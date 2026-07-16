@@ -1,0 +1,232 @@
+{
+  "protocol_id": "spin-coat-photoresist",
+  "protocol_version": "1.0.0",
+  "name": "Spin-coat positive photoresist on a 100 mm Si wafer",
+  "description": "A six-step closed-world protocol for spin-coating S1813 positive photoresist onto a 100 mm (4 in) silicon wafer at 4000 rpm for 30 s, followed by a 90 s soft-bake at 115 °C. Canonical academic-cleanroom workflow used as the OpenLabOS reference protocol — exercises object_on_surface, component_added, action_performed, and measurement_in_range criteria, with two real safety notes (PGMEA solvent flammability, hot-plate burn risk).",
+  "modules": ["semiconductor-litho"],
+  "steps": [
+    {
+      "step_id": "load-wafer-on-chuck",
+      "order": 0,
+      "title": "Load the wafer onto the spin-coater chuck",
+      "instruction": "Using wafer tweezers, place a clean 100 mm silicon wafer flat-side down, centred on the spin-coater chuck. The wafer flat should align with the reference notch on the chuck.",
+      "expected_objects": [
+        { "object_id": "object:wafer-100mm-si", "label": "100 mm Si wafer", "optional": false },
+        { "object_id": "tool:wafer-tweezers", "label": "wafer tweezers", "optional": false },
+        { "object_id": "surface:spin-coater-chuck", "label": "spin-coater chuck", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:place",
+        "label": "Place",
+        "target_object_id": "object:wafer-100mm-si",
+        "instrument_id": "tool:wafer-tweezers"
+      },
+      "success_criteria": [
+        {
+          "kind": "object_on_surface",
+          "object_id": "object:wafer-100mm-si",
+          "surface_id": "surface:spin-coater-chuck",
+          "description": "wafer rests centred on the chuck, flat side down"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "missing_object", "description": "no wafer visible on the chuck" },
+        { "kind": "wrong_object", "description": "wafer placed face-down (polished side down)" },
+        { "kind": "other", "description": "wafer off-centre — will throw off-axis at speed" }
+      ],
+      "safety_notes": [
+        "Handle wafers only with tweezers — finger oils contaminate the surface and degrade resist adhesion."
+      ]
+    },
+    {
+      "step_id": "engage-vacuum-chuck",
+      "order": 1,
+      "title": "Engage the chuck vacuum",
+      "instruction": "Toggle the vacuum-on switch on the spin-coater. Confirm the wafer is locked to the chuck by gently nudging the edge with the tweezers — the wafer should not move.",
+      "expected_objects": [
+        { "object_id": "object:wafer-100mm-si", "label": "wafer", "optional": false },
+        { "object_id": "tool:spin-coater", "label": "spin-coater", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:engage-vacuum",
+        "label": "Engage vacuum",
+        "target_object_id": "tool:spin-coater"
+      },
+      "success_criteria": [
+        {
+          "kind": "action_performed",
+          "action_id": "action:engage-vacuum",
+          "instrument_id": "tool:spin-coater",
+          "description": "vacuum-on indicator (LED or gauge) reads engaged"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "other", "description": "vacuum gauge reads insufficient draw — wafer not seated, will fly at speed" }
+      ],
+      "safety_notes": []
+    },
+    {
+      "step_id": "dispense-photoresist",
+      "order": 2,
+      "title": "Dispense 3 mL of S1813 photoresist onto wafer centre",
+      "instruction": "Using a clean disposable transfer pipette, dispense roughly 3 mL of S1813 resist as a continuous puddle onto the wafer centre. Avoid bubbles; do not let the pipette tip contact the surface.",
+      "expected_objects": [
+        { "object_id": "object:wafer-100mm-si", "label": "wafer", "optional": false },
+        { "object_id": "reagent:s1813-photoresist", "label": "S1813 photoresist", "optional": false },
+        { "object_id": "tool:disposable-pipette", "label": "disposable transfer pipette", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:dispense",
+        "label": "Dispense",
+        "target_object_id": "object:wafer-100mm-si",
+        "instrument_id": "reagent:s1813-photoresist"
+      },
+      "success_criteria": [
+        {
+          "kind": "component_added",
+          "container_id": "object:wafer-100mm-si",
+          "component_id": "reagent:s1813-photoresist",
+          "description": "amber resist puddle visible at wafer centre, covering ~30 mm radius"
+        },
+        {
+          "kind": "measurement_in_range",
+          "quantity": "dispense_volume",
+          "unit": "mL",
+          "min": 2.0,
+          "max": 4.0,
+          "description": "dispensed volume between 2 and 4 mL"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "spill", "description": "resist visibly off the wafer onto the chuck or bowl" },
+        { "kind": "other", "description": "puddle has visible bubbles — will print as voids" }
+      ],
+      "safety_notes": [
+        "S1813 contains PGMEA — flammable, vapours irritate eyes and respiratory tract. Work inside the fume hood with the sash low.",
+        "Wear nitrile gloves and safety glasses; double-glove if dispensing >5 mL."
+      ]
+    },
+    {
+      "step_id": "close-bowl-lid",
+      "order": 3,
+      "title": "Close the spin-coater bowl lid",
+      "instruction": "Lower the spin-coater bowl lid until it seats. The interlock should latch and the run-enable indicator should illuminate.",
+      "expected_objects": [
+        { "object_id": "tool:spin-coater", "label": "spin-coater", "optional": false },
+        { "object_id": "object:spin-coater-lid", "label": "spin-coater bowl lid", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:close",
+        "label": "Close",
+        "target_object_id": "object:spin-coater-lid"
+      },
+      "success_criteria": [
+        {
+          "kind": "object_on_surface",
+          "object_id": "object:spin-coater-lid",
+          "surface_id": "surface:spin-coater-bowl-rim",
+          "description": "lid seated on the bowl rim, interlock LED lit"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "safety_violation", "description": "spin engaged without the lid latched — chemical spray hazard" }
+      ],
+      "safety_notes": [
+        "Never bypass the lid interlock. A 4000 rpm spin without the lid will spray resist throughout the hood."
+      ]
+    },
+    {
+      "step_id": "run-spin-program",
+      "order": 4,
+      "title": "Run the spin program: 4000 rpm for 30 s",
+      "instruction": "Press start. Verify the recipe shows 500 rpm spread for 5 s, then 4000 rpm spin for 30 s, then ramp-down. Wait for the cycle to complete and the chuck to stop.",
+      "expected_objects": [
+        { "object_id": "tool:spin-coater", "label": "spin-coater", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:spin-coat",
+        "label": "Spin",
+        "instrument_id": "tool:spin-coater"
+      },
+      "success_criteria": [
+        {
+          "kind": "action_performed",
+          "action_id": "action:spin-coat",
+          "instrument_id": "tool:spin-coater",
+          "description": "spin cycle runs to completion; tachometer reaches setpoint and ramps down"
+        },
+        {
+          "kind": "measurement_in_range",
+          "quantity": "spin_speed",
+          "unit": "rpm",
+          "min": 3950,
+          "max": 4050,
+          "description": "tachometer holds 4000 ± 50 rpm during the main spin"
+        },
+        {
+          "kind": "measurement_in_range",
+          "quantity": "spin_duration",
+          "unit": "s",
+          "min": 28,
+          "max": 32,
+          "description": "main-spin dwell of 30 ± 2 s"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "out_of_range", "description": "speed setpoint differed from 4000 rpm — film thickness off-target" },
+        { "kind": "other", "description": "audible imbalance or vibration — wafer may have lifted" }
+      ],
+      "safety_notes": []
+    },
+    {
+      "step_id": "soft-bake-hotplate",
+      "order": 5,
+      "title": "Soft-bake on hotplate at 115 °C for 90 s",
+      "instruction": "Transfer the coated wafer with tweezers onto the calibrated hotplate. The hotplate setpoint must read 115 °C and be at temperature. Time the bake to 90 s, then move the wafer to a cooling chuck.",
+      "expected_objects": [
+        { "object_id": "object:wafer-100mm-si", "label": "coated wafer", "optional": false },
+        { "object_id": "tool:hotplate", "label": "hotplate", "optional": false },
+        { "object_id": "tool:wafer-tweezers", "label": "wafer tweezers", "optional": false },
+        { "object_id": "surface:hotplate-surface", "label": "hotplate surface", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:bake",
+        "label": "Bake",
+        "target_object_id": "object:wafer-100mm-si",
+        "instrument_id": "tool:hotplate"
+      },
+      "success_criteria": [
+        {
+          "kind": "object_on_surface",
+          "object_id": "object:wafer-100mm-si",
+          "surface_id": "surface:hotplate-surface",
+          "description": "wafer flat on hotplate surface during bake"
+        },
+        {
+          "kind": "measurement_in_range",
+          "quantity": "hotplate_temperature",
+          "unit": "C",
+          "min": 113,
+          "max": 117,
+          "description": "hotplate at 115 ± 2 °C"
+        },
+        {
+          "kind": "measurement_in_range",
+          "quantity": "bake_duration",
+          "unit": "s",
+          "min": 85,
+          "max": 95,
+          "description": "bake duration of 90 ± 5 s"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "out_of_range", "description": "hotplate not at temperature — under-bake leaves residual solvent, over-bake hardens resist beyond developable" },
+        { "kind": "safety_violation", "description": "wafer placed on cold hotplate that was being warmed up — uneven bake" }
+      ],
+      "safety_notes": [
+        "Hotplate surface and tweezers tip are hot — burn risk. Use silicone-tipped tweezers if available.",
+        "Do not bend over a 115 °C hotplate face-down; convective vapours include residual PGMEA."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "protocol_id": "kitchen-tea",
+  "protocol_version": "1.0.0",
+  "name": "Tea preparation",
+  "description": "A five-step closed-world protocol used as the canonical OpenLabOS smoke test. Demonstrates object placement, liquid pour, component addition, an action with a count, and final placement on a tray.",
+  "modules": [],
+  "steps": [
+    {
+      "step_id": "place-mug",
+      "order": 0,
+      "title": "Place the mug on the counter",
+      "instruction": "Place an empty, upright mug on a flat counter surface.",
+      "expected_objects": [
+        { "object_id": "object:mug", "label": "mug", "optional": false },
+        { "object_id": "surface:counter", "label": "counter", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:place",
+        "label": "Place",
+        "target_object_id": "object:mug"
+      },
+      "success_criteria": [
+        {
+          "kind": "object_on_surface",
+          "object_id": "object:mug",
+          "surface_id": "surface:counter",
+          "description": "mug rests upright on the counter"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "missing_object", "description": "no mug visible" },
+        { "kind": "wrong_surface", "description": "mug on a non-counter surface" }
+      ],
+      "safety_notes": []
+    },
+    {
+      "step_id": "pour-water",
+      "order": 1,
+      "title": "Pour hot water into the mug",
+      "instruction": "Pour hot water into the mug until it is roughly 80% full.",
+      "expected_objects": [
+        { "object_id": "object:mug", "label": "mug", "optional": false },
+        { "object_id": "object:kettle", "label": "kettle", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:pour",
+        "label": "Pour",
+        "target_object_id": "object:mug",
+        "instrument_id": "object:kettle"
+      },
+      "success_criteria": [
+        {
+          "kind": "liquid_in_object",
+          "container_id": "object:mug",
+          "fill_fraction": 0.8,
+          "description": "mug fill at roughly 80%"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "spill", "description": "water visibly spilled outside the mug" }
+      ],
+      "safety_notes": [
+        "Hot water — pour steadily, keep the kettle spout close to the rim."
+      ]
+    },
+    {
+      "step_id": "add-tea-bag",
+      "order": 2,
+      "title": "Add a tea bag to the mug",
+      "instruction": "Drop one tea bag into the mug; the string or tag may rest over the rim.",
+      "expected_objects": [
+        { "object_id": "object:mug", "label": "mug", "optional": false },
+        { "object_id": "object:tea-bag", "label": "tea bag", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:add",
+        "label": "Add",
+        "target_object_id": "object:mug",
+        "instrument_id": "object:tea-bag"
+      },
+      "success_criteria": [
+        {
+          "kind": "component_added",
+          "container_id": "object:mug",
+          "component_id": "object:tea-bag",
+          "description": "tea bag in mug or string draping over the rim"
+        }
+      ],
+      "failure_modes": [],
+      "safety_notes": []
+    },
+    {
+      "step_id": "stir",
+      "order": 3,
+      "title": "Stir 5–10 times with the spoon",
+      "instruction": "Stir the mug with a spoon, five to ten circular motions.",
+      "expected_objects": [
+        { "object_id": "object:mug", "label": "mug", "optional": false },
+        { "object_id": "object:spoon", "label": "spoon", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:stir",
+        "label": "Stir",
+        "target_object_id": "object:mug",
+        "instrument_id": "object:spoon"
+      },
+      "success_criteria": [
+        {
+          "kind": "action_performed",
+          "action_id": "action:stir",
+          "target_object_id": "object:mug",
+          "instrument_id": "object:spoon",
+          "min_count": 5,
+          "description": "at least five circular stirs visible"
+        }
+      ],
+      "failure_modes": [],
+      "safety_notes": []
+    },
+    {
+      "step_id": "place-on-tray",
+      "order": 4,
+      "title": "Place the mug on the tray",
+      "instruction": "Place the mug on the tray, upright and stable.",
+      "expected_objects": [
+        { "object_id": "object:mug", "label": "mug", "optional": false },
+        { "object_id": "surface:tray", "label": "tray", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:place",
+        "label": "Place",
+        "target_object_id": "object:mug"
+      },
+      "success_criteria": [
+        {
+          "kind": "object_on_surface",
+          "object_id": "object:mug",
+          "surface_id": "surface:tray",
+          "description": "mug rests stably on the tray"
+        }
+      ],
+      "failure_modes": [],
+      "safety_notes": []
+    }
+  ]
+}
