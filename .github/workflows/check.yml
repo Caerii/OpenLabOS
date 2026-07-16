@@ -1,0 +1,94 @@
+name: Check
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+jobs:
+  api-web-and-sidecar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.19.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install perception smoke dependencies
+        run: pip install -r services/perception/requirements-smoke.txt
+
+      - name: Typecheck API
+        run: pnpm --filter @openlabos/api typecheck
+
+      - name: Typecheck web
+        run: pnpm --filter @openlabos/web typecheck
+
+      - name: Typecheck desktop package
+        run: pnpm --filter @openlabos/desktop typecheck
+
+      - name: Test protocol package
+        run: pnpm --filter @openlabos/protocol test
+
+      - name: Test Android adapter package
+        run: pnpm --filter @openlabos/device-android test
+
+      - name: Run API offline tests
+        run: pnpm --filter @openlabos/api test:offline
+
+      - name: Smoke perception sidecar
+        run: python scripts/check-sidecar-smoke.py
+
+      - name: Build web
+        run: pnpm --filter @openlabos/web build
+
+      - name: Build API
+        run: pnpm --filter @openlabos/api build
+
+  device-editions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Test Go device edition
+        working-directory: apps/device-reference/editions/go
+        run: go test ./...
+
+      - name: Build Rust device edition
+        working-directory: apps/device-reference/editions/rust
+        run: cargo build
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build Android APKs
+        working-directory: apps/device-reference
+        run: ./gradlew assembleDebug
