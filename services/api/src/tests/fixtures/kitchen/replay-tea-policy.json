@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "labos.kitchen.replay-fixture.v1",
+  "fixtureId": "synthetic-tea-policy-v1",
+  "source": {
+    "kind": "synthetic"
+  },
+  "protocolId": "kitchen-tea-v1",
+  "notes": "Small deterministic replay fixture for the adherence policy. It covers evidence collection, frame-only confirmation, advancement, deviation, and blocking without requiring live glasses or Gemini.",
+  "ticks": [
+    {
+      "label": "needs short video evidence",
+      "runId": "fixture-run-a",
+      "protocolId": "kitchen-tea-v1",
+      "stepNumber": 1,
+      "decision": {
+        "stepComplete": false,
+        "confidence": 0,
+        "action": "collect_short_chunk",
+        "summary": "Step 1 needs more evidence.",
+        "supportingCheckIds": [],
+        "warnings": [],
+        "blockers": []
+      },
+      "evidence": [],
+      "expected": {
+        "action": "collect_more_evidence",
+        "state": "watching",
+        "shouldAdvance": false,
+        "recommendedNextScale": "short_chunk"
+      }
+    },
+    {
+      "label": "first high confidence frame-only pass confirms",
+      "runId": "fixture-run-b",
+      "protocolId": "kitchen-tea-v1",
+      "stepNumber": 1,
+      "decision": {
+        "stepComplete": false,
+        "confidence": 0.9,
+        "action": "collect_short_chunk",
+        "summary": "Frame suggests the mug is placed but no temporal chunk is present.",
+        "supportingCheckIds": ["place-mug-on-counter:success"],
+        "warnings": [],
+        "blockers": []
+      },
+      "evidence": [
+        {
+          "checkId": "place-mug-on-counter:success",
+          "scale": "frame",
+          "modeId": "success-check",
+          "title": "Single-frame success check",
+          "ok": true,
+          "passed": true,
+          "confidence": 0.9,
+          "warnings": [],
+          "blockers": []
+        }
+      ],
+      "expected": {
+        "action": "confirming",
+        "state": "confirming",
+        "shouldAdvance": false,
+        "recommendedNextScale": "short_chunk"
+      }
+    },
+    {
+      "label": "second high confidence frame-only pass advances",
+      "runId": "fixture-run-b",
+      "protocolId": "kitchen-tea-v1",
+      "stepNumber": 1,
+      "decision": {
+        "stepComplete": false,
+        "confidence": 0.91,
+        "action": "collect_short_chunk",
+        "summary": "Repeated frame evidence confirms the mug is placed.",
+        "supportingCheckIds": ["place-mug-on-counter:success"],
+        "warnings": [],
+        "blockers": []
+      },
+      "evidence": [
+        {
+          "checkId": "place-mug-on-counter:success",
+          "scale": "frame",
+          "modeId": "success-check",
+          "title": "Single-frame success check",
+          "ok": true,
+          "passed": true,
+          "confidence": 0.91,
+          "warnings": [],
+          "blockers": []
+        }
+      ],
+      "expected": {
+        "action": "advance",
+        "state": "passed",
+        "shouldAdvance": true
+      }
+    },
+    {
+      "label": "manual review warning becomes possible deviation",
+      "runId": "fixture-run-c",
+      "protocolId": "kitchen-tea-v1",
+      "stepNumber": 2,
+      "decision": {
+        "stepComplete": false,
+        "confidence": 0.42,
+        "action": "manual_review",
+        "summary": "Water may have been poured before the mug was visible.",
+        "supportingCheckIds": [],
+        "warnings": ["missing mug"],
+        "blockers": []
+      },
+      "evidence": [],
+      "expected": {
+        "action": "possible_deviation",
+        "state": "recovering",
+        "shouldAdvance": false
+      }
+    },
+    {
+      "label": "hard safety blocker blocks",
+      "runId": "fixture-run-d",
+      "protocolId": "kitchen-tea-v1",
+      "stepNumber": 2,
+      "decision": {
+        "stepComplete": false,
+        "confidence": 0.8,
+        "action": "manual_review",
+        "summary": "Unsafe hot water handling detected.",
+        "supportingCheckIds": [],
+        "warnings": [],
+        "blockers": ["hot water spill near hand"]
+      },
+      "evidence": [],
+      "expected": {
+        "action": "blocked",
+        "state": "blocked",
+        "shouldAdvance": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "labos.kitchen.session-manifest.v1",
+  "generatedAt": "1970-01-01T00:00:00.000Z",
+  "run": {
+    "id": "test-step-segment-1779833376499-ufx8uw",
+    "protocolId": "kitchen-tea-v1",
+    "protocolName": "Make a Cup of Tea",
+    "status": "completed",
+    "metrics": {
+      "stepsCompleted": 1
+    }
+  },
+  "steps": [
+    {
+      "number": 1
+    }
+  ],
+  "stepSegments": [
+    {
+      "id": "test-step-segment-1779833376499-ufx8uw-step1",
+      "createdAt": "1970-01-01T00:00:00.000Z",
+      "runId": "test-step-segment-1779833376499-ufx8uw",
+      "protocolId": "kitchen-tea-v1",
+      "protocolName": "Make a Cup of Tea",
+      "stepNumber": 1,
+      "attemptId": "test-step-segment-1779833376499-ufx8uw-step1-attempt1",
+      "attemptNumber": 1,
+      "stepInstruction": "Place mug on counter.",
+      "startedAt": 10,
+      "endedAt": 40,
+      "durationMs": 30,
+      "source": "confirm-step",
+      "frameRefs": [
+        "kitchen/frames/test-frame.jpg"
+      ],
+      "chunkRefs": [],
+      "nativeRecording": {
+        "active": true,
+        "activeVideoPath": "/tmp/native-active.mp4"
+      },
+      "notes": [
+        "test segment"
+      ]
+    }
+  ],
+  "stepAttempts": [
+    {
+      "attemptId": "test-step-segment-1779833376499-ufx8uw-step1-attempt1",
+      "stepNumber": 1,
+      "attemptNumber": 1,
+      "segmentIds": [
+        "test-step-segment-1779833376499-ufx8uw-step1"
+      ],
+      "frameRefs": [
+        "kitchen/frames/test-frame.jpg"
+      ],
+      "chunkRefs": [],
+      "nativeVideoPaths": [
+        "/tmp/native-active.mp4"
+      ],
+      "status": "current"
+    }
+  ],
+  "frames": [
+    {
+      "frameRef": "kitchen/frames/test-frame.jpg",
+      "source": "step_segment"
+    }
+  ],
+  "chunks": [],
+  "adherence": [
+    {
+      "ts": 1,
+      "stepNumber": 1,
+      "action": "advance"
+    }
+  ]
+}

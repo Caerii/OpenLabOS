@@ -1,0 +1,260 @@
+{
+  "schemaVersion": "labos.kitchen.session-manifest.v1",
+  "generatedAt": "2026-06-27T17:07:55.381Z",
+  "run": {
+    "id": "run-1782580068356-z2zu",
+    "protocolId": "kitchen-tea-v1",
+    "protocolName": "Make a Cup of Tea",
+    "status": "aborted",
+    "createdAt": 1782580068356,
+    "startedAt": 1782580068357,
+    "endedAt": 1782580071730,
+    "currentStepIndex": 0,
+    "metrics": {
+      "stepsCompleted": 0,
+      "stepsFailed": 0,
+      "stepsSkipped": 0,
+      "totalVerificationAttempts": 0,
+      "avgConfidence": 0,
+      "totalElapsedMs": 0
+    }
+  },
+  "captureContract": {
+    "primaryArtifact": "frame_sequence",
+    "frameRefRoot": "dashboard/data",
+    "temporalChunks": "rolling_preview_mp4",
+    "stepBoundaries": "step_segments"
+  },
+  "validationCatalog": {
+    "checks": []
+  },
+  "steps": [
+    {
+      "number": 1,
+      "instruction": "Set up the workspace with the mug, hot water source, tea bag, spoon, tray, and clear counter visible",
+      "status": "active",
+      "attemptId": "run-1782580068356-z2zu-step1-attempt1",
+      "attemptNumber": 1,
+      "startedAt": 1782580068357,
+      "elapsedMs": 3373,
+      "notes": [
+        "Aborted: operator requested stop"
+      ],
+      "verifications": []
+    },
+    {
+      "number": 2,
+      "instruction": "Place the mug on the counter in your workspace",
+      "status": "pending",
+      "attemptId": "run-1782580068356-z2zu-step2-attempt1",
+      "attemptNumber": 1,
+      "elapsedMs": 0,
+      "notes": [],
+      "verifications": []
+    },
+    {
+      "number": 3,
+      "instruction": "Pour hot water into the mug (fill to about 80%)",
+      "status": "pending",
+      "attemptId": "run-1782580068356-z2zu-step3-attempt1",
+      "attemptNumber": 1,
+      "elapsedMs": 0,
+      "notes": [],
+      "verifications": []
+    },
+    {
+      "number": 4,
+      "instruction": "Add a tea bag to the mug",
+      "status": "pending",
+      "attemptId": "run-1782580068356-z2zu-step4-attempt1",
+      "attemptNumber": 1,
+      "elapsedMs": 0,
+      "notes": [],
+      "verifications": []
+    },
+    {
+      "number": 5,
+      "instruction": "Stir the tea with a spoon (5-10 circular motions)",
+      "status": "pending",
+      "attemptId": "run-1782580068356-z2zu-step5-attempt1",
+      "attemptNumber": 1,
+      "elapsedMs": 0,
+      "notes": [],
+      "verifications": []
+    },
+    {
+      "number": 6,
+      "instruction": "Place the mug on the tray",
+      "status": "pending",
+      "attemptId": "run-1782580068356-z2zu-step6-attempt1",
+      "attemptNumber": 1,
+      "elapsedMs": 0,
+      "notes": [],
+      "verifications": []
+    }
+  ],
+  "stepAttempts": [],
+  "stepSegments": [],
+  "frames": [],
+  "chunks": [],
+  "adherence": [],
+  "stepAnalyses": [],
+  "vqaAnnotationRecords": [],
+  "vqaAnnotations": [],
+  "readiness": {
+    "schemaVersion": "labos.kitchen.capture-readiness.v2",
+    "grade": "not_ready",
+    "label": "Needs more evidence",
+    "summary": "Needs more evidence. Next missing item: run completed (0/6 steps completed).",
+    "checks": [
+      {
+        "id": "run_completed",
+        "label": "Run completed",
+        "status": "fail",
+        "detail": "0/6 steps completed",
+        "requiredFor": "simple_demo"
+      },
+      {
+        "id": "step_segments",
+        "label": "Step boundaries saved",
+        "status": "fail",
+        "detail": "0/6 step segments saved",
+        "requiredFor": "simple_demo"
+      },
+      {
+        "id": "snapshots",
+        "label": "Per-step snapshots saved",
+        "status": "fail",
+        "detail": "0/6 saved snapshots indexed",
+        "requiredFor": "simple_demo"
+      },
+      {
+        "id": "native_videos",
+        "label": "Native videos linked",
+        "status": "fail",
+        "detail": "0/6 steps have native recording links",
+        "requiredFor": "simple_demo"
+      },
+      {
+        "id": "async_analysis",
+        "label": "Async VLM analysis completed",
+        "status": "fail",
+        "detail": "0/6 step analyses completed",
+        "requiredFor": "analysis_demo"
+      },
+      {
+        "id": "analysis_passed",
+        "label": "Analysis says steps passed",
+        "status": "fail",
+        "detail": "0/6 analyses marked correct",
+        "requiredFor": "analysis_demo"
+      },
+      {
+        "id": "temporal_chunks",
+        "label": "Temporal clips indexed",
+        "status": "fail",
+        "detail": "0 temporal clips indexed",
+        "requiredFor": "partner_demo"
+      }
+    ]
+  },
+  "rollingEvidence": {
+    "enabled": false,
+    "nativeVideoPaths": [],
+    "markers": []
+  },
+  "events": [
+    {
+      "ts": 1782580068468,
+      "type": "run_start",
+      "runId": "run-1782580068356-z2zu",
+      "protocolId": "kitchen-tea-v1",
+      "payload": {
+        "protocolName": "Make a Cup of Tea"
+      }
+    },
+    {
+      "ts": 1782580068468,
+      "type": "run_force_start",
+      "runId": "run-1782580068356-z2zu",
+      "protocolId": "kitchen-tea-v1"
+    },
+    {
+      "ts": 1782580068535,
+      "type": "run_snapshot",
+      "runId": "run-1782580068356-z2zu",
+      "protocolId": "kitchen-tea-v1",
+      "payload": {
+        "summary": {
+          "id": "run-1782580068356-z2zu",
+          "protocolId": "kitchen-tea-v1",
+          "protocolName": "Make a Cup of Tea",
+          "status": "setup",
+          "currentStep": 1,
+          "totalSteps": 6,
+          "stepsCompleted": 0,
+          "elapsedMs": 0
+        }
+      }
+    },
+    {
+      "ts": 1782580068568,
+      "type": "run_snapshot",
+      "runId": "run-1782580068356-z2zu",
+      "protocolId": "kitchen-tea-v1",
+      "payload": {
+        "summary": {
+          "id": "run-1782580068356-z2zu",
+          "protocolId": "kitchen-tea-v1",
+          "protocolName": "Make a Cup of Tea",
+          "status": "running",
+          "currentStep": 1,
+          "totalSteps": 6,
+          "stepsCompleted": 0,
+          "startedAt": 1782580068357,
+          "elapsedMs": 1
+        }
+      }
+    },
+    {
+      "ts": 1782580071733,
+      "type": "run_abort",
+      "runId": "run-1782580068356-z2zu",
+      "protocolId": "kitchen-tea-v1",
+      "payload": {
+        "reason": "operator requested stop"
+      }
+    },
+    {
+      "ts": 1782580071745,
+      "type": "run_snapshot",
+      "runId": "run-1782580068356-z2zu",
+      "protocolId": "kitchen-tea-v1",
+      "payload": {
+        "summary": {
+          "id": "run-1782580068356-z2zu",
+          "protocolId": "kitchen-tea-v1",
+          "protocolName": "Make a Cup of Tea",
+          "status": "aborted",
+          "currentStep": 1,
+          "totalSteps": 6,
+          "stepsCompleted": 0,
+          "startedAt": 1782580068357,
+          "endedAt": 1782580071730,
+          "elapsedMs": 3373
+        }
+      }
+    }
+  ],
+  "exportHints": {
+    "trainingRepoRawTarget": "openlabos-training/data/raw/openlabos-runs",
+    "stableJoinKeys": [
+      "run.id",
+      "run.protocolId",
+      "steps.number",
+      "stepAttempts.attemptId",
+      "stepSegments.id",
+      "frames.frameRef"
+    ]
+  }
+}

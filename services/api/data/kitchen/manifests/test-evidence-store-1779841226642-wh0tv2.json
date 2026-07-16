@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "labos.kitchen.session-manifest.v1",
+  "generatedAt": "1970-01-01T00:00:00.000Z",
+  "run": {
+    "id": "test-evidence-store-1779841226642-wh0tv2",
+    "protocolId": "kitchen-tea-v1",
+    "protocolName": "Make a Cup of Tea",
+    "status": "completed",
+    "metrics": {
+      "stepsCompleted": 2
+    }
+  },
+  "steps": [
+    {
+      "number": 1
+    },
+    {
+      "number": 2
+    }
+  ],
+  "stepAttempts": [
+    {
+      "attemptId": "test-evidence-store-1779841226642-wh0tv2-step2-attempt1",
+      "status": "current"
+    }
+  ],
+  "stepSegments": [
+    {
+      "id": "test-evidence-store-1779841226642-wh0tv2-segment-step2",
+      "createdAt": "1970-01-01T00:00:00.000Z",
+      "runId": "test-evidence-store-1779841226642-wh0tv2",
+      "protocolId": "kitchen-tea-v1",
+      "protocolName": "Make a Cup of Tea",
+      "stepNumber": 2,
+      "attemptId": "test-evidence-store-1779841226642-wh0tv2-step2-attempt1",
+      "attemptNumber": 1,
+      "stepInstruction": "Pour hot water into the mug.",
+      "startedAt": 10,
+      "endedAt": 50,
+      "durationMs": 40,
+      "source": "confirm-step",
+      "frameRefs": [
+        "kitchen/frames/test.jpg"
+      ],
+      "chunkRefs": [],
+      "nativeRecording": {
+        "active": true,
+        "activeVideoPath": "/storage/emulated/0/LabOS/media/VID_test-evidence-store-1779841226642-wh0tv2.mp4"
+      }
+    }
+  ],
+  "adherence": [
+    {
+      "stepNumber": 2,
+      "action": "possible_deviation"
+    },
+    {
+      "stepNumber": 2,
+      "action": "advance"
+    }
+  ]
+}
