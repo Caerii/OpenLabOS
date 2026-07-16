@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "openlabos-voice"
+version = "0.1.0"
+description = "OpenLabOS live-coaching voice agent over LiveKit + WebRTC. Renders protocol context into a real-time TTS/ASR session."
+requires-python = ">=3.10, <3.15"
+
+dependencies = [
+    "livekit-agents[google]~=1.5",
+    "python-dotenv",
+]
+
+[project.scripts]
+openlabos-voice-agent = "openlabos_voice.agent:server"
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "ruff",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["openlabos_voice"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "B", "A", "C4", "UP", "SIM", "RUF"]
+ignore = ["E501"]  # Line too long (handled by formatter)
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
