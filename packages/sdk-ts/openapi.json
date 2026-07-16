@@ -1,0 +1,474 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenLabOS API",
+    "version": "0.1.0",
+    "description": "Coordination plane for OpenLabOS: sessions, adapters, modules, and the contracts the rest of the stack depends on."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3847"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Protocol": {
+        "$ref": "#/definitions/protocol",
+        "definitions": {
+          "protocol": {}
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "Session": {
+        "$ref": "#/definitions/session",
+        "definitions": {
+          "session": {}
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "SessionEvent": {
+        "$ref": "#/definitions/session-event",
+        "definitions": {
+          "session-event": {}
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "Judgment": {
+        "$ref": "#/definitions/judgment",
+        "definitions": {
+          "judgment": {}
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "RunManifest": {
+        "$ref": "#/definitions/run-manifest",
+        "definitions": {
+          "run-manifest": {}
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "Health": {
+        "type": "object",
+        "required": [
+          "ok",
+          "service"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "service": {
+            "type": "string",
+            "const": "@openlabos/api"
+          },
+          "uptime_seconds": {
+            "type": "number",
+            "minimum": 0
+          },
+          "adapters": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "modules": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "SessionStart": {
+        "type": "object",
+        "required": [
+          "protocol_id",
+          "protocol_version",
+          "device_adapter_id"
+        ],
+        "properties": {
+          "protocol_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "protocol_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "device_adapter_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operator_id": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      },
+      "Finalize": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "completed",
+              "abandoned",
+              "errored"
+            ]
+          }
+        }
+      },
+      "SessionView": {
+        "type": "object",
+        "required": [
+          "session",
+          "counts"
+        ],
+        "properties": {
+          "session": {
+            "$ref": "#/components/schemas/Session"
+          },
+          "lastCompletedStepId": {
+            "type": "string"
+          },
+          "activeStepId": {
+            "type": "string"
+          },
+          "counts": {
+            "type": "object",
+            "properties": {
+              "framesCaptured": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "judgmentsEmitted": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "stepsCompleted": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "operatorNotes": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      },
+      "AdaptersList": {
+        "type": "object",
+        "properties": {
+          "adapters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "capabilities": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "registeredAt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ModulesList": {
+        "type": "object",
+        "properties": {
+          "modules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "criterion_kinds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/healthz": {
+      "get": {
+        "summary": "Liveness + dependency snapshot",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/readyz": {
+      "get": {
+        "summary": "Readiness probe",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/sessions": {
+      "get": {
+        "summary": "List sessions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Session"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Start a new session",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionStart"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions/{session_id}": {
+      "get": {
+        "summary": "Folded session view",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions/{session_id}/events": {
+      "post": {
+        "summary": "Append a session event",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionEvent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accepted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions/{session_id}/finalize": {
+      "post": {
+        "summary": "Finalize a session",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Finalize"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/adapters": {
+      "get": {
+        "summary": "List registered device adapters",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdaptersList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/modules": {
+      "get": {
+        "summary": "List loaded modules",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModulesList"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
