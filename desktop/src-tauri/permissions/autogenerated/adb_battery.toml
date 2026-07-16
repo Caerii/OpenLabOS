@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-adb-battery"
+description = "Enables the adb_battery command without any pre-configured scope."
+commands.allow = ["adb_battery"]
+
+[[permission]]
+identifier = "deny-adb-battery"
+description = "Denies the adb_battery command without any pre-configured scope."
+commands.deny = ["adb_battery"]

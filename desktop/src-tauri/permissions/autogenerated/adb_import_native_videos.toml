@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-adb-import-native-videos"
+description = "Enables the adb_import_native_videos command without any pre-configured scope."
+commands.allow = ["adb_import_native_videos"]
+
+[[permission]]
+identifier = "deny-adb-import-native-videos"
+description = "Denies the adb_import_native_videos command without any pre-configured scope."
+commands.deny = ["adb_import_native_videos"]

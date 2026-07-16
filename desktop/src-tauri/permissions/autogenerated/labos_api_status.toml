@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-labos-api-status"
+description = "Enables the labos_api_status command without any pre-configured scope."
+commands.allow = ["labos_api_status"]
+
+[[permission]]
+identifier = "deny-labos-api-status"
+description = "Denies the labos_api_status command without any pre-configured scope."
+commands.deny = ["labos_api_status"]

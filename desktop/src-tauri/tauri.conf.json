@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "OpenLabOS",
+  "version": "0.1.0",
+  "identifier": "org.openlabos.desktop",
+  "build": {
+    "beforeDevCommand": "pnpm -C ../apps/web dev",
+    "devUrl": "http://localhost:5174",
+    "beforeBuildCommand": "pnpm -C .. desktop:prepare-runtime",
+    "frontendDist": "../../apps/web/dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "OpenLabOS",
+        "width": 1440,
+        "height": 960,
+        "minWidth": 1100,
+        "minHeight": 720
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: http://127.0.0.1:* https:; media-src 'self' data: blob: http://127.0.0.1:* https:; connect-src 'self' ipc: http://ipc.localhost http://127.0.0.1:* ws://127.0.0.1:* https:; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "DeveloperTool",
+    "icon": [
+      "icons/icon.ico",
+      "icons/icon.png"
+    ],
+    "resources": [
+      "resources"
+    ],
+    "windows": {
+      "signCommand": "powershell -NoProfile -ExecutionPolicy Bypass -File ../scripts/sign-windows.ps1 %1"
+    },
+    "shortDescription": "Native desktop shell for OpenLabOS",
+    "longDescription": "OpenLabOS desktop packages the operator console with native device diagnostics and local orchestration for glasses-based lab and kitchen workflows."
+  }
+}

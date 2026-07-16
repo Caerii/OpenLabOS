@@ -1,0 +1,28 @@
+{
+  "name": "@openlabos/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "OpenLabOS native desktop shell with bundled API runtime and device diagnostics.",
+  "scripts": {
+    "build:api-sidecar": "node scripts/build-api-sidecar.mjs",
+    "bump-version": "node scripts/bump-version.mjs",
+    "hash:artifacts": "node scripts/hash-artifacts.mjs",
+    "smoke:built-app": "node scripts/smoke-built-app.mjs",
+    "verify:runtime": "node scripts/verify-runtime.mjs",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.0.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0",
+    "esbuild": "^0.21.5",
+    "typescript": "^5.6.0"
+  },
+  "optionalDependencies": {
+    "@tauri-apps/cli-win32-x64-msvc": "2.11.2"
+  }
+}

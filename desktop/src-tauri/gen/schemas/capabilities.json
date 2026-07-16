@@ -1,0 +1,1 @@
+{"default":{"identifier":"default","description":"Main LabOS desktop window capability.","local":true,"windows":["main"],"permissions":["core:default","allow-labos-desktop-commands"]}}

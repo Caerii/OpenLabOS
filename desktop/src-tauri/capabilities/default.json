@@ -1,0 +1,10 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Main LabOS desktop window capability.",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "allow-labos-desktop-commands"
+  ]
+}

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-adb-power-sample"
+description = "Enables the adb_power_sample command without any pre-configured scope."
+commands.allow = ["adb_power_sample"]
+
+[[permission]]
+identifier = "deny-adb-power-sample"
+description = "Denies the adb_power_sample command without any pre-configured scope."
+commands.deny = ["adb_power_sample"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-adb-thermal"
+description = "Enables the adb_thermal command without any pre-configured scope."
+commands.allow = ["adb_thermal"]
+
+[[permission]]
+identifier = "deny-adb-thermal"
+description = "Denies the adb_thermal command without any pre-configured scope."
+commands.deny = ["adb_thermal"]

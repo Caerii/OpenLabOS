@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-labos-api-stop"
+description = "Enables the labos_api_stop command without any pre-configured scope."
+commands.allow = ["labos_api_stop"]
+
+[[permission]]
+identifier = "deny-labos-api-stop"
+description = "Denies the labos_api_stop command without any pre-configured scope."
+commands.deny = ["labos_api_stop"]

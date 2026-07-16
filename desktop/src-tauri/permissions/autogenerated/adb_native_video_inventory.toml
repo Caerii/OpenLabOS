@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-adb-native-video-inventory"
+description = "Enables the adb_native_video_inventory command without any pre-configured scope."
+commands.allow = ["adb_native_video_inventory"]
+
+[[permission]]
+identifier = "deny-adb-native-video-inventory"
+description = "Denies the adb_native_video_inventory command without any pre-configured scope."
+commands.deny = ["adb_native_video_inventory"]

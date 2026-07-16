@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-adb-connect"
+description = "Enables the adb_connect command without any pre-configured scope."
+commands.allow = ["adb_connect"]
+
+[[permission]]
+identifier = "deny-adb-connect"
+description = "Denies the adb_connect command without any pre-configured scope."
+commands.deny = ["adb_connect"]
