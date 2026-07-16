@@ -55,3 +55,4 @@ Brief — enough that a reader can audit the trade.
 - [0015 — Replay-as-test](0015-replay-as-test.md)
 - [0016 — API runtime](0016-api-runtime.md)
 - [0017 — World-model stack selection](0017-world-model-stack-selection.md)
+- [0018 — Apache-2.0 code, CC0 documentation](0018-dual-license.md)

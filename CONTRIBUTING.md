@@ -18,6 +18,9 @@ example protocols rather than the core schema or services.
    in `docs/decisions/` before merge.
 5. **Local-first stays local-first.** A new feature must work offline by
    default. Cloud paths are opt-in.
+6. **License by tree.** Code changes are Apache-2.0 (`LICENSE` at repo root).
+   Documentation under `docs/` is CC0 (`docs/LICENSE`). Match the tree you
+   edit.
 
 ## Workflow
 

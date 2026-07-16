@@ -14,3 +14,9 @@ Four kinds live here:
 
 Top-level docs are referenced from the root `README.md`, `ARCHITECTURE.md`,
 `CONTRIBUTING.md`, `TESTING.md`, and `test-catalog.md`.
+
+## License
+
+Files in this directory are released under [CC0 1.0](LICENSE) unless a
+specific file states otherwise. Repository code is licensed separately under
+Apache-2.0; see the root `LICENSE`.

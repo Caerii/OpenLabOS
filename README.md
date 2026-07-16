@@ -96,11 +96,11 @@ what you need. The full stack runs in `docker compose up` from the repo root.
 
 ## License
 
-Code is released under CC0 — no rights reserved, no warranty. See `LICENSE`.
+- **Code** (apps, services, packages, adapters, desktop, scripts, examples):
+  [Apache-2.0](LICENSE).
+- **Documentation** (`docs/`): [CC0 1.0](docs/LICENSE).
 
-> A future ADR may move code to Apache-2.0 to gain explicit patent grants while
-> keeping documents under CC0. Open as a discussion before contributing patents
-> you care about.
+See [ADR 0018](docs/decisions/0018-dual-license.md) for rationale.
 
 ## Status
 
