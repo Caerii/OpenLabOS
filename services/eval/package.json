@@ -1,0 +1,6 @@
+{
+  "name": "@openlabos/eval",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Evaluation harness (Python via uv; see pyproject.toml)."
+}
