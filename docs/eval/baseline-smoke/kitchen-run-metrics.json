@@ -1,0 +1,15 @@
+{
+  "counts": {
+    "verifications": 2
+  },
+  "metrics": {
+    "json_validity_rate": 1.0,
+    "has_frame_ref_rate": 1.0,
+    "has_reasoning_rate": 1.0,
+    "auto_advance_rate": 0.0,
+    "confidence_threshold": 0.6
+  },
+  "inputs": {
+    "events": "..\\..\\data\\raw\\openlabos-runs\\kitchen\\run_events.jsonl"
+  }
+}
