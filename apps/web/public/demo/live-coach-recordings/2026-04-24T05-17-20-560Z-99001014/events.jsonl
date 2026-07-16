@@ -1,0 +1,17 @@
+{"ts":"2026-04-24T05:17:20.573Z","type":"session_start","payload":{}}
+{"ts":"2026-04-24T05:17:20.683Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-24T05:17:20.817Z","type":"setup","payload":{}}
+{"ts":"2026-04-24T05:17:20.818Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-24T05:17:20.818Z","type":"scenario","payload":{"title":"Missing object: no spoon for stir step","scenarioId":"missing-spoon-stir"}}
+{"ts":"2026-04-24T05:17:20.819Z","type":"client_text","payload":{"text":"Demo scenario: The current protocol step is stirring, but no spoon is visible. Say the step is not ready, name the missing object, and suggest a simple recovery action.\n\nSpeak only the final hands-free copilot voice feedback. Keep it to one or two short sentences. Do not narrate analysis."}}
+{"ts":"2026-04-24T05:17:21.380Z","type":"transcript","payload":{"transcript":"Step not"}}
+{"ts":"2026-04-24T05:17:21.665Z","type":"transcript","payload":{"transcript":" ready."}}
+{"ts":"2026-04-24T05:17:21.794Z","type":"model_audio","payload":{"bytes":46080,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:21.795Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:21.798Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:21.798Z","type":"transcript","payload":{"transcript":" Missing"}}
+{"ts":"2026-04-24T05:17:21.816Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:21.818Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:21.818Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:21.836Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:21.844Z","type":"session_stop","payload":{"reason":"stop"}}

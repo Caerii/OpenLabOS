@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-39-14-595Z-646d781e",
+  "startedAt": "2026-04-26T04:39:14.595Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 1: uncertain view",
+  "scenarioId": "kitchen-tea-v1__step-1__uncertain-place-the-mug-on-the-counter-in-your-workspace",
+  "eventCount": 68,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:39:16.789Z",
+  "outputWav": "output.wav"
+}

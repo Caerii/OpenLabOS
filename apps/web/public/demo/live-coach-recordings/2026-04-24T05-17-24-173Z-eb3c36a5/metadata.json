@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-24T05-17-24-173Z-eb3c36a5",
+  "startedAt": "2026-04-24T05:17:24.173Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Wrong order: milk before steeping",
+  "scenarioId": "deviance-milk-before-steep",
+  "eventCount": 16,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-24T05:17:25.482Z",
+  "outputWav": "output.wav"
+}

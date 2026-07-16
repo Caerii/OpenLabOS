@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-40-44-294Z-3fce27ae",
+  "startedAt": "2026-04-26T04:40:44.294Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 5: coach the next action",
+  "scenarioId": "kitchen-tea-v1__step-5__intro-place-the-mug-on-the-tray",
+  "eventCount": 35,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:40:46.251Z",
+  "outputWav": "output.wav"
+}

@@ -1,0 +1,4 @@
+{"ts":"2026-05-01T16:33:53.780Z","type":"session_start","payload":{"title":"Completion: protocol finished","scenarioId":"kitchen-tea-v1__completion"}}
+{"ts":"2026-05-01T16:33:53.780Z","type":"scenario","payload":{"title":"Completion: protocol finished","scenarioId":"kitchen-tea-v1__completion"}}
+{"ts":"2026-05-01T16:33:53.780Z","type":"model_text","payload":{"text":"Protocol complete. I saved the run, the key checkpoints, and the useful training moments for review."}}
+{"ts":"2026-05-01T16:33:53.780Z","type":"session_stop","payload":{"reason":"static_asset_generation"}}

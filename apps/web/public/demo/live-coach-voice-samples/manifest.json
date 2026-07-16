@@ -1,0 +1,249 @@
+{
+  "generatedAt": "2026-04-27T06:43:42.409Z",
+  "model": "gemini-2.5-flash-preview-tts",
+  "count": 30,
+  "missingCount": 0,
+  "voices": [
+    {
+      "name": "Puck",
+      "style": "Upbeat",
+      "character": "playful lab mate",
+      "file": "public/demo/live-coach-voice-samples/puck.wav",
+      "url": "/demo/live-coach-voice-samples/puck.wav",
+      "bytes": 578490
+    },
+    {
+      "name": "Charon",
+      "style": "Informative",
+      "character": "calm protocol narrator",
+      "file": "public/demo/live-coach-voice-samples/charon.wav",
+      "url": "/demo/live-coach-voice-samples/charon.wav",
+      "bytes": 591930
+    },
+    {
+      "name": "Kore",
+      "style": "Firm",
+      "character": "precise supervisor",
+      "file": "public/demo/live-coach-voice-samples/kore.wav",
+      "url": "/demo/live-coach-voice-samples/kore.wav",
+      "bytes": 620730
+    },
+    {
+      "name": "Fenrir",
+      "style": "Excitable",
+      "character": "energetic coach",
+      "file": "public/demo/live-coach-voice-samples/fenrir.wav",
+      "url": "/demo/live-coach-voice-samples/fenrir.wav",
+      "bytes": 551610
+    },
+    {
+      "name": "Leda",
+      "style": "Youthful",
+      "character": "bright junior copilot",
+      "file": "public/demo/live-coach-voice-samples/leda.wav",
+      "url": "/demo/live-coach-voice-samples/leda.wav",
+      "bytes": 576570
+    },
+    {
+      "name": "Orus",
+      "style": "Firm",
+      "character": "steady operator",
+      "file": "public/demo/live-coach-voice-samples/orus.wav",
+      "url": "/demo/live-coach-voice-samples/orus.wav",
+      "bytes": 565050
+    },
+    {
+      "name": "Aoede",
+      "style": "Breezy",
+      "character": "relaxed guide",
+      "file": "public/demo/live-coach-voice-samples/aoede.wav",
+      "url": "/demo/live-coach-voice-samples/aoede.wav",
+      "bytes": 574650
+    },
+    {
+      "name": "Zephyr",
+      "style": "Bright",
+      "character": "crisp demo host",
+      "file": "public/demo/live-coach-voice-samples/zephyr.wav",
+      "url": "/demo/live-coach-voice-samples/zephyr.wav",
+      "bytes": 565050
+    },
+    {
+      "name": "Callirrhoe",
+      "style": "Easy-going",
+      "character": "gentle helper",
+      "file": "public/demo/live-coach-voice-samples/callirrhoe.wav",
+      "url": "/demo/live-coach-voice-samples/callirrhoe.wav",
+      "bytes": 601530
+    },
+    {
+      "name": "Autonoe",
+      "style": "Bright",
+      "character": "clear facilitator",
+      "file": "public/demo/live-coach-voice-samples/autonoe.wav",
+      "url": "/demo/live-coach-voice-samples/autonoe.wav",
+      "bytes": 707130
+    },
+    {
+      "name": "Enceladus",
+      "style": "Breathy",
+      "character": "soft-spoken coach",
+      "file": "public/demo/live-coach-voice-samples/enceladus.wav",
+      "url": "/demo/live-coach-voice-samples/enceladus.wav",
+      "bytes": 837690
+    },
+    {
+      "name": "Iapetus",
+      "style": "Clear",
+      "character": "clean-room announcer",
+      "file": "public/demo/live-coach-voice-samples/iapetus.wav",
+      "url": "/demo/live-coach-voice-samples/iapetus.wav",
+      "bytes": 760890
+    },
+    {
+      "name": "Umbriel",
+      "style": "Easy-going",
+      "character": "low-pressure mentor",
+      "file": "public/demo/live-coach-voice-samples/umbriel.wav",
+      "url": "/demo/live-coach-voice-samples/umbriel.wav",
+      "bytes": 687930
+    },
+    {
+      "name": "Algieba",
+      "style": "Smooth",
+      "character": "polished concierge",
+      "file": "public/demo/live-coach-voice-samples/algieba.wav",
+      "url": "/demo/live-coach-voice-samples/algieba.wav",
+      "bytes": 664890
+    },
+    {
+      "name": "Despina",
+      "style": "Smooth",
+      "character": "natural companion",
+      "file": "public/demo/live-coach-voice-samples/despina.wav",
+      "url": "/demo/live-coach-voice-samples/despina.wav",
+      "bytes": 670650
+    },
+    {
+      "name": "Erinome",
+      "style": "Clear",
+      "character": "concise verifier",
+      "file": "public/demo/live-coach-voice-samples/erinome.wav",
+      "url": "/demo/live-coach-voice-samples/erinome.wav",
+      "bytes": 622650
+    },
+    {
+      "name": "Algenib",
+      "style": "Gravelly",
+      "character": "dry-humour technician",
+      "file": "public/demo/live-coach-voice-samples/algenib.wav",
+      "url": "/demo/live-coach-voice-samples/algenib.wav",
+      "bytes": 734010
+    },
+    {
+      "name": "Rasalgethi",
+      "style": "Informative",
+      "character": "methodical scientist",
+      "file": "public/demo/live-coach-voice-samples/rasalgethi.wav",
+      "url": "/demo/live-coach-voice-samples/rasalgethi.wav",
+      "bytes": 753210
+    },
+    {
+      "name": "Laomedeia",
+      "style": "Upbeat",
+      "character": "friendly demonstrator",
+      "file": "public/demo/live-coach-voice-samples/laomedeia.wav",
+      "url": "/demo/live-coach-voice-samples/laomedeia.wav",
+      "bytes": 674490
+    },
+    {
+      "name": "Achernar",
+      "style": "Soft",
+      "character": "gentle safety coach",
+      "file": "public/demo/live-coach-voice-samples/achernar.wav",
+      "url": "/demo/live-coach-voice-samples/achernar.wav",
+      "bytes": 734010
+    },
+    {
+      "name": "Alnilam",
+      "style": "Firm",
+      "character": "assertive checklist lead",
+      "file": "public/demo/live-coach-voice-samples/alnilam.wav",
+      "url": "/demo/live-coach-voice-samples/alnilam.wav",
+      "bytes": 689850
+    },
+    {
+      "name": "Schedar",
+      "style": "Even",
+      "character": "balanced instructor",
+      "file": "public/demo/live-coach-voice-samples/schedar.wav",
+      "url": "/demo/live-coach-voice-samples/schedar.wav",
+      "bytes": 686010
+    },
+    {
+      "name": "Gacrux",
+      "style": "Mature",
+      "character": "senior lab lead",
+      "file": "public/demo/live-coach-voice-samples/gacrux.wav",
+      "url": "/demo/live-coach-voice-samples/gacrux.wav",
+      "bytes": 726330
+    },
+    {
+      "name": "Pulcherrima",
+      "style": "Forward",
+      "character": "confident guide",
+      "file": "public/demo/live-coach-voice-samples/pulcherrima.wav",
+      "url": "/demo/live-coach-voice-samples/pulcherrima.wav",
+      "bytes": 695610
+    },
+    {
+      "name": "Achird",
+      "style": "Friendly",
+      "character": "warm teammate",
+      "file": "public/demo/live-coach-voice-samples/achird.wav",
+      "url": "/demo/live-coach-voice-samples/achird.wav",
+      "bytes": 607290
+    },
+    {
+      "name": "Zubenelgenubi",
+      "style": "Casual",
+      "character": "laid-back copilot",
+      "file": "public/demo/live-coach-voice-samples/zubenelgenubi.wav",
+      "url": "/demo/live-coach-voice-samples/zubenelgenubi.wav",
+      "bytes": 666810
+    },
+    {
+      "name": "Vindemiatrix",
+      "style": "Gentle",
+      "character": "patient tutor",
+      "file": "public/demo/live-coach-voice-samples/vindemiatrix.wav",
+      "url": "/demo/live-coach-voice-samples/vindemiatrix.wav",
+      "bytes": 712890
+    },
+    {
+      "name": "Sadachbia",
+      "style": "Lively",
+      "character": "animated host",
+      "file": "public/demo/live-coach-voice-samples/sadachbia.wav",
+      "url": "/demo/live-coach-voice-samples/sadachbia.wav",
+      "bytes": 749370
+    },
+    {
+      "name": "Sadaltager",
+      "style": "Knowledgeable",
+      "character": "scholarly advisor",
+      "file": "public/demo/live-coach-voice-samples/sadaltager.wav",
+      "url": "/demo/live-coach-voice-samples/sadaltager.wav",
+      "bytes": 716730
+    },
+    {
+      "name": "Sulafat",
+      "style": "Warm",
+      "character": "welcoming guide",
+      "file": "public/demo/live-coach-voice-samples/sulafat.wav",
+      "url": "/demo/live-coach-voice-samples/sulafat.wav",
+      "bytes": 712890
+    }
+  ],
+  "missing": []
+}

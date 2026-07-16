@@ -1,0 +1,15 @@
+{
+  "id": "kitchen-tea-v1__step-2__intro-place-the-mug-on-the-counter-in-your-workspace",
+  "startedAt": "2026-05-01T16:33:16.319Z",
+  "endedAt": "2026-05-01T16:33:16.319Z",
+  "model": "gemini-2.5-flash-preview-tts",
+  "voiceName": "Despina",
+  "title": "Step 2: coach the next action",
+  "scenarioId": "kitchen-tea-v1__step-2__intro-place-the-mug-on-the-counter-in-your-workspace",
+  "eventCount": 4,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "outputWav": "output.wav",
+  "outputBytes": 599566,
+  "outputDurationSec": 12.490958333333333
+}

@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-40-37-933Z-e5e32f24",
+  "startedAt": "2026-04-26T04:40:37.933Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 4: possible deviance",
+  "scenarioId": "kitchen-tea-v1__step-4__possible-deviation-stir-the-tea-with-a-spoon-5-10-circular-motions",
+  "eventCount": 69,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:40:40.279Z",
+  "outputWav": "output.wav"
+}

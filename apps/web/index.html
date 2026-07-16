@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>OpenLabOS</title>
+    <meta
+      name="description"
+      content="An open, interoperable operating system for augmented laboratory work."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html, body, #root { min-height: 100%; }
+      body { margin: 0; }
+    </style>
+    <script>
+      (function () {
+        var LIGHT = {
+          "--surface-0": "248 250 252",
+          "--surface-1": "241 245 249",
+          "--surface-2": "255 255 255",
+          "--fg": "15 23 42",
+          "--muted": "51 65 85",
+          "--border": "15 23 42",
+        };
+        var DARK = {
+          "--surface-0": "8 12 10",
+          "--surface-1": "13 20 16",
+          "--surface-2": "17 25 22",
+          "--fg": "232 240 236",
+          "--muted": "164 178 172",
+          "--border": "255 255 255",
+        };
+        try {
+          var stored = localStorage.getItem("labos.theme");
+          var theme = stored === "light" || stored === "dark" ? stored : "dark";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.style.colorScheme = theme;
+          var vars = theme === "light" ? LIGHT : DARK;
+          Object.keys(vars).forEach(function (key) {
+            root.style.setProperty(key, vars[key]);
+          });
+          root.style.backgroundColor = "rgb(" + vars["--surface-0"].replace(/ /g, ", ") + ")";
+          root.style.color = "rgb(" + vars["--fg"].replace(/ /g, ", ") + ")";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.style.colorScheme = "dark";
+        }
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

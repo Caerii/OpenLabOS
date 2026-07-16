@@ -1,0 +1,4 @@
+{"ts":"2026-05-01T16:33:48.434Z","type":"session_start","payload":{"title":"Step 6: coach the next action","scenarioId":"kitchen-tea-v1__step-6__intro-place-the-mug-on-the-tray"}}
+{"ts":"2026-05-01T16:33:48.434Z","type":"scenario","payload":{"title":"Step 6: coach the next action","scenarioId":"kitchen-tea-v1__step-6__intro-place-the-mug-on-the-tray"}}
+{"ts":"2026-05-01T16:33:48.434Z","type":"model_text","payload":{"text":"Step 6: Place the mug on the tray. I am watching for Mug is positioned on the tray surface, stable, not at risk of tipping."}}
+{"ts":"2026-05-01T16:33:48.434Z","type":"session_stop","payload":{"reason":"static_asset_generation"}}

@@ -1,0 +1,15 @@
+{
+  "id": "kitchen-tea-v1__step-4__intro-add-a-tea-bag-to-the-mug",
+  "startedAt": "2026-05-01T16:33:32.215Z",
+  "endedAt": "2026-05-01T16:33:32.215Z",
+  "model": "gemini-2.5-flash-preview-tts",
+  "voiceName": "Despina",
+  "title": "Step 4: coach the next action",
+  "scenarioId": "kitchen-tea-v1__step-4__intro-add-a-tea-bag-to-the-mug",
+  "eventCount": 4,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "outputWav": "output.wav",
+  "outputBytes": 578446,
+  "outputDurationSec": 12.050958333333334
+}

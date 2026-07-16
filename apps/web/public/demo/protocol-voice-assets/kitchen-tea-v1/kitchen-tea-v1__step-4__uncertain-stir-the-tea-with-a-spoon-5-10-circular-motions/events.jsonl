@@ -1,0 +1,19 @@
+{"ts":"2026-04-26T04:40:29.378Z","type":"session_start","payload":{}}
+{"ts":"2026-04-26T04:40:29.494Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-26T04:40:30.045Z","type":"setup","payload":{}}
+{"ts":"2026-04-26T04:40:30.046Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-26T04:40:30.046Z","type":"scenario","payload":{"title":"Step 4: uncertain view","scenarioId":"kitchen-tea-v1__step-4__uncertain-stir-the-tea-with-a-spoon-5-10-circular-motions"}}
+{"ts":"2026-04-26T04:40:30.047Z","type":"client_text","payload":{"text":"Demo scenario: The model is uncertain whether step 4 is complete because the view is occluded or low confidence. Ask for a better view without sounding robotic.\n\nSpeak only the final hands-free copilot voice feedback. Be warm, playful, and precise. Keep it to one or two short sentences. Do not narrate analysis."}}
+{"ts":"2026-04-26T04:40:30.724Z","type":"transcript","payload":{"transcript":"Mind giving"}}
+{"ts":"2026-04-26T04:40:30.976Z","type":"transcript","payload":{"transcript":" me a"}}
+{"ts":"2026-04-26T04:40:31.510Z","type":"transcript","payload":{"transcript":" clearer"}}
+{"ts":"2026-04-26T04:40:31.566Z","type":"model_audio","payload":{"bytes":46080,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:40:31.566Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:40:31.568Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:40:31.569Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:40:31.570Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:40:31.570Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:40:31.573Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:40:31.574Z","type":"transcript","payload":{"transcript":" look"}}
+{"ts":"2026-04-26T04:40:31.575Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:40:31.584Z","type":"session_stop","payload":{"reason":"stop"}}

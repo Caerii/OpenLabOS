@@ -1,0 +1,4 @@
+{"ts":"2026-05-01T16:32:56.895Z","type":"session_start","payload":{"title":"Preflight: workspace looks ready","scenarioId":"kitchen-tea-v1__preflight-ready"}}
+{"ts":"2026-05-01T16:32:56.895Z","type":"scenario","payload":{"title":"Preflight: workspace looks ready","scenarioId":"kitchen-tea-v1__preflight-ready"}}
+{"ts":"2026-05-01T16:32:56.895Z","type":"model_text","payload":{"text":"Workspace looks ready. I can see the key materials like mug, kettle, tea bag, spoon, so we can begin."}}
+{"ts":"2026-05-01T16:32:56.895Z","type":"session_stop","payload":{"reason":"static_asset_generation"}}

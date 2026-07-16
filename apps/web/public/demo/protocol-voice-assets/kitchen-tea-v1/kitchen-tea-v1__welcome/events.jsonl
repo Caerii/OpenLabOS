@@ -1,0 +1,4 @@
+{"ts":"2026-05-01T16:32:51.828Z","type":"session_start","payload":{"title":"Welcome: start the protocol","scenarioId":"kitchen-tea-v1__welcome"}}
+{"ts":"2026-05-01T16:32:51.828Z","type":"scenario","payload":{"title":"Welcome: start the protocol","scenarioId":"kitchen-tea-v1__welcome"}}
+{"ts":"2026-05-01T16:32:51.828Z","type":"model_text","payload":{"text":"Ready for Make a Cup of Tea? I will watch the workspace, keep us honest, and call out each step as we go."}}
+{"ts":"2026-05-01T16:32:51.828Z","type":"session_stop","payload":{"reason":"static_asset_generation"}}

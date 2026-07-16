@@ -1,0 +1,49 @@
+{"ts":"2026-04-26T04:39:09.562Z","type":"session_start","payload":{}}
+{"ts":"2026-04-26T04:39:10.157Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-26T04:39:10.768Z","type":"setup","payload":{}}
+{"ts":"2026-04-26T04:39:10.768Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-26T04:39:10.769Z","type":"scenario","payload":{"title":"Step 1: passed","scenarioId":"kitchen-tea-v1__step-1__passed-place-the-mug-on-the-counter-in-your-workspace"}}
+{"ts":"2026-04-26T04:39:10.770Z","type":"client_text","payload":{"text":"Demo scenario: Step 1 of \"Make a Cup of Tea\" passed with high confidence. Confirm success, sound friendly, and preview the next action if one exists.\n\nSpeak only the final hands-free copilot voice feedback. Be warm, playful, and precise. Keep it to one or two short sentences. Do not narrate analysis."}}
+{"ts":"2026-04-26T04:39:11.502Z","type":"transcript","payload":{"transcript":"Perfect! The"}}
+{"ts":"2026-04-26T04:39:12.285Z","type":"model_audio","payload":{"bytes":46080,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.294Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.295Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.296Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.297Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.298Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.301Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.301Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.303Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.303Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.306Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.306Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.306Z","type":"transcript","payload":{"transcript":" first"}}
+{"ts":"2026-04-26T04:39:12.306Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.307Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.307Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.307Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.308Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.307Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.321Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.321Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.322Z","type":"transcript","payload":{"transcript":" step"}}
+{"ts":"2026-04-26T04:39:12.322Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.323Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.324Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.324Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.324Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.325Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.325Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.325Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.325Z","type":"transcript","payload":{"transcript":" is"}}
+{"ts":"2026-04-26T04:39:12.325Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.326Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.327Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.327Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.327Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.327Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.328Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.328Z","type":"transcript","payload":{"transcript":" complete."}}
+{"ts":"2026-04-26T04:39:12.328Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.328Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:12.335Z","type":"session_stop","payload":{"reason":"stop"}}

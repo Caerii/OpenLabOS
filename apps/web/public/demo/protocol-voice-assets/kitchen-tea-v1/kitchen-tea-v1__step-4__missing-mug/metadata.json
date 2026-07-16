@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-40-33-772Z-6aa96ab6",
+  "startedAt": "2026-04-26T04:40:33.772Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 4: missing mug",
+  "scenarioId": "kitchen-tea-v1__step-4__missing-mug",
+  "eventCount": 50,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:40:35.539Z",
+  "outputWav": "output.wav"
+}

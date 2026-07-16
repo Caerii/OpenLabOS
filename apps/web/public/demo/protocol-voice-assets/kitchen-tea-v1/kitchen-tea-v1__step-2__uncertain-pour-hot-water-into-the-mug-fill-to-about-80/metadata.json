@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-39-36-183Z-6ebc4092",
+  "startedAt": "2026-04-26T04:39:36.183Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 2: uncertain view",
+  "scenarioId": "kitchen-tea-v1__step-2__uncertain-pour-hot-water-into-the-mug-fill-to-about-80",
+  "eventCount": 58,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:39:38.168Z",
+  "outputWav": "output.wav"
+}

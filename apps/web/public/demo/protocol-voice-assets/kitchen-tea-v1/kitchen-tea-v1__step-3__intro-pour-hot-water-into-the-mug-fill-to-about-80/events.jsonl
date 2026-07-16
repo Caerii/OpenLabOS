@@ -1,0 +1,4 @@
+{"ts":"2026-05-01T16:33:24.389Z","type":"session_start","payload":{"title":"Step 3: coach the next action","scenarioId":"kitchen-tea-v1__step-3__intro-pour-hot-water-into-the-mug-fill-to-about-80"}}
+{"ts":"2026-05-01T16:33:24.389Z","type":"scenario","payload":{"title":"Step 3: coach the next action","scenarioId":"kitchen-tea-v1__step-3__intro-pour-hot-water-into-the-mug-fill-to-about-80"}}
+{"ts":"2026-05-01T16:33:24.389Z","type":"model_text","payload":{"text":"Step 3: Pour hot water into the mug (fill to about 80%). I am watching for Mug contains water, approximately 80% full, kettle visible or recently used."}}
+{"ts":"2026-05-01T16:33:24.389Z","type":"session_stop","payload":{"reason":"static_asset_generation"}}

@@ -1,0 +1,15 @@
+{
+  "id": "kitchen-tea-v1__step-5__intro-stir-the-tea-with-a-spoon-5-10-circular-motions",
+  "startedAt": "2026-05-01T16:33:41.190Z",
+  "endedAt": "2026-05-01T16:33:41.190Z",
+  "model": "gemini-2.5-flash-preview-tts",
+  "voiceName": "Despina",
+  "title": "Step 5: coach the next action",
+  "scenarioId": "kitchen-tea-v1__step-5__intro-stir-the-tea-with-a-spoon-5-10-circular-motions",
+  "eventCount": 4,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "outputWav": "output.wav",
+  "outputBytes": 847246,
+  "outputDurationSec": 17.65095833333333
+}

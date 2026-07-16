@@ -1,0 +1,123 @@
+{
+    "generatedAt":  "2026-04-24T16:25:02.7619008Z",
+    "mode":  "static-replay",
+    "recordings":  [
+                       {
+                           "id":  "2026-04-24T05-17-24-173Z-eb3c36a5",
+                           "title":  "Wrong order: milk before steeping",
+                           "scenarioId":  "deviance-milk-before-steep",
+                           "category":  "deviance",
+                           "startedAt":  "2026-04-24T05:17:24.173Z",
+                           "endedAt":  "2026-04-24T05:17:25.482Z",
+                           "model":  "gemini-2.5-flash-native-audio-latest",
+                           "eventCount":  16,
+                           "outputWav":  "output.wav",
+                           "eventsPath":  "events.jsonl",
+                           "metadataPath":  "metadata.json",
+                           "staticBaseUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-24-173Z-eb3c36a5",
+                           "outputUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-24-173Z-eb3c36a5/output.wav",
+                           "eventsUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-24-173Z-eb3c36a5/events.jsonl"
+                       },
+                       {
+                           "id":  "2026-04-24T05-17-22-370Z-eed0b0c7",
+                           "title":  "Step passed: mug placement confirmed",
+                           "scenarioId":  "step-passed-place-mug",
+                           "category":  "success",
+                           "startedAt":  "2026-04-24T05:17:22.370Z",
+                           "endedAt":  "2026-04-24T05:17:23.661Z",
+                           "model":  "gemini-2.5-flash-native-audio-latest",
+                           "eventCount":  18,
+                           "outputWav":  "output.wav",
+                           "eventsPath":  "events.jsonl",
+                           "metadataPath":  "metadata.json",
+                           "staticBaseUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-22-370Z-eed0b0c7",
+                           "outputUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-22-370Z-eed0b0c7/output.wav",
+                           "eventsUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-22-370Z-eed0b0c7/events.jsonl"
+                       },
+                       {
+                           "id":  "2026-04-24T05-17-20-560Z-99001014",
+                           "title":  "Missing object: no spoon for stir step",
+                           "scenarioId":  "missing-spoon-stir",
+                           "category":  "recovery",
+                           "startedAt":  "2026-04-24T05:17:20.560Z",
+                           "endedAt":  "2026-04-24T05:17:21.843Z",
+                           "model":  "gemini-2.5-flash-native-audio-latest",
+                           "eventCount":  17,
+                           "outputWav":  "output.wav",
+                           "eventsPath":  "events.jsonl",
+                           "metadataPath":  "metadata.json",
+                           "staticBaseUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-20-560Z-99001014",
+                           "outputUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-20-560Z-99001014/output.wav",
+                           "eventsUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-20-560Z-99001014/events.jsonl"
+                       },
+                       {
+                           "id":  "2026-04-24T05-17-18-279Z-b94ac9a1",
+                           "title":  "Safety: hot water before mug stabilized",
+                           "scenarioId":  "hot-water-without-mug",
+                           "category":  "safety",
+                           "startedAt":  "2026-04-24T05:17:18.279Z",
+                           "endedAt":  "2026-04-24T05:17:20.050Z",
+                           "model":  "gemini-2.5-flash-native-audio-latest",
+                           "eventCount":  65,
+                           "outputWav":  "output.wav",
+                           "eventsPath":  "events.jsonl",
+                           "metadataPath":  "metadata.json",
+                           "staticBaseUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-18-279Z-b94ac9a1",
+                           "outputUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-18-279Z-b94ac9a1/output.wav",
+                           "eventsUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-18-279Z-b94ac9a1/events.jsonl"
+                       },
+                       {
+                           "id":  "2026-04-24T05-17-15-867Z-8ea32a9e",
+                           "title":  "Wrong order: tea bag before workspace ready",
+                           "scenarioId":  "wrong-order-teabag-first",
+                           "category":  "deviance",
+                           "startedAt":  "2026-04-24T05:17:15.867Z",
+                           "endedAt":  "2026-04-24T05:17:17.737Z",
+                           "model":  "gemini-2.5-flash-native-audio-latest",
+                           "eventCount":  37,
+                           "outputWav":  "output.wav",
+                           "eventsPath":  "events.jsonl",
+                           "metadataPath":  "metadata.json",
+                           "staticBaseUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-15-867Z-8ea32a9e",
+                           "outputUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-15-867Z-8ea32a9e/output.wav",
+                           "eventsUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-15-867Z-8ea32a9e/events.jsonl"
+                       }
+                   ],
+    "scenarios":  [
+                      {
+                          "id":  "deviance-milk-before-steep",
+                          "title":  "Wrong order: milk before steeping",
+                          "category":  "deviance",
+                          "recordingId":  "2026-04-24T05-17-24-173Z-eb3c36a5",
+                          "outputUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-24-173Z-eb3c36a5/output.wav"
+                      },
+                      {
+                          "id":  "step-passed-place-mug",
+                          "title":  "Step passed: mug placement confirmed",
+                          "category":  "success",
+                          "recordingId":  "2026-04-24T05-17-22-370Z-eed0b0c7",
+                          "outputUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-22-370Z-eed0b0c7/output.wav"
+                      },
+                      {
+                          "id":  "missing-spoon-stir",
+                          "title":  "Missing object: no spoon for stir step",
+                          "category":  "recovery",
+                          "recordingId":  "2026-04-24T05-17-20-560Z-99001014",
+                          "outputUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-20-560Z-99001014/output.wav"
+                      },
+                      {
+                          "id":  "hot-water-without-mug",
+                          "title":  "Safety: hot water before mug stabilized",
+                          "category":  "safety",
+                          "recordingId":  "2026-04-24T05-17-18-279Z-b94ac9a1",
+                          "outputUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-18-279Z-b94ac9a1/output.wav"
+                      },
+                      {
+                          "id":  "wrong-order-teabag-first",
+                          "title":  "Wrong order: tea bag before workspace ready",
+                          "category":  "deviance",
+                          "recordingId":  "2026-04-24T05-17-15-867Z-8ea32a9e",
+                          "outputUrl":  "/demo/live-coach-recordings/2026-04-24T05-17-15-867Z-8ea32a9e/output.wav"
+                      }
+                  ]
+}

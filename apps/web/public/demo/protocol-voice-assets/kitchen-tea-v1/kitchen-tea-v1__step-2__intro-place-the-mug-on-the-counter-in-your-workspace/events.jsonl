@@ -1,0 +1,4 @@
+{"ts":"2026-05-01T16:33:16.319Z","type":"session_start","payload":{"title":"Step 2: coach the next action","scenarioId":"kitchen-tea-v1__step-2__intro-place-the-mug-on-the-counter-in-your-workspace"}}
+{"ts":"2026-05-01T16:33:16.319Z","type":"scenario","payload":{"title":"Step 2: coach the next action","scenarioId":"kitchen-tea-v1__step-2__intro-place-the-mug-on-the-counter-in-your-workspace"}}
+{"ts":"2026-05-01T16:33:16.319Z","type":"model_text","payload":{"text":"Step 2: Place the mug on the counter in your workspace. I am watching for Mug is visible on a flat counter surface, upright, empty."}}
+{"ts":"2026-05-01T16:33:16.319Z","type":"session_stop","payload":{"reason":"static_asset_generation"}}

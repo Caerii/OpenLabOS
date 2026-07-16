@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+}
+
+/* Marketing / dashboard shell — fixed dark studio palette (separate from LabOS theme toggle). */
+.shell-chrome {
+  background: #050708;
+  color: #e6f1ec;
+  min-height: 100vh;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.shell-chrome ::selection {
+  background: rgba(56, 189, 167, 0.45);
+  color: #050708;
+}
+
+@layer utilities {
+  .font-mono {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  }
+  .glow-emerald {
+    text-shadow: 0 0 24px rgba(56, 189, 167, 0.55);
+  }
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(56, 189, 167, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 189, 167, 0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(56, 189, 167, 0.35) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(56, 189, 167, 0.35);
+    border-radius: 4px;
+  }
+}

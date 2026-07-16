@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-40-29-377Z-ae56a0e1",
+  "startedAt": "2026-04-26T04:40:29.377Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 4: uncertain view",
+  "scenarioId": "kitchen-tea-v1__step-4__uncertain-stir-the-tea-with-a-spoon-5-10-circular-motions",
+  "eventCount": 19,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:40:31.582Z",
+  "outputWav": "output.wav"
+}

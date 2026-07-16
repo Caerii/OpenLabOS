@@ -1,0 +1,927 @@
+/* Operator protocol console — literate layout; colors via semantic tokens */
+
+.operate-console {
+  --oc-rail: 20rem;
+  --oc-prose: "Literata", "Georgia", "Times New Roman", serif;
+  --oc-ui: "Inter", system-ui, sans-serif;
+  --oc-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Primary surfaces — shared elevation */
+.operate-console :where(
+  .oc-chapter,
+  .oc-viewport-shell,
+  .oc-rail-card,
+  .oc-setup-hint,
+  .labos-panel
+) {
+  position: relative;
+  border: 1px solid rgb(var(--border) / 0.1);
+  box-shadow: var(--labos-shadow-inset), var(--labos-shadow-raise);
+}
+
+.operate-console .oc-action-dock {
+  border: 1px solid rgb(var(--border) / 0.1);
+  border-bottom: 0;
+  box-shadow: var(--labos-shadow-inset), var(--labos-shadow-dock);
+}
+
+/* Nested chips / inset wells — no outer cast shadow */
+.operate-console :where(.labos-inset, .oc-runway-pill, .oc-signal) {
+  border: 1px solid rgb(var(--border) / 0.08);
+  box-shadow: var(--labos-shadow-nested);
+}
+.operate-console .oc-viewport-shell > .oc-viewport-clip {
+  overflow: hidden;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.operate-console .oc-viewport-shell > .oc-viewport-head {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.operate-console .labos-panel-head,
+.operate-console .labos-panel-body,
+.operate-console .oc-setup-hint-body,
+.operate-console .oc-rail-section {
+  background: inherit;
+}
+
+/* ── Page masthead ───────────────────────────────────────── */
+
+.operate-console .oc-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 0.125rem;
+}
+
+@media (min-width: 640px) {
+  .operate-console .oc-page-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.operate-console .oc-page-eyebrow {
+  margin-bottom: 0;
+  font-family: var(--oc-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(var(--subtle) / 1);
+}
+
+.operate-console .oc-page-title {
+  margin-top: 0.25rem;
+  font-family: var(--oc-ui);
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: rgb(var(--fg) / 1);
+}
+
+@media (min-width: 640px) {
+  .operate-console .oc-page-title {
+    font-size: 1.5rem;
+  }
+}
+
+.operate-console .oc-page-lede {
+  margin-top: 0.375rem;
+  max-width: 36rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgb(var(--muted) / 1);
+}
+
+/* ── Tabs — use shared labos-tabs; console scopes UI font only ── */
+
+.operate-console .oc-tabs,
+.operate-console .labos-tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid rgb(var(--border) / 0.08);
+}
+
+.operate-console .oc-tab,
+.operate-console .labos-tab {
+  position: relative;
+  padding: 0.5rem 0.875rem;
+  font-family: var(--oc-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: rgb(var(--muted) / 1);
+  border-radius: var(--labos-radius-sm) var(--labos-radius-sm) 0 0;
+  transition:
+    color var(--labos-motion),
+    background-color var(--labos-motion);
+}
+
+.operate-console .oc-tab:hover,
+.operate-console .labos-tab:hover {
+  color: rgb(var(--fg) / 1);
+  background: rgb(var(--overlay) / 0.06);
+}
+
+.operate-console .oc-tab:focus-visible,
+.operate-console .labos-tab:focus-visible {
+  outline: 2px solid rgb(var(--ring) / 0.45);
+  outline-offset: 2px;
+}
+
+.operate-console .oc-tab[data-active="true"],
+.operate-console .labos-tab[data-active="true"] {
+  color: rgb(var(--fg) / 1);
+}
+
+.operate-console .oc-tab[data-active="true"]::after,
+.operate-console .labos-tab[data-active="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0.875rem;
+  right: 0.875rem;
+  bottom: -1px;
+  height: 2px;
+  background: rgb(var(--accent-text) / 1);
+  border-radius: 1px 1px 0 0;
+}
+
+/* ── Chapter strip (status) ──────────────────────────────── */
+
+.operate-console .oc-chapter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: rgb(var(--surface-2) / 1);
+}
+
+.operate-console .oc-chapter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.operate-console .oc-chapter-breadcrumb {
+  font-family: var(--oc-ui);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: rgb(var(--muted) / 1);
+}
+
+.operate-console .oc-chapter-breadcrumb strong {
+  font-weight: 600;
+  color: rgb(var(--fg) / 1);
+}
+
+.operate-console .oc-chapter-phase {
+  font-family: var(--oc-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--subtle) / 1);
+}
+
+.operate-console .oc-chapter-phase[data-tone="active"] {
+  color: rgb(var(--accent-text) / 1);
+}
+
+.operate-console .oc-chapter-phase[data-tone="warn"] {
+  color: rgb(var(--warn-fg) / 1);
+}
+
+.operate-console .oc-signals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.operate-console .oc-signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-family: var(--oc-ui);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  border: 1px solid transparent;
+}
+
+.operate-console .oc-signal::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.operate-console .oc-signal[data-tone="good"] {
+  color: rgb(var(--good-fg) / 1);
+  background: rgb(var(--good-bg) / 0.12);
+  border-color: rgb(var(--good-border) / 0.2);
+}
+
+.operate-console .oc-signal[data-tone="good"]::before {
+  background: rgb(var(--good-fg) / 1);
+  box-shadow: 0 0 6px rgb(var(--good-fg) / 0.5);
+}
+
+.operate-console .oc-signal[data-tone="warn"] {
+  color: rgb(var(--warn-fg) / 1);
+  background: rgb(var(--warn-bg) / 0.1);
+  border-color: rgb(var(--warn-border) / 0.2);
+}
+
+.operate-console .oc-signal[data-tone="warn"]::before {
+  background: rgb(var(--warn-fg) / 1);
+}
+
+.operate-console .oc-signal[data-tone="bad"] {
+  color: rgb(var(--bad-fg) / 1);
+  background: rgb(var(--bad-bg) / 0.1);
+  border-color: rgb(var(--bad-border) / 0.2);
+}
+
+.operate-console .oc-signal[data-tone="bad"]::before {
+  background: rgb(var(--bad-fg) / 1);
+}
+
+.operate-console .oc-signal[data-tone="idle"] {
+  color: rgb(var(--muted) / 1);
+  background: rgb(var(--border) / 0.06);
+  border-color: rgb(var(--border) / 0.1);
+}
+
+.operate-console .oc-signal[data-tone="idle"]::before {
+  background: rgb(var(--subtle) / 1);
+}
+
+.operate-console .oc-chapter-track {
+  height: 3px;
+  border-radius: 9999px;
+  background: rgb(var(--border) / 0.1);
+  overflow: hidden;
+}
+
+.operate-console .oc-chapter-track-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgb(var(--accent) / 0.85), rgb(var(--good-fg) / 0.9));
+  transition: width 0.35s ease;
+}
+
+.operate-console .oc-chapter-track-label {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+  font-family: var(--oc-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--subtle) / 1);
+}
+
+/* Legacy dot — kept for any remaining uses */
+.operate-console .oc-status-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  margin-right: 0.375rem;
+}
+
+.operate-console .oc-status-dot[data-tone="good"] {
+  background: rgb(var(--good-fg));
+  box-shadow: 0 0 6px rgb(var(--good-fg) / 0.5);
+}
+
+.operate-console .oc-status-dot[data-tone="warn"] {
+  background: rgb(var(--warn-fg));
+}
+
+.operate-console .oc-status-dot[data-tone="bad"] {
+  background: rgb(var(--bad-fg));
+}
+
+.operate-console .oc-status-dot[data-tone="idle"] {
+  background: rgb(var(--subtle));
+}
+
+/* ── Workspace grid ──────────────────────────────────────── */
+
+.operate-console .oc-workspace {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .operate-console .oc-workspace {
+    grid-template-columns: minmax(0, 1fr) var(--oc-rail);
+    align-items: start;
+    gap: 1.5rem;
+  }
+}
+
+.operate-console .oc-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+/* ── Viewport (hero) ─────────────────────────────────────── */
+
+.operate-console .oc-viewport-shell {
+  position: relative;
+  border-radius: 0.5rem;
+  background: rgb(var(--viewport-bg) / 1);
+  isolation: isolate;
+}
+
+.operate-console .oc-viewport-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0.875rem;
+  border-bottom: 1px solid rgb(var(--border) / 0.06);
+  background: rgb(var(--surface-2) / 0.6);
+  font-family: var(--oc-ui);
+  font-size: 11px;
+  font-weight: 500;
+  color: rgb(var(--muted) / 1);
+}
+
+.operate-console .oc-viewport-head strong {
+  font-weight: 600;
+  color: rgb(var(--fg) / 0.9);
+}
+
+.operate-console .oc-viewport-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem 0.75rem;
+  font-family: var(--oc-mono);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: rgb(var(--subtle) / 1);
+}
+
+.operate-console .oc-viewport-metrics span[data-live="true"] {
+  color: rgb(var(--good-fg) / 1);
+}
+
+.operate-console .oc-viewport-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: rgb(var(--border) / 0.15);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.operate-console .oc-viewport-progress > span {
+  display: block;
+  height: 100%;
+  background: rgb(var(--accent-text) / 0.9);
+  transition: width 0.4s ease;
+}
+
+/* ── Instruction prose ───────────────────────────────────── */
+
+.operate-console .oc-instruction {
+  padding: 1.25rem 1.25rem 1.375rem;
+  border-top: 1px solid rgb(var(--border) / 0.08);
+  background: rgb(var(--surface-2) / 1);
+  border-radius: 0 0 0.5rem 0.5rem;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .operate-console .oc-instruction {
+    padding: 1.375rem 1.5rem 1.5rem;
+  }
+}
+
+.operate-console .oc-instruction-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
+}
+
+.operate-console .oc-instruction-kicker {
+  font-family: var(--oc-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(var(--subtle) / 1);
+}
+
+.operate-console .oc-instruction-step {
+  font-family: var(--oc-ui);
+  font-size: 11px;
+  font-weight: 500;
+  color: rgb(var(--muted) / 1);
+}
+
+.operate-console .oc-instruction-headline {
+  margin: 0;
+  font-family: var(--oc-prose);
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: rgb(var(--fg) / 1);
+}
+
+@media (min-width: 640px) {
+  .operate-console .oc-instruction-headline {
+    font-size: 1.375rem;
+  }
+}
+
+.operate-console .oc-instruction-detail {
+  margin: 0.75rem 0 0;
+  max-width: 42rem;
+  font-family: var(--oc-ui);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: rgb(var(--muted) / 1);
+}
+
+.operate-console .oc-instruction-detail::before {
+  content: "";
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  margin-bottom: 0.625rem;
+  border-radius: 1px;
+  background: rgb(var(--accent-text) / 0.45);
+}
+
+/* ── Setup checklist rows ────────────────────────────────── */
+
+.operate-console .oc-setup-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.5rem 0.75rem;
+  align-items: start;
+  padding: 0.625rem 0;
+  border-bottom: 1px solid rgb(var(--border) / 0.06);
+}
+
+.operate-console .oc-setup-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.operate-console .oc-setup-mark {
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.125rem;
+  border: 1.5px solid rgb(var(--border) / 0.25);
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  font-size: 9px;
+  font-weight: 600;
+  color: rgb(var(--good-fg) / 1);
+  flex-shrink: 0;
+}
+
+.operate-console .oc-setup-mark[data-state="ready"] {
+  border-color: rgb(var(--good-border) / 0.5);
+  background: rgb(var(--good-bg) / 0.15);
+}
+
+.operate-console .oc-setup-mark[data-state="blocked"] {
+  border-color: rgb(var(--bad-border) / 0.4);
+  background: rgb(var(--bad-bg) / 0.08);
+}
+
+.operate-console .oc-setup-mark[data-state="checking"] {
+  border-color: rgb(var(--warn-border) / 0.4);
+  animation: oc-pulse 1.2s ease-in-out infinite;
+}
+
+.operate-console .oc-setup-label {
+  font-family: var(--oc-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgb(var(--fg) / 1);
+}
+
+.operate-console .oc-setup-detail {
+  margin-top: 0.125rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgb(var(--muted) / 1);
+}
+
+@keyframes oc-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── Setup hint (mobile) ─────────────────────────────────── */
+
+.operate-console .oc-setup-hint {
+  border-radius: 0.5rem;
+  border-left: 3px solid rgb(var(--warn-fg) / 0.55);
+  transition: border-color 0.15s ease;
+}
+
+.operate-console .oc-setup-hint:hover,
+.operate-console .oc-setup-hint:has(.oc-expandable-trigger:hover),
+.operate-console .oc-setup-hint:has(.oc-expandable-trigger:focus-visible) {
+  border-left-color: rgb(var(--warn-fg) / 0.85);
+}
+
+.operate-console .oc-setup-hint:hover > .oc-setup-hint-summary,
+.operate-console .oc-expandable-trigger:hover,
+.operate-console .oc-expandable-trigger:focus-visible {
+  background: rgb(var(--highlight-bg) / 0.08);
+}
+
+.operate-console .oc-setup-hint:hover .oc-setup-hint-title,
+.operate-console .oc-expandable-trigger:hover .oc-setup-hint-title {
+  color: rgb(var(--accent-text) / 1);
+}
+
+.operate-console .oc-setup-hint:hover .oc-setup-hint-toggle,
+.operate-console .oc-expandable-trigger:hover .oc-setup-hint-toggle,
+.operate-console .oc-expandable-trigger:focus-visible .oc-setup-hint-toggle {
+  color: rgb(var(--fg) / 1);
+  background: rgb(var(--highlight-bg) / 0.12);
+  border-color: rgb(var(--highlight-border) / 0.35);
+}
+
+.operate-console .oc-setup-hint-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.operate-console .oc-setup-hint-summary::-webkit-details-marker {
+  display: none;
+}
+
+.operate-console .oc-setup-hint-progress {
+  display: flex;
+  height: 1.25rem;
+  width: 1.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgb(var(--warn-bg) / 0.12);
+  font-family: var(--oc-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: rgb(var(--warn-fg) / 1);
+}
+
+.operate-console .oc-setup-hint-title {
+  font-family: var(--oc-ui);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: rgb(var(--fg) / 1);
+}
+
+.operate-console .oc-setup-hint-lede {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgb(var(--muted) / 1);
+}
+
+.operate-console .oc-setup-hint-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3125rem 0.625rem;
+  border-radius: 9999px;
+  border: 1px solid rgb(var(--border) / 0.1);
+  background: rgb(var(--border) / 0.04);
+  font-family: var(--oc-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--subtle) / 1);
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.operate-console .oc-setup-hint-toggle::after {
+  content: "";
+  width: 0.35rem;
+  height: 0.35rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-1px);
+  transition: transform 0.15s ease;
+}
+
+.operate-console .oc-setup-hint[open] .oc-setup-hint-toggle::after {
+  transform: rotate(-135deg) translateY(-1px);
+}
+
+.operate-console .oc-expandable-trigger:hover .oc-setup-hint-toggle::after,
+.operate-console .oc-setup-hint:hover .oc-setup-hint-toggle::after {
+  border-color: rgb(var(--accent-text) / 1);
+}
+
+.operate-console .oc-setup-hint-body {
+  padding: 0 1rem 0.875rem;
+  border-top: 1px solid rgb(var(--border) / 0.08);
+}
+
+@media (min-width: 1024px) {
+  .operate-console .oc-setup-hint {
+    display: none;
+  }
+}
+
+/* ── Unified operator rail ───────────────────────────────── */
+
+.operate-console .oc-rail-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  background: rgb(var(--surface-2) / 1);
+}
+
+.operate-console .oc-rail-section {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid rgb(var(--border) / 0.06);
+}
+
+.operate-console .oc-rail-section:last-child {
+  border-bottom: 0;
+}
+
+.operate-console .oc-rail-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
+  font-family: var(--oc-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgb(var(--fg) / 0.9);
+}
+
+.operate-console summary.oc-expandable-trigger {
+  list-style: none;
+}
+
+.operate-console summary.oc-expandable-trigger::-webkit-details-marker {
+  display: none;
+}
+
+/* ── Interactive affordances (expandables, disclosures) ─── */
+
+.operate-console .oc-expandable-trigger {
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.operate-console .oc-expandable-trigger:hover {
+  background: rgb(var(--highlight-bg) / 0.08);
+}
+
+.operate-console .oc-expandable-trigger:focus-visible {
+  outline: 2px solid rgb(var(--ring) / 0.45);
+  outline-offset: -2px;
+  border-radius: 0.375rem;
+}
+
+.operate-console details.oc-rail-section > summary.oc-expandable-trigger {
+  margin: -0.5rem -0.75rem 0.625rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+}
+
+.operate-console .oc-expandable-chevron {
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-right: 1.5px solid rgb(var(--subtle) / 1);
+  border-bottom: 1.5px solid rgb(var(--subtle) / 1);
+  transform: rotate(-45deg) translateY(-1px);
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.operate-console .oc-expandable-trigger:hover .oc-expandable-chevron,
+.operate-console .oc-expandable-trigger:focus-visible .oc-expandable-chevron {
+  border-color: rgb(var(--accent-text) / 1);
+}
+
+.operate-console details.oc-expandable[open] > .oc-expandable-trigger .oc-expandable-chevron {
+  transform: rotate(45deg) translateY(-1px);
+}
+
+.operate-console details.oc-rail-section.oc-expandable:hover,
+.operate-console details.oc-rail-section.oc-expandable:has(.oc-expandable-trigger:hover),
+.operate-console details.oc-rail-section.oc-expandable:has(.oc-expandable-trigger:focus-visible) {
+  background: rgb(var(--highlight-bg) / 0.04);
+}
+
+.operate-console details.oc-rail-section.oc-expandable:hover > summary.oc-expandable-trigger,
+.operate-console details.oc-rail-section.oc-expandable:has(.oc-expandable-trigger:hover) > summary.oc-expandable-trigger {
+  color: rgb(var(--accent-text) / 1);
+}
+
+.operate-console .oc-rail-label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-family: var(--oc-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--subtle) / 1);
+}
+
+.operate-console .oc-rail-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Runway strip ────────────────────────────────────────── */
+
+.operate-console .oc-runway-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.375rem;
+}
+
+.operate-console .oc-runway-pill {
+  padding: 0.5rem 0.375rem;
+  border-radius: 0.375rem;
+  background: rgb(var(--border) / 0.04);
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.operate-console .oc-runway-pill[data-done="true"] {
+  border-color: rgb(var(--good-border) / 0.25);
+  background: rgb(var(--good-bg) / 0.08);
+}
+
+.operate-console .oc-runway-pill[data-active="true"] {
+  border-color: rgb(var(--highlight-border) / 0.35);
+  background: rgb(var(--highlight-bg) / 0.1);
+}
+
+.operate-console .oc-runway-pill-label {
+  font-family: var(--oc-mono);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--subtle) / 1);
+}
+
+.operate-console .oc-runway-pill-value {
+  margin-top: 0.25rem;
+  font-family: var(--oc-ui);
+  font-size: 10px;
+  font-weight: 600;
+  color: rgb(var(--muted) / 1);
+}
+
+.operate-console .oc-runway-pill[data-done="true"] .oc-runway-pill-value {
+  color: rgb(var(--good-fg) / 1);
+}
+
+.operate-console .oc-runway-pill[data-active="true"] .oc-runway-pill-value {
+  color: rgb(var(--highlight) / 1);
+}
+
+.operate-console .oc-runway {
+  display: grid;
+  gap: 0.375rem;
+}
+
+.operate-console .oc-runway-step {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.625rem;
+  align-items: start;
+  opacity: 0.45;
+}
+
+.operate-console .oc-runway-step[data-active="true"],
+.operate-console .oc-runway-step[data-done="true"] {
+  opacity: 1;
+}
+
+/* ── Mobile action dock ──────────────────────────────────── */
+
+.operate-console .oc-action-dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 25;
+  border-top: 1px solid rgb(var(--border) / 0.1);
+  background: rgb(var(--surface-2) / 0.98);
+  backdrop-filter: blur(12px);
+  padding: 0.625rem max(1rem, env(safe-area-inset-right)) calc(0.625rem + env(safe-area-inset-bottom))
+    max(1rem, env(safe-area-inset-left));
+}
+
+.operate-console .oc-action-dock-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+@media (min-width: 480px) {
+  .operate-console .oc-action-dock-inner {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.operate-console .oc-action-dock-context {
+  min-width: 0;
+  flex: 1;
+}
+
+.operate-console .oc-action-dock-kicker {
+  font-family: var(--oc-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(var(--subtle) / 1);
+}
+
+.operate-console .oc-action-dock-detail {
+  margin-top: 0.25rem;
+  font-family: var(--oc-prose);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: rgb(var(--muted) / 1);
+}
+
+.operate-console .oc-action-dock-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .operate-console .oc-action-dock-actions {
+    width: auto;
+  }
+}
+
+.operate-console .oc-action-dock-actions .oc-action-primary {
+  flex: 1;
+}
+
+@media (min-width: 480px) {
+  .operate-console .oc-action-dock-actions .oc-action-primary {
+    flex: none;
+    min-width: 9rem;
+  }
+}

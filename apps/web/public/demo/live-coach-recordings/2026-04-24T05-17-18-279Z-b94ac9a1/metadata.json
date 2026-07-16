@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-24T05-17-18-279Z-b94ac9a1",
+  "startedAt": "2026-04-24T05:17:18.279Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Safety: hot water before mug stabilized",
+  "scenarioId": "hot-water-without-mug",
+  "eventCount": 65,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-24T05:17:20.050Z",
+  "outputWav": "output.wav"
+}

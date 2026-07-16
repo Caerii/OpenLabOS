@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-39-32-430Z-9ebce7a5",
+  "startedAt": "2026-04-26T04:39:32.430Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 2: passed",
+  "scenarioId": "kitchen-tea-v1__step-2__passed-pour-hot-water-into-the-mug-fill-to-about-80",
+  "eventCount": 16,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:39:33.996Z",
+  "outputWav": "output.wav"
+}

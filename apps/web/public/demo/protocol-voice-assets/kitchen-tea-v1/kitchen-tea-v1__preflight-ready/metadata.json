@@ -1,0 +1,15 @@
+{
+  "id": "kitchen-tea-v1__preflight-ready",
+  "startedAt": "2026-05-01T16:32:56.895Z",
+  "endedAt": "2026-05-01T16:32:56.895Z",
+  "model": "gemini-2.5-flash-preview-tts",
+  "voiceName": "Despina",
+  "title": "Preflight: workspace looks ready",
+  "scenarioId": "kitchen-tea-v1__preflight-ready",
+  "eventCount": 4,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "outputWav": "output.wav",
+  "outputBytes": 457486,
+  "outputDurationSec": 9.530958333333333
+}

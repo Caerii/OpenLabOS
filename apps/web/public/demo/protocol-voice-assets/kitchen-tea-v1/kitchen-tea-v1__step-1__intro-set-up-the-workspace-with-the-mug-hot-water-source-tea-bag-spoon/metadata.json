@@ -1,0 +1,15 @@
+{
+  "id": "kitchen-tea-v1__step-1__intro-set-up-the-workspace-with-the-mug-hot-water-source-tea-bag-spoon",
+  "startedAt": "2026-05-01T16:33:08.141Z",
+  "endedAt": "2026-05-01T16:33:08.141Z",
+  "model": "gemini-2.5-flash-preview-tts",
+  "voiceName": "Despina",
+  "title": "Step 1: coach the next action",
+  "scenarioId": "kitchen-tea-v1__step-1__intro-set-up-the-workspace-with-the-mug-hot-water-source-tea-bag-spoon",
+  "eventCount": 4,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "outputWav": "output.wav",
+  "outputBytes": 1031566,
+  "outputDurationSec": 21.49095833333333
+}

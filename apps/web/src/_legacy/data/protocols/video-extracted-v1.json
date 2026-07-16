@@ -1,0 +1,144 @@
+{
+  "id": "video-extracted-v1",
+  "name": "Pan-Seared Ribeye Steak",
+  "description": "Preparation of a pan-seared steak with butter basting. Tests ER capabilities for identifying raw vs. seared meat, detecting foaming butter, and monitoring temperature probes.",
+  "difficulty": "intermediate",
+  "estimatedMinutes": 15,
+  "tags": [
+    "cooking",
+    "steak",
+    "searing",
+    "lab-os-kitchen"
+  ],
+  "requiredInventory": [
+    {
+      "name": "Ribeye Steak",
+      "category": "ingredient"
+    },
+    {
+      "name": "Salt and Pepper",
+      "category": "ingredient"
+    },
+    {
+      "name": "Unsalted Butter",
+      "category": "ingredient"
+    },
+    {
+      "name": "Cast Iron Skillet",
+      "category": "tool"
+    },
+    {
+      "name": "Tongs",
+      "category": "tool"
+    },
+    {
+      "name": "Meat Thermometer",
+      "category": "tool"
+    }
+  ],
+  "workspaceVerificationPrompt": "Point to all items needed for Pan-Seared Ribeye Steak. I need: Ribeye Steak, Salt and Pepper, Unsalted Butter, Cast Iron Skillet, Tongs, Meat Thermometer.\nFor any missing items, label them as \"MISSING: <item>\".\n\nThe answer should follow the JSON format:\n[{\"point\": [y, x], \"label\": \"label\"}]",
+  "steps": [
+    {
+      "number": 1,
+      "instruction": "Season both sides of the steak generously with salt and pepper.",
+      "successCriteria": "Steak surface is evenly coated with visible salt and pepper granules.",
+      "verificationPrompt": "Check if the Ribeye Steak has visible seasoning (salt and pepper) on its upper surface. Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Ribeye Steak",
+        "Salt and Pepper"
+      ],
+      "spatialHint": "On the cutting board or clean flat surface.",
+      "hazardChecks": [
+        "Raw meat cross-contamination"
+      ],
+      "instrumentReads": [],
+      "expectedDurationSec": 60
+    },
+    {
+      "number": 2,
+      "instruction": "Heat the cast iron skillet until it begins to smoke slightly.",
+      "successCriteria": "Skillet surface shows visible wisps of smoke or oil shimmer.",
+      "verificationPrompt": "Look at the skillet. Is there light smoke or visible oil shimmering on the surface? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Cast Iron Skillet"
+      ],
+      "spatialHint": "On the primary burner.",
+      "hazardChecks": [
+        "Extremely hot surface",
+        "Handle may be hot"
+      ],
+      "instrumentReads": [
+        "Surface temperature if using IR thermometer (expecting ~400F+)"
+      ],
+      "expectedDurationSec": 180
+    },
+    {
+      "number": 3,
+      "instruction": "Place steak in skillet and sear for 3 minutes without moving it.",
+      "successCriteria": "Steak is flat in pan; contact produces visible steam/sizzling.",
+      "verificationPrompt": "Is the steak lying flat in contact with the skillet bottom? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Ribeye Steak",
+        "Cast Iron Skillet",
+        "Tongs"
+      ],
+      "spatialHint": "Centered in the skillet.",
+      "hazardChecks": [
+        "Hot oil splatter"
+      ],
+      "instrumentReads": [],
+      "expectedDurationSec": 180
+    },
+    {
+      "number": 4,
+      "instruction": "Flip steak and add butter to the skillet.",
+      "successCriteria": "Seared side of steak is facing up (brown crust); butter is added to the pan.",
+      "verificationPrompt": "Has the steak been flipped to reveal a browned crust, and is butter visible in the pan? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Tongs",
+        "Unsalted Butter"
+      ],
+      "spatialHint": "In the skillet.",
+      "hazardChecks": [
+        "Hot oil splatter"
+      ],
+      "instrumentReads": [],
+      "expectedDurationSec": 30
+    },
+    {
+      "number": 5,
+      "instruction": "Baste the steak with melted butter using a spoon.",
+      "successCriteria": "Melted butter is actively being scooped over the top of the steak.",
+      "verificationPrompt": "Confirm if user is currently basting (pouring liquid butter over meat). Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Steak",
+        "Unsalted Butter",
+        "Spoon"
+      ],
+      "spatialHint": "Edge of skillet tilted towards handle.",
+      "hazardChecks": [
+        "Burn hazard from hot liquid butter"
+      ],
+      "instrumentReads": [],
+      "expectedDurationSec": 120
+    },
+    {
+      "number": 6,
+      "instruction": "Check internal temperature for desired doneness.",
+      "successCriteria": "Thermometer probe is inserted into the center of the steak.",
+      "verificationPrompt": "Is the thermometer probe tip visible inside the center edge of the steak? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Meat Thermometer",
+        "Steak"
+      ],
+      "spatialHint": "Inside the skillet.",
+      "hazardChecks": [],
+      "instrumentReads": [
+        "Meat thermometer display (check for ~130F for Medium-Rare)"
+      ],
+      "expectedDurationSec": 45
+    }
+  ],
+  "sourceVideo": "https://www.youtube.com/watch?v=N3gMfGnPuGs",
+  "extractedAt": "2026-04-20T15:51:48.390Z"
+}

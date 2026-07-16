@@ -1,0 +1,88 @@
+{
+  "id": "video-extracted-tea",
+  "name": "Traditional Loose-Leaf Tea Preparation",
+  "description": "Step-by-step preparation of loose-leaf tea with proper water temperature control, steeping time monitoring, and serving. Tests ER capabilities for liquid level detection, instrument reading (thermometer), and timing verification.",
+  "difficulty": "beginner",
+  "estimatedMinutes": 8,
+  "tags": ["cooking", "tea", "beverage", "beginner-friendly", "lab-os-kitchen"],
+  "requiredInventory": [
+    { "name": "Electric Kettle", "category": "appliance" },
+    { "name": "Teapot or Infuser", "category": "tool" },
+    { "name": "Tea Cup", "category": "tool" },
+    { "name": "Loose-Leaf Tea", "category": "ingredient" },
+    { "name": "Kitchen Thermometer", "category": "tool" },
+    { "name": "Timer", "category": "tool" },
+    { "name": "Teaspoon", "category": "tool" }
+  ],
+  "workspaceVerificationPrompt": "Point to all items needed for Traditional Loose-Leaf Tea Preparation. I need: Electric Kettle, Teapot or Infuser, Tea Cup, Loose-Leaf Tea, Kitchen Thermometer, Timer, Teaspoon.\nFor any missing items, label them as \"MISSING: <item>\".\n\nThe answer should follow the JSON format:\n[{\"point\": [y, x], \"label\": \"label\"}]",
+  "steps": [
+    {
+      "number": 1,
+      "instruction": "Fill the electric kettle with fresh cold water and start heating.",
+      "successCriteria": "Kettle is filled with water and the power indicator is on.",
+      "verificationPrompt": "Check if the electric kettle contains water and its power light/switch is in the ON position. Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": ["Electric Kettle"],
+      "spatialHint": "On the counter near a power outlet.",
+      "hazardChecks": ["Ensure kettle is on stable surface", "Check cord is not near water"],
+      "instrumentReads": [],
+      "expectedDurationSec": 30
+    },
+    {
+      "number": 2,
+      "instruction": "Measure one teaspoon of loose-leaf tea and place it in the teapot infuser.",
+      "successCriteria": "Tea leaves are visible inside the infuser basket or teapot.",
+      "verificationPrompt": "Is there loose-leaf tea visible inside the teapot or infuser basket? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": ["Loose-Leaf Tea", "Teapot or Infuser", "Teaspoon"],
+      "spatialHint": "On the counter next to the kettle.",
+      "hazardChecks": [],
+      "instrumentReads": [],
+      "expectedDurationSec": 30
+    },
+    {
+      "number": 3,
+      "instruction": "Check water temperature with thermometer. Target: 175-185F (80-85C) for green tea, or 200-212F (93-100C) for black tea.",
+      "successCriteria": "Thermometer is submerged in the heated water and displays a reading in the target range.",
+      "verificationPrompt": "Is the thermometer probe submerged in the kettle water? Can you read the temperature display? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": ["Kitchen Thermometer", "Electric Kettle"],
+      "spatialHint": "Thermometer dipped into the kettle opening.",
+      "hazardChecks": ["Steam burn risk when opening kettle", "Hot water splash"],
+      "instrumentReads": ["Thermometer display: target 175-212F depending on tea type"],
+      "expectedDurationSec": 60
+    },
+    {
+      "number": 4,
+      "instruction": "Pour hot water over the tea leaves in the teapot. Fill to approximately 3/4 full.",
+      "successCriteria": "Hot water is being poured or has been poured into the teapot over the tea leaves. Water level is approximately 3/4 of the teapot.",
+      "verificationPrompt": "Is the teapot filled with water to roughly 3/4 capacity with tea leaves steeping inside? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": ["Electric Kettle", "Teapot or Infuser"],
+      "spatialHint": "Pour from kettle into teapot on the counter.",
+      "hazardChecks": ["Hot water splash risk", "Steam burn risk"],
+      "instrumentReads": ["Liquid level in teapot (target ~75%)"],
+      "expectedDurationSec": 20
+    },
+    {
+      "number": 5,
+      "instruction": "Start timer and steep for 3-5 minutes. Do not disturb the teapot.",
+      "successCriteria": "Timer is running and teapot lid is on. Tea is visibly steeping (water changing color).",
+      "verificationPrompt": "Is a timer visible and running? Is the teapot sitting undisturbed with its lid on? Is the water showing tea color? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": ["Teapot or Infuser", "Timer"],
+      "spatialHint": "Teapot on counter, timer nearby.",
+      "hazardChecks": ["Teapot handle may be hot"],
+      "instrumentReads": ["Timer countdown (3-5 min range)"],
+      "expectedDurationSec": 240
+    },
+    {
+      "number": 6,
+      "instruction": "Remove the infuser or strain the tea. Pour into the tea cup.",
+      "successCriteria": "Infuser has been removed from teapot and tea is being poured into the cup. No loose leaves in cup.",
+      "verificationPrompt": "Has the infuser been removed, and is tea being poured (or already poured) into the tea cup? Is the tea a clear color without floating leaves? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": ["Teapot or Infuser", "Tea Cup"],
+      "spatialHint": "Pour from teapot into cup on counter.",
+      "hazardChecks": ["Hot liquid pour risk"],
+      "instrumentReads": ["Liquid level in cup"],
+      "expectedDurationSec": 30
+    }
+  ],
+  "sourceVideo": "https://www.youtube.com/watch?v=AkHbLRuNP4M",
+  "extractedAt": "2026-04-20T15:45:22.000Z"
+}

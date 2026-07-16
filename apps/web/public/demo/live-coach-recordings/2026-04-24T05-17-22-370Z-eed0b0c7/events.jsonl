@@ -1,0 +1,18 @@
+{"ts":"2026-04-24T05:17:22.382Z","type":"session_start","payload":{}}
+{"ts":"2026-04-24T05:17:22.521Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-24T05:17:22.632Z","type":"setup","payload":{}}
+{"ts":"2026-04-24T05:17:22.632Z","type":"scenario","payload":{"title":"Step passed: mug placement confirmed","scenarioId":"step-passed-place-mug"}}
+{"ts":"2026-04-24T05:17:22.632Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-24T05:17:22.633Z","type":"client_text","payload":{"text":"Demo scenario: The model verified that the mug is placed on the counter with high confidence. Give a short positive confirmation and preview the next action.\n\nSpeak only the final hands-free copilot voice feedback. Keep it to one or two short sentences. Do not narrate analysis."}}
+{"ts":"2026-04-24T05:17:23.226Z","type":"transcript","payload":{"transcript":"Mug confirmed."}}
+{"ts":"2026-04-24T05:17:23.603Z","type":"model_audio","payload":{"bytes":46080,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:23.626Z","type":"transcript","payload":{"transcript":" Next,"}}
+{"ts":"2026-04-24T05:17:23.626Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:23.627Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:23.627Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:23.637Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:23.637Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:23.637Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:23.647Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:23.657Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:23.662Z","type":"session_stop","payload":{"reason":"stop"}}

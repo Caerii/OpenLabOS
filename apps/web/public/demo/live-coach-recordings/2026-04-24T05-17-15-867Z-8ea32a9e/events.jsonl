@@ -1,0 +1,37 @@
+{"ts":"2026-04-24T05:17:15.891Z","type":"session_start","payload":{}}
+{"ts":"2026-04-24T05:17:16.023Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-24T05:17:16.178Z","type":"setup","payload":{}}
+{"ts":"2026-04-24T05:17:16.179Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-24T05:17:16.179Z","type":"scenario","payload":{"title":"Wrong order: tea bag before workspace ready","scenarioId":"wrong-order-teabag-first"}}
+{"ts":"2026-04-24T05:17:16.180Z","type":"client_text","payload":{"text":"Demo scenario: The technician is making tea but skipped the workspace setup. They put the tea bag near the mug before the mug is clearly placed on the counter. Identify the step deviance and say what should happen next.\n\nSpeak only the final hands-free copilot voice feedback. Keep it to one or two short sentences. Do not narrate analysis."}}
+{"ts":"2026-04-24T05:17:17.146Z","type":"transcript","payload":{"transcript":"Please ensure"}}
+{"ts":"2026-04-24T05:17:17.398Z","type":"transcript","payload":{"transcript":" the mug"}}
+{"ts":"2026-04-24T05:17:17.545Z","type":"model_audio","payload":{"bytes":46080,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.549Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.552Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.552Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.553Z","type":"transcript","payload":{"transcript":" is securely"}}
+{"ts":"2026-04-24T05:17:17.553Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.555Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.555Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.556Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.557Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.558Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.584Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.585Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.588Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.594Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.618Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.618Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.628Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.639Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.650Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.661Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.672Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.672Z","type":"transcript","payload":{"transcript":" placed"}}
+{"ts":"2026-04-24T05:17:17.698Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.698Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.708Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.717Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.729Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:17.738Z","type":"session_stop","payload":{"reason":"stop"}}

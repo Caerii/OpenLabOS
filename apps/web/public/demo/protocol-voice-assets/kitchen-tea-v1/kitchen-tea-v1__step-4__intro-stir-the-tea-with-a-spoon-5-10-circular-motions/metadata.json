@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-40-20-312Z-08dca1da",
+  "startedAt": "2026-04-26T04:40:20.312Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 4: coach the next action",
+  "scenarioId": "kitchen-tea-v1__step-4__intro-stir-the-tea-with-a-spoon-5-10-circular-motions",
+  "eventCount": 31,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:40:23.061Z",
+  "outputWav": "output.wav"
+}

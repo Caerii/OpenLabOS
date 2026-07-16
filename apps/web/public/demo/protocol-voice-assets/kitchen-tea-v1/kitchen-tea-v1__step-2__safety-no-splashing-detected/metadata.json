@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-39-53-979Z-25bfbeab",
+  "startedAt": "2026-04-26T04:39:53.979Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 2: safety check",
+  "scenarioId": "kitchen-tea-v1__step-2__safety-no-splashing-detected",
+  "eventCount": 59,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:39:55.765Z",
+  "outputWav": "output.wav"
+}

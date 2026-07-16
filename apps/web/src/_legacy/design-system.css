@@ -1,0 +1,560 @@
+/**
+ * LabOS design system — shared primitives for operator UI.
+ * Tokens live in theme/tokens.css; components consume these classes.
+ */
+
+:root {
+  --labos-radius-sm: 0.375rem;
+  --labos-radius-md: 0.625rem;
+  --labos-radius-lg: 0.75rem;
+  --labos-radius-xl: 0.875rem;
+  --labos-motion: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --labos-shadow-inset: inset 0 1px 0 rgb(var(--border) / 0.04);
+  --labos-shadow-raise: -1px 2px 6px rgb(var(--shadow-color) / 0.05);
+  --labos-shadow-nested: inset 0 1px 2px rgb(var(--shadow-color) / 0.03);
+  --labos-shadow-dock: 0 -1px 4px rgb(var(--shadow-color) / 0.04);
+}
+
+html[data-theme="dark"] {
+  --labos-shadow-inset: inset 0 1px 0 rgb(255 255 255 / 0.03);
+  --labos-shadow-raise: -1px 2px 5px rgb(0 0 0 / 0.14);
+  --labos-shadow-nested: inset 0 1px 2px rgb(0 0 0 / 0.1);
+  --labos-shadow-dock: 0 -1px 4px rgb(0 0 0 / 0.12);
+}
+
+/* ── Surfaces ─────────────────────────────────────────────── */
+
+.labos-surface {
+  border: 1px solid rgb(var(--border) / 0.1);
+  border-radius: var(--labos-radius-lg);
+  background-color: rgb(var(--surface-2) / 1);
+  color: rgb(var(--fg) / 1);
+  box-shadow: var(--labos-shadow-inset), var(--labos-shadow-raise);
+}
+
+html[data-theme="light"] .labos-surface,
+html[data-theme="light"] .labos-panel {
+  background-color: #ffffff;
+  color: #0f172a;
+  border-color: rgb(15 23 42 / 0.1);
+}
+
+/* ── Typography ───────────────────────────────────────────── */
+
+.labos-eyebrow {
+  margin-bottom: 0.375rem;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--subtle) / 1);
+}
+
+.labos-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: rgb(var(--fg) / 1);
+}
+
+.labos-body {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: rgb(var(--muted) / 1);
+}
+
+/* ── Focus ring (shared) ──────────────────────────────────── */
+
+.labos-focus:focus-visible {
+  outline: 2px solid rgb(var(--ring) / 0.45);
+  outline-offset: 2px;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+
+.labos-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: nowrap;
+  border-radius: var(--labos-radius-md);
+  transition:
+    background-color var(--labos-motion),
+    border-color var(--labos-motion),
+    color var(--labos-motion),
+    box-shadow var(--labos-motion),
+    transform 80ms ease;
+}
+
+.labos-btn:active:not(:disabled) {
+  transform: translateY(0.5px);
+}
+
+.labos-btn:disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.labos-btn--xs {
+  padding: 0.25rem 0.625rem;
+  font-size: 11px;
+  border-radius: var(--labos-radius-sm);
+  gap: 0.25rem;
+}
+
+.labos-btn--sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.labos-btn--md {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.labos-btn--primary {
+  background-color: rgb(var(--accent) / 1);
+  color: rgb(var(--accent-fg) / 1);
+  border: 1px solid rgb(var(--accent) / 0.85);
+  box-shadow: var(--labos-shadow-inset), 0 1px 2px rgb(var(--accent) / 0.2);
+}
+
+.labos-btn--primary:hover:not(:disabled) {
+  background-color: rgb(var(--accent) / 0.92);
+}
+
+.labos-btn--primary:disabled {
+  background-color: rgb(var(--accent) / 0.45);
+  border-color: rgb(var(--accent) / 0.35);
+  color: rgb(var(--accent-fg) / 0.95);
+}
+
+.labos-btn--secondary {
+  background-color: rgb(var(--overlay) / 0.06);
+  color: rgb(var(--fg) / 1);
+  border: 1px solid rgb(var(--border) / 0.12);
+}
+
+.labos-btn--secondary:hover:not(:disabled) {
+  background-color: rgb(var(--overlay) / 0.1);
+  border-color: rgb(var(--border) / 0.18);
+}
+
+.labos-btn--secondary:disabled {
+  background-color: rgb(var(--overlay) / 0.03);
+  color: rgb(var(--muted) / 1);
+}
+
+.labos-btn--danger {
+  background-color: rgb(var(--bad-bg) / 0.1);
+  color: rgb(var(--bad-fg) / 1);
+  border: 1px solid rgb(var(--bad-border) / 0.22);
+}
+
+.labos-btn--danger:hover:not(:disabled) {
+  background-color: rgb(var(--bad-bg) / 0.16);
+}
+
+.labos-btn--ghost {
+  background-color: transparent;
+  color: rgb(var(--muted) / 1);
+  border: 1px solid transparent;
+}
+
+.labos-btn--ghost:hover:not(:disabled) {
+  background-color: rgb(var(--overlay) / 0.06);
+  color: rgb(var(--fg) / 1);
+}
+
+/* ── Inputs ───────────────────────────────────────────────── */
+
+.labos-input {
+  width: 100%;
+  border: 1px solid rgb(var(--border) / 0.14);
+  border-radius: var(--labos-radius-md);
+  background-color: rgb(var(--surface-2) / 1);
+  color: rgb(var(--fg) / 1);
+  transition:
+    border-color var(--labos-motion),
+    box-shadow var(--labos-motion);
+}
+
+.labos-input::placeholder {
+  color: rgb(var(--subtle) / 1);
+}
+
+.labos-input:hover:not(:disabled):not(:focus) {
+  border-color: rgb(var(--border) / 0.22);
+}
+
+.labos-input:focus {
+  outline: none;
+  border-color: rgb(var(--ring) / 0.45);
+  box-shadow: 0 0 0 3px rgb(var(--ring) / 0.12);
+}
+
+html[data-theme="light"] .labos-input {
+  background-color: #ffffff;
+  border-color: rgb(15 23 42 / 0.14);
+  color: #0f172a;
+}
+
+html[data-theme="light"] .labos-input::placeholder {
+  color: #64748b;
+}
+
+/* ── Badges & tags ────────────────────────────────────────── */
+
+.labos-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.35;
+  border: 1px solid transparent;
+}
+
+.labos-badge--green {
+  background: rgb(var(--good-bg) / 0.12);
+  color: rgb(var(--good-fg) / 1);
+  border-color: rgb(var(--good-border) / 0.2);
+}
+
+.labos-badge--red {
+  background: rgb(var(--bad-bg) / 0.12);
+  color: rgb(var(--bad-fg) / 1);
+  border-color: rgb(var(--bad-border) / 0.2);
+}
+
+.labos-badge--yellow {
+  background: rgb(var(--warn-bg) / 0.12);
+  color: rgb(var(--warn-fg) / 1);
+  border-color: rgb(var(--warn-border) / 0.2);
+}
+
+.labos-badge--blue {
+  background: rgb(var(--info-bg) / 0.12);
+  color: rgb(var(--info-fg) / 1);
+  border-color: rgb(var(--info-border) / 0.2);
+}
+
+.labos-badge--purple {
+  background: rgb(168 85 247 / 0.12);
+  color: rgb(192 132 252 / 1);
+  border-color: rgb(168 85 247 / 0.22);
+}
+
+html[data-theme="light"] .labos-badge--purple {
+  color: rgb(126 34 206 / 1);
+}
+
+.labos-badge--gray {
+  background: rgb(var(--border) / 0.06);
+  color: rgb(var(--muted) / 1);
+  border-color: rgb(var(--border) / 0.1);
+}
+
+.labos-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.4375rem;
+  border-radius: var(--labos-radius-sm);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.35;
+  background: rgb(var(--border) / 0.06);
+  color: rgb(var(--muted) / 1);
+  border: 1px solid rgb(var(--border) / 0.08);
+}
+
+/* ── Segmented control ────────────────────────────────────── */
+
+.labos-segmented {
+  display: inline-flex;
+  gap: 0.125rem;
+  padding: 0.1875rem;
+  border-radius: var(--labos-radius-lg);
+  border: 1px solid rgb(var(--border) / 0.1);
+  background: rgb(var(--border) / 0.05);
+}
+
+.labos-segmented-item {
+  position: relative;
+  flex-shrink: 0;
+  padding: 0.4375rem 0.875rem;
+  border-radius: calc(var(--labos-radius-lg) - 2px);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgb(var(--muted) / 1);
+  transition:
+    color var(--labos-motion),
+    background-color var(--labos-motion),
+    box-shadow var(--labos-motion);
+}
+
+.labos-segmented-item:hover {
+  color: rgb(var(--fg) / 1);
+}
+
+.labos-segmented-item[data-active="true"] {
+  background: rgb(var(--surface-2) / 1);
+  color: rgb(var(--fg) / 1);
+  box-shadow: var(--labos-shadow-inset), var(--labos-shadow-raise);
+}
+
+html[data-theme="light"] .labos-segmented-item[data-active="true"] {
+  background: #ffffff;
+}
+
+/* ── Selectable card ──────────────────────────────────────── */
+
+.labos-selectable {
+  text-align: left;
+  padding: 1rem;
+  border-radius: var(--labos-radius-xl);
+  border: 1px solid rgb(var(--border) / 0.1);
+  background: rgb(var(--surface-2) / 1);
+  color: rgb(var(--fg) / 1);
+  box-shadow: var(--labos-shadow-inset), var(--labos-shadow-raise);
+  transition:
+    border-color var(--labos-motion),
+    background-color var(--labos-motion),
+    box-shadow var(--labos-motion);
+}
+
+html[data-theme="light"] .labos-selectable {
+  background: #ffffff;
+}
+
+.labos-selectable:hover {
+  border-color: rgb(var(--border) / 0.16);
+  background: rgb(var(--surface-3) / 1);
+}
+
+html[data-theme="light"] .labos-selectable:hover {
+  background: #f8fafc;
+}
+
+.labos-selectable[data-selected="true"] {
+  border-color: rgb(var(--highlight-border) / 0.35);
+  background: rgb(var(--highlight-bg) / 0.06);
+  box-shadow:
+    var(--labos-shadow-inset),
+    var(--labos-shadow-raise),
+    inset 0 0 0 1px rgb(var(--highlight-border) / 0.12);
+}
+
+/* ── Alerts ───────────────────────────────────────────────── */
+
+.labos-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  border-radius: var(--labos-radius-lg);
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.labos-alert--error {
+  background: rgb(var(--bad-bg) / 0.08);
+  border-color: rgb(var(--bad-border) / 0.18);
+  color: rgb(var(--bad-fg) / 1);
+}
+
+.labos-alert--success {
+  background: rgb(var(--good-bg) / 0.08);
+  border-color: rgb(var(--good-border) / 0.18);
+  color: rgb(var(--good-fg) / 1);
+}
+
+.labos-alert--info {
+  background: rgb(var(--info-bg) / 0.08);
+  border-color: rgb(var(--info-border) / 0.18);
+  color: rgb(var(--info-fg) / 1);
+}
+
+/* ── Shell chrome (sidebar, topbar, mobile dock) ──────────── */
+
+.labos-rail {
+  border-color: rgb(var(--border) / 0.1);
+  background-color: rgb(var(--surface-1) / 0.95);
+  backdrop-filter: blur(12px);
+}
+
+.labos-rail--vertical {
+  border-right: 1px solid rgb(var(--border) / 0.1);
+}
+
+.labos-rail--horizontal {
+  border-bottom: 1px solid rgb(var(--border) / 0.1);
+}
+
+.labos-rail--dock {
+  border-top: 1px solid rgb(var(--border) / 0.1);
+  box-shadow: var(--labos-shadow-dock);
+}
+
+.labos-brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--labos-radius-md);
+  border: 1px solid rgb(var(--highlight-border) / 0.2);
+  background: rgb(var(--highlight-bg) / 0.08);
+  color: rgb(var(--accent-text) / 1);
+}
+
+/* ── Navigation ───────────────────────────────────────────── */
+
+.labos-nav-group-label {
+  padding: 0 0.5rem;
+  margin-bottom: 0.375rem;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--subtle) / 1);
+}
+
+.labos-nav-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: var(--labos-radius-md);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgb(var(--muted) / 1);
+  transition:
+    color var(--labos-motion),
+    background-color var(--labos-motion);
+}
+
+.labos-nav-link:hover {
+  color: rgb(var(--fg) / 1);
+  background: rgb(var(--overlay) / 0.06);
+}
+
+.labos-nav-link[data-active="true"],
+.labos-nav-link[aria-current="page"] {
+  color: rgb(var(--accent-text) / 1);
+  background: rgb(var(--highlight-bg) / 0.08);
+}
+
+.labos-nav-link--compact {
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem 0.25rem;
+  font-size: 10px;
+  border-radius: var(--labos-radius-lg);
+}
+
+.labos-nav-link--compact[data-active="true"],
+.labos-nav-link--compact[aria-current="page"] {
+  background: rgb(var(--highlight-bg) / 0.1);
+}
+
+/* ── Tabs (underline variant for console views) ───────────── */
+
+.labos-tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid rgb(var(--border) / 0.08);
+}
+
+.labos-tab {
+  position: relative;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: rgb(var(--muted) / 1);
+  border-radius: var(--labos-radius-sm) var(--labos-radius-sm) 0 0;
+  transition:
+    color var(--labos-motion),
+    background-color var(--labos-motion);
+}
+
+.labos-tab:hover {
+  color: rgb(var(--fg) / 1);
+  background: rgb(var(--overlay) / 0.06);
+}
+
+.labos-tab:focus-visible {
+  outline: 2px solid rgb(var(--ring) / 0.45);
+  outline-offset: 2px;
+}
+
+.labos-tab[data-active="true"] {
+  color: rgb(var(--fg) / 1);
+}
+
+.labos-tab[data-active="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0.875rem;
+  right: 0.875rem;
+  bottom: -1px;
+  height: 2px;
+  background: rgb(var(--accent-text) / 1);
+  border-radius: 1px 1px 0 0;
+}
+
+/* ── Modal & dialog ───────────────────────────────────────── */
+
+.labos-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgb(var(--shadow-color) / 0.55);
+  backdrop-filter: blur(4px);
+}
+
+html[data-theme="light"] .labos-overlay {
+  background: rgb(15 23 42 / 0.35);
+}
+
+.labos-dialog {
+  width: 100%;
+  max-width: 28rem;
+  padding: 1.25rem;
+  border-radius: var(--labos-radius-xl);
+  border: 1px solid rgb(var(--border) / 0.1);
+  background: rgb(var(--surface-2) / 1);
+  color: rgb(var(--fg) / 1);
+  box-shadow: var(--labos-shadow-inset), var(--labos-shadow-raise), 0 16px 40px rgb(var(--shadow-color) / 0.12);
+}
+
+html[data-theme="light"] .labos-dialog {
+  background: #ffffff;
+}
+
+.labos-dialog-head {
+  margin-bottom: 1rem;
+}
+
+.labos-dialog-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(var(--border) / 0.08);
+}
+

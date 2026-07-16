@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-24T05-17-20-560Z-99001014",
+  "startedAt": "2026-04-24T05:17:20.560Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Missing object: no spoon for stir step",
+  "scenarioId": "missing-spoon-stir",
+  "eventCount": 17,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-24T05:17:21.843Z",
+  "outputWav": "output.wav"
+}

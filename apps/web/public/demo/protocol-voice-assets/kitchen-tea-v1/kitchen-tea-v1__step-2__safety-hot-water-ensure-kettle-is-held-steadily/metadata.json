@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-39-49-420Z-b2e1ddf3",
+  "startedAt": "2026-04-26T04:39:49.420Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 2: safety check",
+  "scenarioId": "kitchen-tea-v1__step-2__safety-hot-water-ensure-kettle-is-held-steadily",
+  "eventCount": 66,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:39:51.681Z",
+  "outputWav": "output.wav"
+}

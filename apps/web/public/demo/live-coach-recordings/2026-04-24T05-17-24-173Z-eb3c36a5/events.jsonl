@@ -1,0 +1,16 @@
+{"ts":"2026-04-24T05:17:24.190Z","type":"session_start","payload":{}}
+{"ts":"2026-04-24T05:17:24.334Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-24T05:17:24.464Z","type":"setup","payload":{}}
+{"ts":"2026-04-24T05:17:24.464Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-24T05:17:24.464Z","type":"scenario","payload":{"title":"Wrong order: milk before steeping","scenarioId":"deviance-milk-before-steep"}}
+{"ts":"2026-04-24T05:17:24.465Z","type":"client_text","payload":{"text":"Demo scenario: The technician added milk before the tea bag has steeped. Explain the step deviance without being harsh, say whether the run should continue, and suggest the cleanest correction.\n\nSpeak only the final hands-free copilot voice feedback. Keep it to one or two short sentences. Do not narrate analysis."}}
+{"ts":"2026-04-24T05:17:25.034Z","type":"transcript","payload":{"transcript":"Adding milk"}}
+{"ts":"2026-04-24T05:17:25.293Z","type":"transcript","payload":{"transcript":" before"}}
+{"ts":"2026-04-24T05:17:25.432Z","type":"model_audio","payload":{"bytes":46080,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:25.433Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:25.437Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:25.438Z","type":"transcript","payload":{"transcript":" steeping"}}
+{"ts":"2026-04-24T05:17:25.438Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:25.438Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:25.446Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-24T05:17:25.483Z","type":"session_stop","payload":{"reason":"stop"}}

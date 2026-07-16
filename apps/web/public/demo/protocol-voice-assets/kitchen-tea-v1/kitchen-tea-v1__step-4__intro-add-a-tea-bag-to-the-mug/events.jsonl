@@ -1,0 +1,4 @@
+{"ts":"2026-05-01T16:33:32.215Z","type":"session_start","payload":{"title":"Step 4: coach the next action","scenarioId":"kitchen-tea-v1__step-4__intro-add-a-tea-bag-to-the-mug"}}
+{"ts":"2026-05-01T16:33:32.215Z","type":"scenario","payload":{"title":"Step 4: coach the next action","scenarioId":"kitchen-tea-v1__step-4__intro-add-a-tea-bag-to-the-mug"}}
+{"ts":"2026-05-01T16:33:32.215Z","type":"model_text","payload":{"text":"Step 4: Add a tea bag to the mug. I am watching for Tea bag visible inside the mug or its string hanging over the rim."}}
+{"ts":"2026-05-01T16:33:32.215Z","type":"session_stop","payload":{"reason":"static_asset_generation"}}

@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-39-23-864Z-10789d82",
+  "startedAt": "2026-04-26T04:39:23.864Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 1: possible deviance",
+  "scenarioId": "kitchen-tea-v1__step-1__possible-deviation-place-the-mug-on-the-counter-in-your-workspace",
+  "eventCount": 25,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:39:25.627Z",
+  "outputWav": "output.wav"
+}

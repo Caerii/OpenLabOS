@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-40-25-299Z-8d5e5e2d",
+  "startedAt": "2026-04-26T04:40:25.299Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 4: passed",
+  "scenarioId": "kitchen-tea-v1__step-4__passed-stir-the-tea-with-a-spoon-5-10-circular-motions",
+  "eventCount": 62,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:40:27.068Z",
+  "outputWav": "output.wav"
+}

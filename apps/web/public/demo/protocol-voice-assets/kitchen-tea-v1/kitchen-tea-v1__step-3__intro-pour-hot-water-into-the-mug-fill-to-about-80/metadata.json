@@ -1,0 +1,15 @@
+{
+  "id": "kitchen-tea-v1__step-3__intro-pour-hot-water-into-the-mug-fill-to-about-80",
+  "startedAt": "2026-05-01T16:33:24.389Z",
+  "endedAt": "2026-05-01T16:33:24.389Z",
+  "model": "gemini-2.5-flash-preview-tts",
+  "voiceName": "Despina",
+  "title": "Step 3: coach the next action",
+  "scenarioId": "kitchen-tea-v1__step-3__intro-pour-hot-water-into-the-mug-fill-to-about-80",
+  "eventCount": 4,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "outputWav": "output.wav",
+  "outputBytes": 783886,
+  "outputDurationSec": 16.330958333333335
+}

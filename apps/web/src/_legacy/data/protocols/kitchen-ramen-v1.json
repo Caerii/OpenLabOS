@@ -1,0 +1,134 @@
+{
+  "id": "kitchen-ramen-v1",
+  "name": "Stovetop Ramen (Pot) — Demo Protocol",
+  "description": "Simple stovetop ramen in a pot. Designed for LabOS demo capture: clear object/action verification (pot/stove/noodles/seasoning/bowl) with intentional near-miss and failure frames.",
+  "difficulty": "beginner",
+  "estimatedMinutes": 10,
+  "tags": [
+    "cooking",
+    "ramen",
+    "beginner-friendly",
+    "lab-os-kitchen"
+  ],
+  "requiredInventory": [
+    {
+      "name": "Pot",
+      "category": "tool"
+    },
+    {
+      "name": "Stove",
+      "category": "appliance"
+    },
+    {
+      "name": "Water",
+      "category": "ingredient"
+    },
+    {
+      "name": "Instant Ramen Pack",
+      "category": "ingredient"
+    },
+    {
+      "name": "Bowl",
+      "category": "tool"
+    }
+  ],
+  "workspaceVerificationPrompt": "Point to all items needed for Stovetop Ramen (Pot). I need: Pot, Stove, Instant Ramen Pack, Bowl.\nFor any missing items, label them as \"MISSING: <item>\".\n\nThe answer should follow the JSON format:\n[{\"point\": [y, x], \"label\": \"label\"}]",
+  "steps": [
+    {
+      "number": 1,
+      "instruction": "Place the pot on the stove burner.",
+      "successCriteria": "Pot is clearly resting on a stove burner.",
+      "verificationPrompt": "Is there a pot positioned on a stove burner (ready to heat)? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Pot",
+        "Stove"
+      ],
+      "spatialHint": "Stove top / burner area.",
+      "hazardChecks": [
+        "Ensure pot is stable on burner"
+      ],
+      "instrumentReads": [],
+      "expectedDurationSec": 20
+    },
+    {
+      "number": 2,
+      "instruction": "Fill the pot with water (about halfway).",
+      "successCriteria": "Water is visible inside the pot at a non-zero level.",
+      "verificationPrompt": "Is water visible inside the pot (at least some amount)? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Pot",
+        "Water"
+      ],
+      "spatialHint": "Pot on stove or counter while filling.",
+      "hazardChecks": [
+        "Avoid spilling water near burner controls"
+      ],
+      "instrumentReads": [],
+      "expectedDurationSec": 30
+    },
+    {
+      "number": 3,
+      "instruction": "Turn on the stove heat to bring the water to a simmer.",
+      "successCriteria": "Stove control is set ON and the pot remains on the burner (steam/bubbles may be visible).",
+      "verificationPrompt": "Is the stove heat turned on for the burner under the pot (or are there visible signs of heating like steam/bubbles)? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Pot",
+        "Stove"
+      ],
+      "spatialHint": "Stove knobs / burner under the pot.",
+      "hazardChecks": [
+        "Hot surface burn risk"
+      ],
+      "instrumentReads": [],
+      "expectedDurationSec": 90
+    },
+    {
+      "number": 4,
+      "instruction": "Add the noodles to the pot.",
+      "successCriteria": "Noodle block/noodles are visible in the pot (or being added).",
+      "verificationPrompt": "Are noodles visible in the pot (or being added to the pot)? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Instant Ramen Pack",
+        "Pot"
+      ],
+      "spatialHint": "Over the pot opening.",
+      "hazardChecks": [
+        "Steam burn risk when leaning over pot"
+      ],
+      "instrumentReads": [],
+      "expectedDurationSec": 20
+    },
+    {
+      "number": 5,
+      "instruction": "Add the seasoning packet contents to the pot and stir.",
+      "successCriteria": "Seasoning is added (packet visible or contents dispersed) and stirring motion/tool is present (optional).",
+      "verificationPrompt": "Is seasoning being added (packet visible or contents in pot) and is the mixture being stirred? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Instant Ramen Pack",
+        "Pot"
+      ],
+      "spatialHint": "Over the pot; stirring in the pot.",
+      "hazardChecks": [
+        "Hot liquid splash risk"
+      ],
+      "instrumentReads": [],
+      "expectedDurationSec": 30
+    },
+    {
+      "number": 6,
+      "instruction": "Pour the cooked ramen into the bowl to serve.",
+      "successCriteria": "Ramen contents are being poured into the bowl or are already in the bowl.",
+      "verificationPrompt": "Is the ramen being poured into the bowl (or already served in the bowl)? Return JSON:\n{\"success\": true/false, \"confidence\": 0.0-1.0, \"reasoning\": \"string\"}",
+      "requiredObjects": [
+        "Bowl",
+        "Pot"
+      ],
+      "spatialHint": "Over the bowl on the counter.",
+      "hazardChecks": [
+        "Hot liquid pour risk"
+      ],
+      "instrumentReads": [],
+      "expectedDurationSec": 30
+    }
+  ]
+}

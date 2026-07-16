@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-24T05-17-22-370Z-eed0b0c7",
+  "startedAt": "2026-04-24T05:17:22.370Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step passed: mug placement confirmed",
+  "scenarioId": "step-passed-place-mug",
+  "eventCount": 18,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-24T05:17:23.661Z",
+  "outputWav": "output.wav"
+}

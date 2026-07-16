@@ -1,0 +1,16 @@
+{"ts":"2026-04-26T04:39:32.431Z","type":"session_start","payload":{}}
+{"ts":"2026-04-26T04:39:32.875Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-26T04:39:32.968Z","type":"status","payload":{"state":"connected","model":"gemini-2.5-flash-native-audio-latest"}}
+{"ts":"2026-04-26T04:39:32.968Z","type":"scenario","payload":{"title":"Step 2: passed","scenarioId":"kitchen-tea-v1__step-2__passed-pour-hot-water-into-the-mug-fill-to-about-80"}}
+{"ts":"2026-04-26T04:39:32.968Z","type":"setup","payload":{}}
+{"ts":"2026-04-26T04:39:32.970Z","type":"client_text","payload":{"text":"Demo scenario: Step 2 of \"Make a Cup of Tea\" passed with high confidence. Confirm success, sound friendly, and preview the next action if one exists.\n\nSpeak only the final hands-free copilot voice feedback. Be warm, playful, and precise. Keep it to one or two short sentences. Do not narrate analysis."}}
+{"ts":"2026-04-26T04:39:33.594Z","type":"transcript","payload":{"transcript":"Perfect! Step"}}
+{"ts":"2026-04-26T04:39:33.971Z","type":"model_audio","payload":{"bytes":46080,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:33.973Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:33.974Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:33.984Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:33.984Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:33.984Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:33.991Z","type":"model_audio","payload":{"bytes":1920,"sampleRate":24000,"mimeType":"audio/pcm;rate=24000"}}
+{"ts":"2026-04-26T04:39:33.992Z","type":"transcript","payload":{"transcript":" two"}}
+{"ts":"2026-04-26T04:39:33.997Z","type":"session_stop","payload":{"reason":"stop"}}

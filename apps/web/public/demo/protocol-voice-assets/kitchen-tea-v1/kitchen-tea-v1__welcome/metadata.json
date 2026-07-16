@@ -1,0 +1,15 @@
+{
+  "id": "kitchen-tea-v1__welcome",
+  "startedAt": "2026-05-01T16:32:51.828Z",
+  "endedAt": "2026-05-01T16:32:51.828Z",
+  "model": "gemini-2.5-flash-preview-tts",
+  "voiceName": "Despina",
+  "title": "Welcome: start the protocol",
+  "scenarioId": "kitchen-tea-v1__welcome",
+  "eventCount": 4,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "outputWav": "output.wav",
+  "outputBytes": 445966,
+  "outputDurationSec": 9.290958333333334
+}

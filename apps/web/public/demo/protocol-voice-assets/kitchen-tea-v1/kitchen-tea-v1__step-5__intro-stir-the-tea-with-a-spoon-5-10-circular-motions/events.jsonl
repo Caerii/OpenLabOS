@@ -1,0 +1,4 @@
+{"ts":"2026-05-01T16:33:41.190Z","type":"session_start","payload":{"title":"Step 5: coach the next action","scenarioId":"kitchen-tea-v1__step-5__intro-stir-the-tea-with-a-spoon-5-10-circular-motions"}}
+{"ts":"2026-05-01T16:33:41.190Z","type":"scenario","payload":{"title":"Step 5: coach the next action","scenarioId":"kitchen-tea-v1__step-5__intro-stir-the-tea-with-a-spoon-5-10-circular-motions"}}
+{"ts":"2026-05-01T16:33:41.190Z","type":"model_text","payload":{"text":"Step 5: Stir the tea with a spoon (5-10 circular motions). I am watching for Spoon is in or near the mug, water shows signs of stirring (swirl, darker color from steeping)."}}
+{"ts":"2026-05-01T16:33:41.190Z","type":"session_stop","payload":{"reason":"static_asset_generation"}}

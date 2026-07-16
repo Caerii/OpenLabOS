@@ -1,0 +1,15 @@
+{
+  "id": "kitchen-tea-v1__step-6__intro-place-the-mug-on-the-tray",
+  "startedAt": "2026-05-01T16:33:48.434Z",
+  "endedAt": "2026-05-01T16:33:48.434Z",
+  "model": "gemini-2.5-flash-preview-tts",
+  "voiceName": "Despina",
+  "title": "Step 6: coach the next action",
+  "scenarioId": "kitchen-tea-v1__step-6__intro-place-the-mug-on-the-tray",
+  "eventCount": 4,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "outputWav": "output.wav",
+  "outputBytes": 540046,
+  "outputDurationSec": 11.250958333333333
+}

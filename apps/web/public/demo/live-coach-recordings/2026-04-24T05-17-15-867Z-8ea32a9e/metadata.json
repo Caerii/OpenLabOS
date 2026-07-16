@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-24T05-17-15-867Z-8ea32a9e",
+  "startedAt": "2026-04-24T05:17:15.867Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Wrong order: tea bag before workspace ready",
+  "scenarioId": "wrong-order-teabag-first",
+  "eventCount": 37,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-24T05:17:17.737Z",
+  "outputWav": "output.wav"
+}

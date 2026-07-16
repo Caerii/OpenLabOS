@@ -1,0 +1,13 @@
+{
+  "id": "2026-04-26T04-39-27-850Z-51e023ea",
+  "startedAt": "2026-04-26T04:39:27.850Z",
+  "model": "gemini-2.5-flash-native-audio-latest",
+  "audioRoute": "browser",
+  "title": "Step 2: coach the next action",
+  "scenarioId": "kitchen-tea-v1__step-2__intro-pour-hot-water-into-the-mug-fill-to-about-80",
+  "eventCount": 59,
+  "eventsPath": "events.jsonl",
+  "metadataPath": "metadata.json",
+  "endedAt": "2026-04-26T04:39:30.155Z",
+  "outputWav": "output.wav"
+}
