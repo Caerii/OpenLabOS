@@ -1,0 +1,26 @@
+[project]
+name = "openlabos-inference"
+version = "0.0.0"
+description = "OpenLabOS inference / model-server backend: protocol-aware judgment generation, provider routing, perception adapters."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "pydantic>=2.10.0",
+]
+
+[project.optional-dependencies]
+dev = ["httpx>=0.28.0", "pytest>=8.0.0"]
+codegen = ["datamodel-code-generator[http]>=0.25"]
+
+[project.scripts]
+openlabos-inference = "openlabos_inference.openlabos_main:run"
+openlabos-inference-legacy = "openlabos_inference.main:run"
+
+[build-system]
+requires = ["hatchling>=1.26.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openlabos_inference"]
