@@ -1,0 +1,10 @@
+{
+  "name": "@openlabos/devtools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "slides": "node slides/generate.mjs",
+    "slides:overview": "node slides/generate.mjs openlabos-system-overview"
+  }
+}
