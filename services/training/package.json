@@ -1,0 +1,6 @@
+{
+  "name": "@openlabos/training",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Training scripts and configs (Python via uv; see pyproject.toml)."
+}
