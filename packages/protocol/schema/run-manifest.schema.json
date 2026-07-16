@@ -1,0 +1,7 @@
+{
+  "$ref": "#/definitions/run-manifest",
+  "definitions": {
+    "run-manifest": {}
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
