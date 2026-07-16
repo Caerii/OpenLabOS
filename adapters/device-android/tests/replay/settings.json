@@ -1,0 +1,41 @@
+{
+  "fixture_version": 1,
+  "name": "settings",
+  "request": {
+    "method": "GET",
+    "path": "/api/settings"
+  },
+  "response": {
+    "photo_resolution": "large",
+    "video_width": 1280,
+    "video_height": 720,
+    "video_fps": "<numeric>",
+    "max_recording_time_seconds": 600,
+    "video_bitrate": 4000000,
+    "camera_fov": 118,
+    "camera_led_on_capture": true,
+    "jpeg_quality": 80,
+    "camera_keep_alive_ms": 5000,
+    "audio_volume": 0.30000001192092896,
+    "i2s_keep_open_ms": 2000,
+    "mic_enabled": true,
+    "vad_enabled": false,
+    "serial_port": "/dev/ttyS1",
+    "baud_rate": 460800,
+    "normal_poll_ms": 10,
+    "fast_poll_ms": 2,
+    "mcu_firmware_version": "",
+    "photo_flash_ms": 300,
+    "led_brightness": 100,
+    "boot_chime_delay_ms": 1500,
+    "camera_warmup_delay_ms": 3000,
+    "low_battery_threshold": 10,
+    "low_battery_reset": 20,
+    "gallery_mode": true,
+    "button_actions": {
+      "camera_short": "take_photo",
+      "camera_long": "toggle_video",
+      "power_short": "announce_battery"
+    }
+  }
+}

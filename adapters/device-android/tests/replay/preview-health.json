@@ -1,0 +1,14 @@
+{
+  "fixture_version": 1,
+  "name": "preview-health",
+  "request": {
+    "method": "GET",
+    "path": "/api/preview/health"
+  },
+  "response": {
+    "ok": false,
+    "fps": "<numeric>",
+    "frameCount": "<numeric>",
+    "streaming": false
+  }
+}

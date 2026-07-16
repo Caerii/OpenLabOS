@@ -1,0 +1,276 @@
+{
+  "manifest_version": 1,
+  "captured_at": "2026-05-04T21:26:05.537Z",
+  "captured_against": "http://192.168.50.122:8080",
+  "probes": [
+    {
+      "name": "health",
+      "request": {
+        "method": "GET",
+        "path": "/health"
+      },
+      "response_keys": [
+        "ok",
+        "service",
+        "version"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "auth-token",
+      "request": {
+        "method": "GET",
+        "path": "/api/auth/token"
+      },
+      "response_keys": [
+        "token"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "status",
+      "request": {
+        "method": "GET",
+        "path": "/api/status"
+      },
+      "response_keys": [
+        "androidVersion",
+        "batteryPercent",
+        "batteryVoltage",
+        "coreStatus",
+        "dashboardVersion",
+        "manufacturer",
+        "mcuConnected",
+        "model",
+        "sdkVersion"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "system-info",
+      "request": {
+        "method": "GET",
+        "path": "/api/system/info"
+      },
+      "response_keys": [
+        "androidVersion",
+        "brand",
+        "buildId",
+        "device",
+        "hardware",
+        "jvmFreeMemoryMb",
+        "jvmMaxMemoryMb",
+        "jvmTotalMemoryMb",
+        "manufacturer",
+        "model",
+        "product",
+        "sdkVersion",
+        "serial",
+        "uptimeHours",
+        "uptimeMs"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "battery-summary",
+      "request": {
+        "method": "GET",
+        "path": "/api/battery/summary"
+      },
+      "response_keys": [
+        "available",
+        "lastTimestamp",
+        "logSizeBytes",
+        "percent",
+        "voltage"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "battery-history",
+      "request": {
+        "method": "GET",
+        "path": "/api/battery/history"
+      },
+      "response_keys": [
+        "entries",
+        "total"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "wifi-status",
+      "request": {
+        "method": "GET",
+        "path": "/api/wifi/status"
+      },
+      "response_keys": [
+        "connected",
+        "frequency",
+        "ip",
+        "link_speed",
+        "rssi",
+        "ssid"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "mcu-status",
+      "request": {
+        "method": "GET",
+        "path": "/api/mcu/status"
+      },
+      "response_keys": [
+        "batteryPercent",
+        "batteryVoltage",
+        "connected"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "settings",
+      "request": {
+        "method": "GET",
+        "path": "/api/settings"
+      },
+      "response_keys": [
+        "audio_volume",
+        "baud_rate",
+        "boot_chime_delay_ms",
+        "button_actions",
+        "camera_fov",
+        "camera_keep_alive_ms",
+        "camera_led_on_capture",
+        "camera_warmup_delay_ms",
+        "fast_poll_ms",
+        "gallery_mode",
+        "i2s_keep_open_ms",
+        "jpeg_quality",
+        "led_brightness",
+        "low_battery_reset",
+        "low_battery_threshold",
+        "max_recording_time_seconds",
+        "mcu_firmware_version",
+        "mic_enabled",
+        "normal_poll_ms",
+        "photo_flash_ms",
+        "photo_resolution",
+        "serial_port",
+        "vad_enabled",
+        "video_bitrate",
+        "video_fps",
+        "video_height",
+        "video_width"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "preview-health",
+      "request": {
+        "method": "GET",
+        "path": "/api/preview/health"
+      },
+      "response_keys": [
+        "fps",
+        "frameCount",
+        "ok",
+        "streaming"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "live-coach-audio-status",
+      "request": {
+        "method": "GET",
+        "path": "/api/live-coach/audio/status"
+      },
+      "response_keys": [
+        "audioBytesAccepted",
+        "audioBytesPlayed",
+        "audioWriteFailures",
+        "bytesSent",
+        "chunksSent",
+        "connected",
+        "droppedAudioChunks",
+        "lastAudioAt",
+        "lastError",
+        "outputSampleRate",
+        "playbackEnabled",
+        "queuedAudioChunks",
+        "running",
+        "sampleRate",
+        "speakerPathRequests",
+        "startedAt",
+        "wsUrl"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "dev-shell-echo",
+      "request": {
+        "method": "POST",
+        "path": "/api/dev/shell",
+        "body": "{\"command\":\"echo openlabos\"}"
+      },
+      "response_keys": [
+        "command",
+        "exitCode",
+        "stderr",
+        "stdout"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "dev-props",
+      "request": {
+        "method": "GET",
+        "path": "/api/dev/props"
+      },
+      "response_keys": [
+        "command",
+        "exitCode",
+        "stderr",
+        "stdout"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "dev-packages",
+      "request": {
+        "method": "GET",
+        "path": "/api/dev/packages"
+      },
+      "response_keys": [
+        "count",
+        "packages"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "dev-files-sdcard",
+      "request": {
+        "method": "GET",
+        "path": "/api/dev/files?path=%2Fsdcard"
+      },
+      "response_keys": [
+        "count",
+        "entries",
+        "isDirectory",
+        "path"
+      ],
+      "response_type": "object"
+    },
+    {
+      "name": "dev-crashes",
+      "request": {
+        "method": "GET",
+        "path": "/api/dev/crashes"
+      },
+      "response_keys": [
+        "count",
+        "crashes"
+      ],
+      "response_type": "object"
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "fixture_version": 1,
+  "name": "dev-files-sdcard",
+  "request": {
+    "method": "GET",
+    "path": "/api/dev/files?path=%2Fsdcard"
+  },
+  "response": {
+    "path": "/sdcard",
+    "isDirectory": true,
+    "entries": [
+      {
+        "name": "asg",
+        "path": "/sdcard/asg",
+        "isDirectory": true,
+        "size": 0,
+        "modified": "2026-03-16 16:54:21",
+        "readable": true,
+        "writable": true
+      },
+      {
+        "name": "Notifications",
+        "path": "/sdcard/Notifications",
+        "isDirectory": true,
+        "size": 0,
+        "modified": "2026-01-13 08:52:47",
+        "readable": true,
+        "writable": true
+      },
+      {
+        "name": "xysmart",
+        "path": "/sdcard/xysmart",
+        "isDirectory": true,
+        "size": 0,
+        "modified": "2026-01-13 08:59:30",
+        "readable": true,
+        "writable": true
+      },
+      {
+        "name": "Audiobooks",
+        "path": "/sdcard/Audiobooks",
+        "isDirectory": true,
+        "size": 0,
+        "modified": "2026-01-13 08:52:47",
+        "readable": true,
+        "writable": true
+      },
+      {
+        "name": "bt.mp3",
+        "path": "/sdcard/bt.mp3",
+        "isDirectory": false,
+        "size": 11699,
+        "modified": "2026-01-13 09:00:34",
+        "readable": true,
+        "writable": true
+      },
+      {
+        "name": "Android",
+        "path": "/sdcard/Android",
+        "isDirectory": true,
+        "size": 0,
+        "modified": "2026-01-13 08:52:45",
+        "readable": true,
+        "writable": true
+      },
+      {
+        "name": "Movies",
+        "path": "/sdcard/Movies",
+        "isDirectory": true,
+        "size": 0,
+        "modified": "2026-01-13 08:52:47",
+        "readable": true,
+        "writable": true
+      },
+      {
+        "name": "Ringtones",
+        "path": "/sdcard/Ringtones",
+        "isDirectory": true,
+        "size": 0,
+        "modified": "2026-01-13 08:52:47",
+        "readable": true,
+        "writable": true
+      },
+      "<truncated>"
+    ],
+    "count": 18
+  }
+}

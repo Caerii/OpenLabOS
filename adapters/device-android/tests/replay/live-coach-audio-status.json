@@ -1,0 +1,27 @@
+{
+  "fixture_version": 1,
+  "name": "live-coach-audio-status",
+  "request": {
+    "method": "GET",
+    "path": "/api/live-coach/audio/status"
+  },
+  "response": {
+    "running": false,
+    "connected": false,
+    "wsUrl": "",
+    "sampleRate": 16000,
+    "outputSampleRate": 24000,
+    "playbackEnabled": true,
+    "startedAt": 0,
+    "lastAudioAt": 0,
+    "chunksSent": 0,
+    "bytesSent": 0,
+    "audioBytesPlayed": 0,
+    "audioBytesAccepted": 0,
+    "audioWriteFailures": 0,
+    "speakerPathRequests": 0,
+    "droppedAudioChunks": 0,
+    "queuedAudioChunks": 0,
+    "lastError": ""
+  }
+}

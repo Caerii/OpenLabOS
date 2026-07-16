@@ -1,0 +1,22 @@
+{
+  "fixture_version": 1,
+  "name": "dev-packages",
+  "request": {
+    "method": "GET",
+    "path": "/api/dev/packages"
+  },
+  "response": {
+    "packages": [
+      "com.mediatek.ppl",
+      "com.android.providers.telephony",
+      "com.android.dynsystem",
+      "com.mediatek.camera",
+      "com.mediatek.SettingsProviderResOverlay",
+      "com.mediatek.systemuiresoverlay",
+      "com.android.wifi.resources.overlay",
+      "com.android.externalstorage",
+      "<truncated>"
+    ],
+    "count": 49
+  }
+}

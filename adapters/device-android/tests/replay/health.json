@@ -1,0 +1,13 @@
+{
+  "fixture_version": 1,
+  "name": "health",
+  "request": {
+    "method": "GET",
+    "path": "/health"
+  },
+  "response": {
+    "ok": true,
+    "service": "labos-dashboard",
+    "version": "0.3.0"
+  }
+}

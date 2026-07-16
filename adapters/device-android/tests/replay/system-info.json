@@ -1,0 +1,25 @@
+{
+  "fixture_version": 1,
+  "name": "system-info",
+  "request": {
+    "method": "GET",
+    "path": "/api/system/info"
+  },
+  "response": {
+    "model": "Mentra Live",
+    "manufacturer": "mentra_live",
+    "brand": "Mentra",
+    "device": "MentraLive",
+    "product": "MentraLive",
+    "hardware": "mt6761",
+    "androidVersion": "11",
+    "sdkVersion": 30,
+    "buildId": "RP1A.200720.011",
+    "serial": "unknown",
+    "uptimeMs": "<timestamp>",
+    "uptimeHours": "1.0",
+    "jvmMaxMemoryMb": 256,
+    "jvmTotalMemoryMb": 4,
+    "jvmFreeMemoryMb": 1
+  }
+}

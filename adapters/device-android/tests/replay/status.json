@@ -1,0 +1,22 @@
+{
+  "fixture_version": 1,
+  "name": "status",
+  "request": {
+    "method": "GET",
+    "path": "/api/status"
+  },
+  "response": {
+    "mcuConnected": false,
+    "batteryPercent": "<numeric>",
+    "batteryVoltage": "<numeric>",
+    "dashboardVersion": "0.3.0",
+    "coreStatus": {
+      "mcuConnected": true,
+      "batteryPercent": "<numeric>"
+    },
+    "model": "Mentra Live",
+    "manufacturer": "mentra_live",
+    "androidVersion": "11",
+    "sdkVersion": 30
+  }
+}

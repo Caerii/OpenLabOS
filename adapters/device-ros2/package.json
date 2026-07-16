@@ -1,0 +1,10 @@
+{
+  "name": "@openlabos/device-ros2",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "echo 'no sources yet' && exit 0",
+    "test": "echo 'no tests yet' && exit 0"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "fixture_version": 1,
+  "name": "wifi-status",
+  "request": {
+    "method": "GET",
+    "path": "/api/wifi/status"
+  },
+  "response": {
+    "connected": true,
+    "ssid": "<ssid>",
+    "ip": "<ip>",
+    "rssi": "<numeric>",
+    "link_speed": "<numeric>",
+    "frequency": "<numeric>"
+  }
+}

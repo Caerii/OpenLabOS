@@ -1,0 +1,12 @@
+{
+  "fixture_version": 1,
+  "name": "dev-crashes",
+  "request": {
+    "method": "GET",
+    "path": "/api/dev/crashes"
+  },
+  "response": {
+    "crashes": [],
+    "count": 0
+  }
+}

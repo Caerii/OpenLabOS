@@ -1,0 +1,54 @@
+{
+  "fixture_version": 1,
+  "name": "battery-history",
+  "request": {
+    "method": "GET",
+    "path": "/api/battery/history"
+  },
+  "response": {
+    "entries": [
+      {
+        "timestamp": "<timestamp>",
+        "percent": "<numeric>",
+        "voltage": "<numeric>"
+      },
+      {
+        "timestamp": "<timestamp>",
+        "percent": "<numeric>",
+        "voltage": "<numeric>"
+      },
+      {
+        "timestamp": "<timestamp>",
+        "percent": "<numeric>",
+        "voltage": "<numeric>"
+      },
+      {
+        "timestamp": "<timestamp>",
+        "percent": "<numeric>",
+        "voltage": "<numeric>"
+      },
+      {
+        "timestamp": "<timestamp>",
+        "percent": "<numeric>",
+        "voltage": "<numeric>"
+      },
+      {
+        "timestamp": "<timestamp>",
+        "percent": "<numeric>",
+        "voltage": "<numeric>"
+      },
+      {
+        "timestamp": "<timestamp>",
+        "percent": "<numeric>",
+        "voltage": "<numeric>"
+      },
+      {
+        "timestamp": "<timestamp>",
+        "percent": "<numeric>",
+        "voltage": "<numeric>"
+      },
+      "<truncated>"
+    ],
+    "total": 3363
+  }
+}

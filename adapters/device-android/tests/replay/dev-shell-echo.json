@@ -1,0 +1,15 @@
+{
+  "fixture_version": 1,
+  "name": "dev-shell-echo",
+  "request": {
+    "method": "POST",
+    "path": "/api/dev/shell",
+    "body": "{\"command\":\"echo openlabos\"}"
+  },
+  "response": {
+    "exitCode": 0,
+    "stdout": "openlabos\n",
+    "stderr": "",
+    "command": "echo openlabos"
+  }
+}

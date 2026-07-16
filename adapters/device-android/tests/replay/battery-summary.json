@@ -1,0 +1,15 @@
+{
+  "fixture_version": 1,
+  "name": "battery-summary",
+  "request": {
+    "method": "GET",
+    "path": "/api/battery/summary"
+  },
+  "response": {
+    "available": true,
+    "lastTimestamp": "<timestamp>",
+    "percent": "<numeric>",
+    "voltage": "<numeric>",
+    "logSizeBytes": "<numeric>"
+  }
+}
