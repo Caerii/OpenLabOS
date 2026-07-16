@@ -1,0 +1,8 @@
+packages:
+  - "desktop"
+  - "devtools"
+  - "apps/*"
+  - "services/api"
+  - "packages/*"
+  - "packages/modules/*"
+  - "adapters/*"

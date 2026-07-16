@@ -1,0 +1,51 @@
+# Node
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+.gradle/
+*.log
+.env
+.env.local
+.env.*.local
+.tmp/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.uv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Local data + artifacts
+/data/raw/
+/data/processed/
+/data/tmp/
+/services/api/artifacts/
+/services/training/artifacts/
+/desktop/src-tauri/target/
+/desktop/src-tauri/resources/client/
+/desktop/src-tauri/resources/node/
+/desktop/src-tauri/resources/openlabos-api/
+/devtools/slides/out/
+/services/training/outputs/
+/services/eval/reports/
+*.sqlite
+*.sqlite-journal
+
+# Generated code (regenerate during sync)
+services/*/openlabos_protocol/_generated/
+packages/sdk-ts/src/_generated/
+packages/sdk-py/openlabos_sdk/_generated/
