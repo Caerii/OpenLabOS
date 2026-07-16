@@ -1,0 +1,486 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LabOS Device Edition Contract",
+    "version": "0.2.0",
+    "description": "Shared API surface used to compare Java, Flutter, Go, and Rust LabOS device editions."
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Service health",
+        "responses": {
+          "200": {
+            "description": "Health payload",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Health" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/device/status": {
+      "get": {
+        "summary": "Device connection status",
+        "responses": {
+          "200": {
+            "description": "Device status",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeviceStatus" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preview/start": {
+      "post": {
+        "summary": "Start preview",
+        "responses": {
+          "200": {
+            "description": "Preview transition result",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Transition" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preview/stop": {
+      "post": {
+        "summary": "Stop preview",
+        "responses": {
+          "200": {
+            "description": "Preview transition result",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Transition" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preview/health": {
+      "get": {
+        "summary": "Preview state",
+        "responses": {
+          "200": {
+            "description": "Preview health",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PreviewHealth" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preview/frame": {
+      "get": {
+        "summary": "Latest JPEG frame",
+        "responses": {
+          "200": {
+            "description": "JPEG frame",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preview/stream": {
+      "get": {
+        "summary": "MJPEG stream",
+        "responses": {
+          "200": {
+            "description": "Multipart MJPEG stream"
+          }
+        }
+      }
+    },
+    "/api/preview/stream/avc": {
+      "get": {
+        "summary": "H.264 Annex-B stream",
+        "responses": {
+          "200": {
+            "description": "Hardware-encoded H.264 NAL unit stream",
+            "content": {
+              "video/h264": {
+                "schema": { "type": "string", "format": "binary" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preview/config": {
+      "get": {
+        "summary": "Preview protocol catalog and active config",
+        "responses": {
+          "200": {
+            "description": "Protocol catalog",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PreviewProtocolCatalog" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update preview protocol config",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PreviewProtocolConfig" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated config",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["ok", "config"],
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "config": { "$ref": "#/components/schemas/PreviewProtocolConfig" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preview/metrics": {
+      "get": {
+        "summary": "Preview encode and transport metrics",
+        "responses": {
+          "200": {
+            "description": "Preview metrics",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PreviewMetrics" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preview/recording/start": {
+      "post": {
+        "summary": "Start native recording",
+        "responses": {
+          "200": {
+            "description": "Recording transition",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RecordingTransition" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preview/recording/stop": {
+      "post": {
+        "summary": "Stop native recording",
+        "responses": {
+          "200": {
+            "description": "Recording transition",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RecordingTransition" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preview/recording/status": {
+      "get": {
+        "summary": "Recording state",
+        "responses": {
+          "200": {
+            "description": "Recording status",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RecordingStatus" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/events": {
+      "get": {
+        "summary": "Recent events",
+        "responses": {
+          "200": {
+            "description": "Event list",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/EventList" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/diagnostics": {
+      "get": {
+        "summary": "Capabilities and diagnostics",
+        "responses": {
+          "200": {
+            "description": "Diagnostics",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Diagnostics" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/metrics": {
+      "get": {
+        "summary": "Runtime counters",
+        "responses": {
+          "200": {
+            "description": "Metrics",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Metrics" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/control/reset": {
+      "post": {
+        "summary": "Reset prototype state",
+        "responses": {
+          "200": {
+            "description": "Reset result",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Transition" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Health": {
+        "type": "object",
+        "required": ["ok", "service", "edition"],
+        "properties": {
+          "ok": { "type": "boolean" },
+          "service": { "type": "string" },
+          "edition": { "type": "string" },
+          "version": { "type": "string" },
+          "uptimeMs": { "type": "integer" }
+        }
+      },
+      "DeviceStatus": {
+        "type": "object",
+        "required": ["connected"],
+        "properties": {
+          "connected": { "type": "boolean" },
+          "device": { "type": "string" },
+          "transport": { "type": "string" }
+        }
+      },
+      "PreviewHealth": {
+        "type": "object",
+        "required": ["streaming", "frameCount", "frameReachable", "recording"],
+        "properties": {
+          "ok": { "type": "boolean" },
+          "streaming": { "type": "boolean" },
+          "fps": { "type": "number" },
+          "frameCount": { "type": "integer" },
+          "frameReachable": { "type": "boolean" },
+          "frameBytes": { "type": "integer" },
+          "streamFrameAgeMs": { "type": ["number", "null"] },
+          "encodeMode": {
+            "type": "string",
+            "enum": ["software-jpeg", "libjpeg-turbo", "hardware-h264"]
+          },
+          "transport": {
+            "type": "string",
+            "enum": ["mjpeg-http", "h264-annexb-http", "h264-fmp4-http", "frame-poll-http", "webrtc"]
+          },
+          "lastFrameAtMs": { "type": "integer" },
+          "recording": { "type": "boolean" },
+          "activeVideoPath": { "type": ["string", "null"] },
+          "lastVideoPath": { "type": ["string", "null"] }
+        }
+      },
+      "PreviewProtocolConfig": {
+        "type": "object",
+        "properties": {
+          "encodeMode": {
+            "type": "string",
+            "enum": ["software-jpeg", "libjpeg-turbo", "hardware-h264"]
+          },
+          "transport": {
+            "type": "string",
+            "enum": ["mjpeg-http", "h264-annexb-http", "h264-fmp4-http", "frame-poll-http", "webrtc"]
+          },
+          "width": { "type": "integer", "minimum": 240, "maximum": 1280 },
+          "height": { "type": "integer", "minimum": 180, "maximum": 720 },
+          "fps": { "type": "integer", "minimum": 1, "maximum": 60 },
+          "jpegQuality": { "type": "integer", "minimum": 20, "maximum": 95 },
+          "h264Bitrate": { "type": "integer", "minimum": 500000, "maximum": 20000000 },
+          "h264KeyframeIntervalSec": { "type": "number", "minimum": 0.5, "maximum": 5 },
+          "lowLatency": { "type": "boolean" },
+          "instrumentMetrics": { "type": "boolean" },
+          "enabled": { "type": "boolean" }
+        }
+      },
+      "PreviewProtocolCatalog": {
+        "type": "object",
+        "required": ["ok", "active", "profiles", "encodeModes", "transports"],
+        "properties": {
+          "ok": { "type": "boolean" },
+          "active": { "$ref": "#/components/schemas/PreviewProtocolConfig" },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "label", "description", "config"],
+              "properties": {
+                "id": { "type": "string" },
+                "label": { "type": "string" },
+                "description": { "type": "string" },
+                "config": { "$ref": "#/components/schemas/PreviewProtocolConfig" }
+              }
+            }
+          },
+          "encodeModes": { "type": "array", "items": { "type": "object" } },
+          "transports": { "type": "array", "items": { "type": "object" } }
+        }
+      },
+      "PreviewMetrics": {
+        "type": "object",
+        "required": ["ok", "streaming", "encodeMode", "transport", "width", "height", "fps", "frameCount"],
+        "properties": {
+          "ok": { "type": "boolean" },
+          "streaming": { "type": "boolean" },
+          "encodeMode": { "type": "string" },
+          "transport": { "type": "string" },
+          "width": { "type": "integer" },
+          "height": { "type": "integer" },
+          "fps": { "type": "number" },
+          "frameCount": { "type": "integer" },
+          "lastCaptureToEncodeMs": { "type": ["number", "null"] },
+          "lastEncodeToPublishMs": { "type": ["number", "null"] },
+          "lastGlassToGlassMs": { "type": ["number", "null"] },
+          "avgEncodeMs": { "type": ["number", "null"] },
+          "streamFrameAgeMs": { "type": ["number", "null"] },
+          "updatedAtMs": { "type": "integer" }
+        }
+      },
+      "Transition": {
+        "type": "object",
+        "required": ["success"],
+        "properties": {
+          "success": { "type": "boolean" },
+          "changed": { "type": "boolean" },
+          "reset": { "type": "boolean" }
+        }
+      },
+      "RecordingTransition": {
+        "type": "object",
+        "required": ["success", "recording"],
+        "properties": {
+          "success": { "type": "boolean" },
+          "recording": { "type": "boolean" },
+          "changed": { "type": "boolean" },
+          "activeVideoPath": { "type": ["string", "null"] },
+          "lastVideoPath": { "type": ["string", "null"] }
+        }
+      },
+      "RecordingStatus": {
+        "type": "object",
+        "required": ["recording"],
+        "properties": {
+          "recording": { "type": "boolean" },
+          "activeVideoPath": { "type": ["string", "null"] },
+          "lastVideoPath": { "type": ["string", "null"] },
+          "source": { "type": "string" }
+        }
+      },
+      "EventList": {
+        "type": "object",
+        "required": ["count", "events"],
+        "properties": {
+          "count": { "type": "integer" },
+          "events": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Event" }
+          }
+        }
+      },
+      "Event": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "sequence": { "type": "integer" },
+          "at": { "type": "string" },
+          "atMs": { "type": "integer" },
+          "type": { "type": "string" },
+          "details": { "type": "object" }
+        }
+      },
+      "Diagnostics": {
+        "type": "object",
+        "required": ["edition", "capabilities"],
+        "properties": {
+          "edition": { "type": "string" },
+          "capabilities": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "eventCount": { "type": "integer" },
+          "uptimeMs": { "type": "integer" },
+          "frameFixtureLen": { "type": "integer" },
+          "streamFrames": { "type": "integer" },
+          "streamIntervalMs": { "type": "integer" }
+        }
+      },
+      "Metrics": {
+        "type": "object",
+        "required": ["edition", "totalRequests"],
+        "properties": {
+          "edition": { "type": "string" },
+          "totalRequests": { "type": "integer" },
+          "requestCounts": {
+            "type": "object",
+            "additionalProperties": { "type": "integer" }
+          },
+          "frameCount": { "type": "integer" },
+          "uptimeMs": { "type": "integer" }
+        }
+      }
+    }
+  }
+}

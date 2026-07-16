@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "targetDevice": "Mentra Live (K900) Android 11",
+  "baselineEdition": "java",
+  "contract": "device/editions/contracts/labos_device_api.md",
+  "editions": [
+    {
+      "id": "java",
+      "language": "Java",
+      "status": "production",
+      "sourceRoots": [
+        "device/core-sdk",
+        "device/core-app",
+        "device/camera",
+        "device/dashboard-device",
+        "device/devtools"
+      ],
+      "buildCommand": "cd device; .\\gradlew.bat :core-app:assembleDebug :camera:assembleDebug :dashboard-device:assembleDebug",
+      "benchmarkBaseUrl": "http://127.0.0.1:3847"
+    },
+    {
+      "id": "flutter",
+      "language": "Dart/Flutter",
+      "status": "scaffold",
+      "sourceRoots": [
+        "device/editions/flutter"
+      ],
+      "buildCommand": "Install Flutter SDK, then run: cd device/editions/flutter; flutter create . --platforms android --org com.openlab.labos; flutter build apk",
+      "benchmarkBaseUrl": "TBD"
+    },
+    {
+      "id": "go",
+      "language": "Go",
+      "status": "experimental-scaffold",
+      "sourceRoots": [
+        "device/editions/go"
+      ],
+      "buildCommand": "cd device/editions/go; go test ./...; go run ./cmd/labos-device",
+      "benchmarkBaseUrl": "http://127.0.0.1:8091"
+    },
+    {
+      "id": "rust",
+      "language": "Rust",
+      "status": "experimental-scaffold",
+      "sourceRoots": [
+        "device/editions/rust"
+      ],
+      "buildCommand": "cd device/editions/rust; cargo test; cargo run",
+      "benchmarkBaseUrl": "http://127.0.0.1:8092"
+    }
+  ],
+  "metrics": [
+    "health_latency_ms_p50",
+    "health_latency_ms_p95",
+    "preview_start_latency_ms",
+    "first_frame_latency_ms",
+    "polled_frame_fps",
+    "avg_frame_bytes",
+    "recording_start_latency_ms",
+    "recording_stop_latency_ms",
+    "apk_size_bytes",
+    "process_memory_kb",
+    "battery_delta_percent"
+  ]
+}
+

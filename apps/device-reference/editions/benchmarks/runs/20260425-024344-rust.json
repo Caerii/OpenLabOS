@@ -1,0 +1,99 @@
+﻿{
+    "edition":  "rust",
+    "baseUrl":  "http://127.0.0.1:8092",
+    "startedAt":  "2026-04-25T02:43:42.8554908-04:00",
+    "durationSeconds":  1,
+    "health":  {
+                   "samples":  10,
+                   "successCount":  10,
+                   "p50Ms":  0.84,
+                   "p95Ms":  88.86,
+                   "errors":  [
+
+                              ]
+               },
+    "deviceStatus":  {
+                         "ok":  true,
+                         "latencyMs":  0.72920000000000007,
+                         "value":  {
+                                       "connected":  true,
+                                       "device":  "local-rust-edition",
+                                       "transport":  "loopback"
+                                   }
+                     },
+    "labosStatus":  {
+                        "ok":  true,
+                        "latencyMs":  3.4603,
+                        "value":  {
+                                      "isInstalled":  true,
+                                      "isRunning":  true,
+                                      "edition":  "rust",
+                                      "modules":  [
+                                                      {
+                                                          "name":  "rust-single-binary",
+                                                          "installed":  true,
+                                                          "isLatest":  true
+                                                      }
+                                                  ]
+                                  }
+                    },
+    "preview":  {
+                    "start":  {
+                                  "ok":  true,
+                                  "latencyMs":  3.4583000000000004,
+                                  "value":  {
+                                                "success":  true,
+                                                "streaming":  true
+                                            }
+                              },
+                    "firstFrame":  {
+                                       "ok":  true,
+                                       "latencyMs":  24.2483,
+                                       "bytes":  141
+                                   },
+                    "health":  {
+                                   "ok":  true,
+                                   "latencyMs":  1.3217,
+                                   "value":  {
+                                                 "streaming":  true,
+                                                 "fps":  0,
+                                                 "frameCount":  5,
+                                                 "frameReachable":  true,
+                                                 "frameBytes":  141,
+                                                 "recording":  false,
+                                                 "activeVideoPath":  null,
+                                                 "lastVideoPath":  null
+                                             }
+                               },
+                    "stop":  {
+                                 "ok":  true,
+                                 "latencyMs":  0.7698,
+                                 "value":  {
+                                               "success":  true,
+                                               "streaming":  false
+                                           }
+                             }
+                },
+    "frames":  {
+                   "attempted":  4,
+                   "successCount":  4,
+                   "polledFps":  4,
+                   "avgBytes":  141,
+                   "p50LatencyMs":  21.35,
+                   "p95LatencyMs":  21.65
+               },
+    "recording":  {
+                      "start":  null,
+                      "stop":  null,
+                      "status":  {
+                                     "ok":  true,
+                                     "latencyMs":  0.86320000000000008,
+                                     "value":  {
+                                                   "recording":  false,
+                                                   "activeVideoPath":  null,
+                                                   "lastVideoPath":  null,
+                                                   "source":  "rust-edition"
+                                               }
+                                 }
+                  }
+}

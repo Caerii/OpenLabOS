@@ -1,0 +1,5 @@
+# Copy to device/local.properties if Gradle cannot auto-detect your local SDK/JDK.
+# This file is intentionally untracked when copied.
+#
+# sdk.dir=C:\\Users\\you\\AppData\\Local\\Android\\Sdk
+# org.gradle.java.installations.paths=C:\\Program Files\\Eclipse Adoptium\\jdk-17

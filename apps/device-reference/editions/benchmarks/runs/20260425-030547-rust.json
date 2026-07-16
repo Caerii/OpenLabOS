@@ -1,0 +1,122 @@
+﻿{
+    "edition":  "rust",
+    "baseUrl":  "http://127.0.0.1:8092",
+    "startedAt":  "2026-04-25T03:05:44.2135314-04:00",
+    "durationSeconds":  2,
+    "health":  {
+                   "samples":  10,
+                   "successCount":  10,
+                   "p50Ms":  0.73,
+                   "p95Ms":  89.39,
+                   "errors":  [
+
+                              ]
+               },
+    "deviceStatus":  {
+                         "ok":  true,
+                         "latencyMs":  0.6914,
+                         "value":  {
+                                       "connected":  true,
+                                       "device":  "local-rust-edition",
+                                       "transport":  "loopback"
+                                   }
+                     },
+    "labosStatus":  {
+                        "ok":  true,
+                        "latencyMs":  4.7012,
+                        "value":  {
+                                      "isInstalled":  true,
+                                      "isRunning":  true,
+                                      "edition":  "rust",
+                                      "modules":  [
+                                                      {
+                                                          "name":  "rust-single-binary",
+                                                          "installed":  true,
+                                                          "isLatest":  true,
+                                                          "installedVersionName":  "0.1.0",
+                                                          "builtVersionName":  "0.1.0"
+                                                      }
+                                                  ]
+                                  }
+                    },
+    "preview":  {
+                    "start":  {
+                                  "ok":  true,
+                                  "latencyMs":  2.4835000000000003,
+                                  "value":  {
+                                                "success":  true,
+                                                "streaming":  true,
+                                                "changed":  true
+                                            }
+                              },
+                    "firstFrame":  {
+                                       "ok":  true,
+                                       "latencyMs":  24.015,
+                                       "bytes":  141
+                                   },
+                    "health":  {
+                                   "ok":  true,
+                                   "latencyMs":  1.4252,
+                                   "value":  {
+                                                 "streaming":  true,
+                                                 "fps":  0,
+                                                 "frameCount":  8,
+                                                 "frameReachable":  true,
+                                                 "frameBytes":  141,
+                                                 "recording":  false,
+                                                 "activeVideoPath":  null,
+                                                 "lastVideoPath":  null,
+                                                 "lastFrameServedMs":  1777100746662
+                                             }
+                               },
+                    "stop":  {
+                                 "ok":  true,
+                                 "latencyMs":  1.0809,
+                                 "value":  {
+                                               "success":  true,
+                                               "streaming":  false,
+                                               "changed":  true
+                                           }
+                             }
+                },
+    "frames":  {
+                   "attempted":  7,
+                   "successCount":  7,
+                   "polledFps":  3.5,
+                   "avgBytes":  141,
+                   "p50LatencyMs":  21.64,
+                   "p95LatencyMs":  34.15
+               },
+    "recording":  {
+                      "start":  {
+                                    "ok":  true,
+                                    "latencyMs":  1.3743,
+                                    "value":  {
+                                                  "success":  true,
+                                                  "recording":  true,
+                                                  "changed":  true,
+                                                  "activeVideoPath":  "/tmp/labos-rust-recording-1777100746958.mp4"
+                                              }
+                                },
+                      "stop":  {
+                                   "ok":  true,
+                                   "latencyMs":  1.1715,
+                                   "value":  {
+                                                 "success":  true,
+                                                 "recording":  false,
+                                                 "changed":  true,
+                                                 "lastVideoPath":  "/tmp/labos-rust-recording-1777100746958.mp4"
+                                             }
+                               },
+                      "status":  {
+                                     "ok":  true,
+                                     "latencyMs":  0.9864,
+                                     "value":  {
+                                                   "recording":  false,
+                                                   "activeVideoPath":  null,
+                                                   "lastVideoPath":  "/tmp/labos-rust-recording-1777100746958.mp4",
+                                                   "source":  "rust-edition"
+                                               }
+                                 }
+                  }
+}

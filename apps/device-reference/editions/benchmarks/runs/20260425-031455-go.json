@@ -1,0 +1,210 @@
+﻿{
+    "edition":  "go",
+    "baseUrl":  "http://127.0.0.1:8091",
+    "startedAt":  "2026-04-25T03:14:51.7259215-04:00",
+    "durationSeconds":  2,
+    "resetBefore":  {
+                        "ok":  true,
+                        "latencyMs":  89.9869,
+                        "value":  {
+                                      "reset":  true,
+                                      "success":  true
+                                  }
+                    },
+    "diagnosticsBefore":  {
+                              "ok":  true,
+                              "latencyMs":  5.972,
+                              "value":  {
+                                            "capabilities":  [
+                                                                 "http-api",
+                                                                 "synthetic-frame",
+                                                                 "event-log",
+                                                                 "mjpeg-stream",
+                                                                 "idempotent-recording"
+                                                             ],
+                                            "edition":  "go",
+                                            "eventCount":  1,
+                                            "frameFixtureLen":  141,
+                                            "streamFrames":  50,
+                                            "streamIntervalMs":  200,
+                                            "uptimeMs":  1090
+                                        }
+                          },
+    "health":  {
+                   "samples":  10,
+                   "successCount":  10,
+                   "p50Ms":  0.7,
+                   "p95Ms":  1.72,
+                   "errors":  [
+
+                              ]
+               },
+    "deviceStatus":  {
+                         "ok":  true,
+                         "latencyMs":  0.682,
+                         "value":  {
+                                       "connected":  true,
+                                       "device":  "local-go-edition",
+                                       "transport":  "loopback"
+                                   }
+                     },
+    "labosStatus":  {
+                        "ok":  true,
+                        "latencyMs":  0.77540000000000009,
+                        "value":  {
+                                      "edition":  "go",
+                                      "isInstalled":  true,
+                                      "isRunning":  true,
+                                      "modules":  [
+                                                      {
+                                                          "builtVersionName":  "0.1.0",
+                                                          "installed":  true,
+                                                          "installedVersionName":  "0.1.0",
+                                                          "isLatest":  true,
+                                                          "name":  "go-single-binary"
+                                                      }
+                                                  ]
+                                  }
+                    },
+    "preview":  {
+                    "start":  {
+                                  "ok":  true,
+                                  "latencyMs":  0.64040000000000008,
+                                  "value":  {
+                                                "changed":  true,
+                                                "streaming":  true,
+                                                "success":  true
+                                            }
+                              },
+                    "firstFrame":  {
+                                       "ok":  true,
+                                       "latencyMs":  25.2011,
+                                       "bytes":  141
+                                   },
+                    "health":  {
+                                   "ok":  true,
+                                   "latencyMs":  1.2973000000000001,
+                                   "value":  {
+                                                 "activeVideoPath":  null,
+                                                 "fps":  0,
+                                                 "frameBytes":  141,
+                                                 "frameCount":  9,
+                                                 "frameReachable":  true,
+                                                 "lastFrameServed":  "2026-04-25T07:14:54.4680743Z",
+                                                 "lastVideoPath":  null,
+                                                 "recording":  false,
+                                                 "streaming":  true
+                                             }
+                               },
+                    "stop":  {
+                                 "ok":  true,
+                                 "latencyMs":  0.9634,
+                                 "value":  {
+                                               "changed":  true,
+                                               "streaming":  false,
+                                               "success":  true
+                                           }
+                             }
+                },
+    "frames":  {
+                   "attempted":  8,
+                   "successCount":  8,
+                   "polledFps":  4,
+                   "avgBytes":  141,
+                   "p50LatencyMs":  20.79,
+                   "p95LatencyMs":  38.65
+               },
+    "recording":  {
+                      "start":  {
+                                    "ok":  true,
+                                    "latencyMs":  1.1159000000000001,
+                                    "value":  {
+                                                  "activeVideoPath":  "/tmp/labos-go-recording-1777101294763.mp4",
+                                                  "changed":  true,
+                                                  "recording":  true,
+                                                  "success":  true
+                                              }
+                                },
+                      "stop":  {
+                                   "ok":  true,
+                                   "latencyMs":  1.3011000000000001,
+                                   "value":  {
+                                                 "changed":  true,
+                                                 "lastVideoPath":  "/tmp/labos-go-recording-1777101294763.mp4",
+                                                 "recording":  false,
+                                                 "success":  true
+                                             }
+                               },
+                      "status":  {
+                                     "ok":  true,
+                                     "latencyMs":  0.898,
+                                     "value":  {
+                                                   "activeVideoPath":  null,
+                                                   "lastVideoPath":  "/tmp/labos-go-recording-1777101294763.mp4",
+                                                   "recording":  false,
+                                                   "source":  "go-edition"
+                                               }
+                                 }
+                  },
+    "metrics":  {
+                    "ok":  true,
+                    "latencyMs":  0.9825,
+                    "value":  {
+                                  "edition":  "go",
+                                  "frameCount":  9,
+                                  "requestCounts":  {
+                                                        "GET /api/device/status":  1,
+                                                        "GET /api/diagnostics":  1,
+                                                        "GET /api/health":  10,
+                                                        "GET /api/labos/status":  1,
+                                                        "GET /api/metrics":  1,
+                                                        "GET /api/preview/frame":  9,
+                                                        "GET /api/preview/health":  1,
+                                                        "GET /api/preview/recording/status":  1,
+                                                        "POST /api/preview/recording/start":  1,
+                                                        "POST /api/preview/recording/stop":  1,
+                                                        "POST /api/preview/start":  1
+                                                    },
+                                  "totalRequests":  28,
+                                  "uptimeMs":  4514
+                              }
+                },
+    "events":  {
+                   "ok":  true,
+                   "latencyMs":  1.2304000000000002,
+                   "value":  {
+                                 "count":  5,
+                                 "events":  [
+                                                {
+                                                    "at":  "2026-04-25T07:14:51.8003871Z",
+                                                    "type":  "state_reset"
+                                                },
+                                                {
+                                                    "at":  "2026-04-25T07:14:51.8745434Z",
+                                                    "type":  "preview_started"
+                                                },
+                                                {
+                                                    "at":  "2026-04-25T07:14:52.3912048Z",
+                                                    "type":  "frame_served",
+                                                    "details":  {
+                                                                    "frameCount":  1
+                                                                }
+                                                },
+                                                {
+                                                    "at":  "2026-04-25T07:14:54.7630891Z",
+                                                    "type":  "recording_started",
+                                                    "details":  {
+                                                                    "path":  "/tmp/labos-go-recording-1777101294763.mp4"
+                                                                }
+                                                },
+                                                {
+                                                    "at":  "2026-04-25T07:14:55.2754281Z",
+                                                    "type":  "recording_stopped",
+                                                    "details":  {
+                                                                    "path":  "/tmp/labos-go-recording-1777101294763.mp4"
+                                                                }
+                                                }
+                                            ]
+                             }
+               }
+}

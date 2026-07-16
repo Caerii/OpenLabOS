@@ -1,0 +1,41 @@
+﻿{
+    "schemaVersion":  1,
+    "artifactSet":  "openlabos-debug",
+    "variant":  "debug",
+    "createdAt":  "2026-06-27T00:47:35.9712457Z",
+    "sourceGitCommit":  "16eb259450f9f0392423ca502978d9dadaae9b63",
+    "modules":  [
+                    {
+                        "name":  "core-app",
+                        "package":  "com.openlab.labos.core",
+                        "apk":  "prebuilt/openlabos-debug/core-app.apk",
+                        "sourceApk":  "core-app/build/outputs/apk/debug/core-app-debug.apk",
+                        "sha256":  "fbf44646dce0e20f569397b923e7d9d1943571a8e24401999885141ee6c62ac8",
+                        "bytes":  13002420
+                    },
+                    {
+                        "name":  "camera",
+                        "package":  "com.openlab.labos.camera",
+                        "apk":  "prebuilt/openlabos-debug/camera.apk",
+                        "sourceApk":  "camera/build/outputs/apk/debug/camera-debug.apk",
+                        "sha256":  "09f05c97bde30ec8eb56d9cbfd350b062d01d55c3fdc647208faf2023ae487e4",
+                        "bytes":  7055674
+                    },
+                    {
+                        "name":  "dashboard-device",
+                        "package":  "com.openlab.labos.dashboard",
+                        "apk":  "prebuilt/openlabos-debug/dashboard-device.apk",
+                        "sourceApk":  "dashboard-device/build/outputs/apk/debug/dashboard-device-debug.apk",
+                        "sha256":  "e3e6f9014d9f83a67a7d80031655b003bcecc80aa6d206052201258584957c50",
+                        "bytes":  8376917
+                    },
+                    {
+                        "name":  "devtools",
+                        "package":  "com.openlab.labos.devtools",
+                        "apk":  "prebuilt/openlabos-debug/devtools.apk",
+                        "sourceApk":  "devtools/build/outputs/apk/debug/devtools-debug.apk",
+                        "sha256":  "a1ed0c281bfa154400f671dbdf810c0832fd6e1edfdb9fb0797735a16c521ea8",
+                        "bytes":  6972636
+                    }
+                ]
+}

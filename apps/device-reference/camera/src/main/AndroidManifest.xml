@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.openlab.labos.camera"
+    android:sharedUserId="com.openlab.labos">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+
+    <application
+        android:label="LabOS Camera"
+        android:testOnly="false">
+
+        <!-- Camera foreground service — owns Camera2 session -->
+        <service
+            android:name=".CameraService"
+            android:exported="false"
+            android:foregroundServiceType="camera" />
+
+        <!-- Receives commands from core-app (take photo, toggle video, start/stop preview) -->
+        <receiver
+            android:name=".CameraCommandReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.openlab.labos.camera.ACTION_TAKE_PHOTO" />
+                <action android:name="com.openlab.labos.camera.ACTION_TOGGLE_VIDEO" />
+                <action android:name="com.openlab.labos.camera.ACTION_START_VIDEO" />
+                <action android:name="com.openlab.labos.camera.ACTION_STOP_VIDEO" />
+                <action android:name="com.openlab.labos.camera.ACTION_START_PREVIEW" />
+                <action android:name="com.openlab.labos.camera.ACTION_STOP_PREVIEW" />
+                <action android:name="com.openlab.labos.camera.ACTION_SNAPSHOT" />
+                <action android:name="com.openlab.labos.camera.ACTION_GET_CAPABILITIES" />
+                <action android:name="com.openlab.labos.camera.ACTION_SET_MANUAL_PARAMS" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+</manifest>

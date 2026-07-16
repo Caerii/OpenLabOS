@@ -1,0 +1,29 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.5.2'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// Shared version constants for all modules
+ext {
+    labosVersionCode = 4
+    labosVersionName = "0.3.0"
+    compileSdk = 34
+    minSdk = 28
+    targetSdk = 33
+}
+
+tasks.register('clean') {
+    delete rootProject.buildDir
+}

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.openlab.labos.core"
+    android:sharedUserId="com.openlab.labos">
+
+    <!-- Network -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Hardware -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+
+    <!-- Storage -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+
+    <!-- System -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:label="LabOS Glass"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.LabOS"
+        android:testOnly="false"
+        tools:targetApi="31">
+
+        <!-- Device Admin Receiver — this is what makes device-owner possible -->
+        <receiver
+            android:name=".AdminReceiver"
+            android:permission="android.permission.BIND_DEVICE_ADMIN"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Main Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- LabOS foreground service — persistent MCU connection -->
+        <service
+            android:name=".LabOsService"
+            android:exported="true"
+            android:foregroundServiceType="connectedDevice">
+            <intent-filter>
+                <action android:name="com.openlab.labos.core.BIND_AIDL" />
+            </intent-filter>
+        </service>
+
+        <!-- Bootstrap activity — transparent bridge for boot service start -->
+        <activity
+            android:name=".BootstrapActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:excludeFromRecents="true" />
+
+        <!-- Boot receiver to auto-start -->
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true"
+            android:directBootAware="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- I2S audio playstate receiver — catches BT audio start/stop from ODM firmware -->
+        <receiver
+            android:name=".audio.I2SAudioBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.xy.sound.AUDIO_PLAYSTATE_CHANGE" />
+                <action android:name="com.xy.sound.AUDIO_PLAYSTATE_ACTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Settings receiver for dashboard remote configuration -->
+        <receiver
+            android:name=".settings.SettingsReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.openlab.labos.ACTION_GET_SETTINGS" />
+                <action android:name="com.openlab.labos.ACTION_UPDATE_SETTINGS" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Dashboard command handler for MCU console, camera preview, audio test -->
+        <receiver
+            android:name=".ipc.LabOsCommandHandler"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.openlab.labos.ACTION_MCU_CONSOLE" />
+                <action android:name="com.openlab.labos.ACTION_CAMERA_PREVIEW" />
+                <action android:name="com.openlab.labos.ACTION_AUDIO_TEST" />
+            </intent-filter>
+        </receiver>
+
+        <!-- IPC command receiver for third-party apps -->
+        <receiver
+            android:name=".ipc.CommandReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.openlab.labos.ACTION_SEND_COMMAND" />
+                <action android:name="com.openlab.labos.ACTION_REGISTER_LISTENER" />
+                <action android:name="com.openlab.labos.ACTION_UNREGISTER_LISTENER" />
+                <action android:name="com.openlab.labos.core.ACTION_CLEAR_DEVICE_OWNER" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+</manifest>

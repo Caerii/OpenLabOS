@@ -1,0 +1,221 @@
+﻿{
+    "edition":  "rust",
+    "baseUrl":  "http://127.0.0.1:8092",
+    "startedAt":  "2026-04-25T03:14:56.6139366-04:00",
+    "durationSeconds":  2,
+    "resetBefore":  {
+                        "ok":  true,
+                        "latencyMs":  67.882500000000007,
+                        "value":  {
+                                      "success":  true,
+                                      "reset":  true
+                                  }
+                    },
+    "diagnosticsBefore":  {
+                              "ok":  true,
+                              "latencyMs":  1.5374,
+                              "value":  {
+                                            "edition":  "rust",
+                                            "capabilities":  [
+                                                                 "http-api",
+                                                                 "synthetic-frame",
+                                                                 "event-log",
+                                                                 "mjpeg-stream",
+                                                                 "idempotent-recording"
+                                                             ],
+                                            "eventCount":  1,
+                                            "uptimeMs":  1203,
+                                            "frameFixtureLen":  141,
+                                            "streamFrames":  50,
+                                            "streamIntervalMs":  200
+                                        }
+                          },
+    "health":  {
+                   "samples":  10,
+                   "successCount":  10,
+                   "p50Ms":  0.77,
+                   "p95Ms":  0.99,
+                   "errors":  [
+
+                              ]
+               },
+    "deviceStatus":  {
+                         "ok":  true,
+                         "latencyMs":  0.6427,
+                         "value":  {
+                                       "connected":  true,
+                                       "device":  "local-rust-edition",
+                                       "transport":  "loopback"
+                                   }
+                     },
+    "labosStatus":  {
+                        "ok":  true,
+                        "latencyMs":  0.64860000000000007,
+                        "value":  {
+                                      "isInstalled":  true,
+                                      "isRunning":  true,
+                                      "edition":  "rust",
+                                      "modules":  [
+                                                      {
+                                                          "name":  "rust-single-binary",
+                                                          "installed":  true,
+                                                          "isLatest":  true,
+                                                          "installedVersionName":  "0.1.0",
+                                                          "builtVersionName":  "0.1.0"
+                                                      }
+                                                  ]
+                                  }
+                    },
+    "preview":  {
+                    "start":  {
+                                  "ok":  true,
+                                  "latencyMs":  0.70300000000000007,
+                                  "value":  {
+                                                "success":  true,
+                                                "streaming":  true,
+                                                "changed":  true
+                                            }
+                              },
+                    "firstFrame":  {
+                                       "ok":  true,
+                                       "latencyMs":  27.0989,
+                                       "bytes":  141
+                                   },
+                    "health":  {
+                                   "ok":  true,
+                                   "latencyMs":  1.4832,
+                                   "value":  {
+                                                 "streaming":  true,
+                                                 "fps":  0,
+                                                 "frameCount":  8,
+                                                 "frameReachable":  true,
+                                                 "frameBytes":  141,
+                                                 "recording":  false,
+                                                 "activeVideoPath":  null,
+                                                 "lastVideoPath":  null,
+                                                 "lastFrameServedMs":  1777101299051
+                                             }
+                               },
+                    "stop":  {
+                                 "ok":  true,
+                                 "latencyMs":  0.68980000000000008,
+                                 "value":  {
+                                               "success":  true,
+                                               "streaming":  false,
+                                               "changed":  true
+                                           }
+                             }
+                },
+    "frames":  {
+                   "attempted":  7,
+                   "successCount":  7,
+                   "polledFps":  3.5,
+                   "avgBytes":  141,
+                   "p50LatencyMs":  22.6,
+                   "p95LatencyMs":  48.71
+               },
+    "recording":  {
+                      "start":  {
+                                    "ok":  true,
+                                    "latencyMs":  1.2970000000000002,
+                                    "value":  {
+                                                  "success":  true,
+                                                  "recording":  true,
+                                                  "changed":  true,
+                                                  "activeVideoPath":  "/tmp/labos-rust-recording-1777101299368.mp4"
+                                              }
+                                },
+                      "stop":  {
+                                   "ok":  true,
+                                   "latencyMs":  1.8101,
+                                   "value":  {
+                                                 "success":  true,
+                                                 "recording":  false,
+                                                 "changed":  true,
+                                                 "lastVideoPath":  "/tmp/labos-rust-recording-1777101299368.mp4"
+                                             }
+                               },
+                      "status":  {
+                                     "ok":  true,
+                                     "latencyMs":  1.2271,
+                                     "value":  {
+                                                   "recording":  false,
+                                                   "activeVideoPath":  null,
+                                                   "lastVideoPath":  "/tmp/labos-rust-recording-1777101299368.mp4",
+                                                   "source":  "rust-edition"
+                                               }
+                                 }
+                  },
+    "metrics":  {
+                    "ok":  true,
+                    "latencyMs":  1.0725,
+                    "value":  {
+                                  "edition":  "rust",
+                                  "totalRequests":  27,
+                                  "requestCounts":  {
+                                                        "GET /api/device/status":  1,
+                                                        "GET /api/diagnostics":  1,
+                                                        "GET /api/health":  10,
+                                                        "GET /api/labos/status":  1,
+                                                        "GET /api/metrics":  1,
+                                                        "GET /api/preview/frame":  8,
+                                                        "GET /api/preview/health":  1,
+                                                        "GET /api/preview/recording/status":  1,
+                                                        "POST /api/preview/recording/start":  1,
+                                                        "POST /api/preview/recording/stop":  1,
+                                                        "POST /api/preview/start":  1
+                                                    },
+                                  "frameCount":  8,
+                                  "uptimeMs":  4363
+                              }
+                },
+    "events":  {
+                   "ok":  true,
+                   "latencyMs":  0.8447,
+                   "value":  {
+                                 "count":  5,
+                                 "events":  [
+                                                {
+                                                    "sequence":  2,
+                                                    "atMs":  1777101296686,
+                                                    "type":  "state_reset",
+                                                    "details":  {
+
+                                                                }
+                                                },
+                                                {
+                                                    "sequence":  3,
+                                                    "atMs":  1777101296734,
+                                                    "type":  "preview_started",
+                                                    "details":  {
+
+                                                                }
+                                                },
+                                                {
+                                                    "sequence":  4,
+                                                    "atMs":  1777101297259,
+                                                    "type":  "frame_served",
+                                                    "details":  {
+                                                                    "frameCount":  1
+                                                                }
+                                                },
+                                                {
+                                                    "sequence":  5,
+                                                    "atMs":  1777101299368,
+                                                    "type":  "recording_started",
+                                                    "details":  {
+                                                                    "path":  "/tmp/labos-rust-recording-1777101299368.mp4"
+                                                                }
+                                                },
+                                                {
+                                                    "sequence":  6,
+                                                    "atMs":  1777101299878,
+                                                    "type":  "recording_stopped",
+                                                    "details":  {
+                                                                    "path":  "/tmp/labos-rust-recording-1777101299368.mp4"
+                                                                }
+                                                }
+                                            ]
+                             }
+               }
+}

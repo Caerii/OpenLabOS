@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LabOS Glass"
+            android:textSize="28sp"
+            android:textColor="#00FF88"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OpenLabOS Scientific Copilot"
+            android:textSize="14sp"
+            android:textColor="#88AAAA"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Connection status -->
+        <TextView
+            android:id="@+id/connection_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MCU: Connecting..."
+            android:textSize="16sp"
+            android:textColor="#FFAA00"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Battery -->
+        <TextView
+            android:id="@+id/battery_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Battery: --"
+            android:textSize="14sp"
+            android:textColor="#CCCCCC"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="8dp" />
+
+        <!-- IMU data -->
+        <TextView
+            android:id="@+id/imu_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="IMU: waiting..."
+            android:textSize="12sp"
+            android:textColor="#AAAAAA"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Gestures -->
+        <TextView
+            android:id="@+id/gesture_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gesture: --"
+            android:textSize="14sp"
+            android:textColor="#00FF88"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Button events -->
+        <TextView
+            android:id="@+id/button_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button: --"
+            android:textSize="14sp"
+            android:textColor="#CCCCCC"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Device info -->
+        <TextView
+            android:id="@+id/status_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Initializing..."
+            android:textSize="12sp"
+            android:textColor="#888888"
+            android:fontFamily="monospace"
+            android:lineSpacingMultiplier="1.3" />
+
+    </LinearLayout>
+</ScrollView>

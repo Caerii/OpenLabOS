@@ -1,0 +1,30 @@
+/**
+ * Temporary migration helper module.
+ *
+ * This APK uses the OLD package name (com.openlab.labos.glass) so it can be
+ * installed as an update over the old monolithic LabOS. On launch, it calls
+ * clearDeviceOwnerApp() to release device owner, then shows a toast.
+ *
+ * After running this once, uninstall it and install the new modular LabOS.
+ * This module can be deleted from the project after migration is complete.
+ */
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.openlab.labos.glass'
+    compileSdk rootProject.ext.compileSdk
+
+    defaultConfig {
+        applicationId "com.openlab.labos.glass"
+        minSdk rootProject.ext.minSdk
+        targetSdk rootProject.ext.targetSdk
+        versionCode 999  // Higher than old app so it installs as update
+        versionName "migration"
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+}

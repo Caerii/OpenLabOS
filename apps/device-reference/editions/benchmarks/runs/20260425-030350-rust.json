@@ -1,0 +1,118 @@
+﻿{
+    "edition":  "rust",
+    "baseUrl":  "http://127.0.0.1:8092",
+    "startedAt":  "2026-04-25T03:03:46.5807341-04:00",
+    "durationSeconds":  2,
+    "health":  {
+                   "samples":  10,
+                   "successCount":  10,
+                   "p50Ms":  0.85,
+                   "p95Ms":  101.08,
+                   "errors":  [
+
+                              ]
+               },
+    "deviceStatus":  {
+                         "ok":  true,
+                         "latencyMs":  1.2683,
+                         "value":  {
+                                       "connected":  true,
+                                       "device":  "local-rust-edition",
+                                       "transport":  "loopback"
+                                   }
+                     },
+    "labosStatus":  {
+                        "ok":  true,
+                        "latencyMs":  3.5099,
+                        "value":  {
+                                      "isInstalled":  true,
+                                      "isRunning":  true,
+                                      "edition":  "rust",
+                                      "modules":  [
+                                                      {
+                                                          "name":  "rust-single-binary",
+                                                          "installed":  true,
+                                                          "isLatest":  true,
+                                                          "installedVersionName":  "0.1.0",
+                                                          "builtVersionName":  "0.1.0"
+                                                      }
+                                                  ]
+                                  }
+                    },
+    "preview":  {
+                    "start":  {
+                                  "ok":  false,
+                                  "error":  "The underlying connection was closed: An unexpected error occurred on a receive.",
+                                  "latencyMs":  12.2882
+                              },
+                    "firstFrame":  {
+                                       "ok":  true,
+                                       "latencyMs":  26.6565,
+                                       "bytes":  141
+                                   },
+                    "health":  {
+                                   "ok":  true,
+                                   "latencyMs":  1.5111,
+                                   "value":  {
+                                                 "streaming":  true,
+                                                 "fps":  0,
+                                                 "frameCount":  9,
+                                                 "frameReachable":  true,
+                                                 "frameBytes":  141,
+                                                 "recording":  false,
+                                                 "activeVideoPath":  null,
+                                                 "lastVideoPath":  null,
+                                                 "lastFrameServedMs":  1777100629335
+                                             }
+                               },
+                    "stop":  {
+                                 "ok":  true,
+                                 "latencyMs":  0.92070000000000007,
+                                 "value":  {
+                                               "success":  true,
+                                               "streaming":  false,
+                                               "changed":  true
+                                           }
+                             }
+                },
+    "frames":  {
+                   "attempted":  8,
+                   "successCount":  8,
+                   "polledFps":  4,
+                   "avgBytes":  141,
+                   "p50LatencyMs":  22.29,
+                   "p95LatencyMs":  40.86
+               },
+    "recording":  {
+                      "start":  {
+                                    "ok":  true,
+                                    "latencyMs":  1.0967,
+                                    "value":  {
+                                                  "success":  true,
+                                                  "recording":  true,
+                                                  "changed":  true,
+                                                  "activeVideoPath":  "/tmp/labos-rust-recording-1777100629645.mp4"
+                                              }
+                                },
+                      "stop":  {
+                                   "ok":  true,
+                                   "latencyMs":  1.1542000000000001,
+                                   "value":  {
+                                                 "success":  true,
+                                                 "recording":  false,
+                                                 "changed":  true,
+                                                 "lastVideoPath":  "/tmp/labos-rust-recording-1777100629645.mp4"
+                                             }
+                               },
+                      "status":  {
+                                     "ok":  true,
+                                     "latencyMs":  1.2549000000000001,
+                                     "value":  {
+                                                   "recording":  false,
+                                                   "activeVideoPath":  null,
+                                                   "lastVideoPath":  "/tmp/labos-rust-recording-1777100629645.mp4",
+                                                   "source":  "rust-edition"
+                                               }
+                                 }
+                  }
+}

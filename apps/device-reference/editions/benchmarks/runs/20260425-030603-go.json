@@ -1,0 +1,122 @@
+﻿{
+    "edition":  "go",
+    "baseUrl":  "http://127.0.0.1:8091",
+    "startedAt":  "2026-04-25T03:05:59.6755119-04:00",
+    "durationSeconds":  2,
+    "health":  {
+                   "samples":  10,
+                   "successCount":  10,
+                   "p50Ms":  0.82,
+                   "p95Ms":  92.62,
+                   "errors":  [
+
+                              ]
+               },
+    "deviceStatus":  {
+                         "ok":  true,
+                         "latencyMs":  0.5989,
+                         "value":  {
+                                       "connected":  true,
+                                       "device":  "local-go-edition",
+                                       "transport":  "loopback"
+                                   }
+                     },
+    "labosStatus":  {
+                        "ok":  true,
+                        "latencyMs":  3.1725000000000003,
+                        "value":  {
+                                      "edition":  "go",
+                                      "isInstalled":  true,
+                                      "isRunning":  true,
+                                      "modules":  [
+                                                      {
+                                                          "builtVersionName":  "0.1.0",
+                                                          "installed":  true,
+                                                          "installedVersionName":  "0.1.0",
+                                                          "isLatest":  true,
+                                                          "name":  "go-single-binary"
+                                                      }
+                                                  ]
+                                  }
+                    },
+    "preview":  {
+                    "start":  {
+                                  "ok":  true,
+                                  "latencyMs":  2.0891,
+                                  "value":  {
+                                                "changed":  true,
+                                                "streaming":  true,
+                                                "success":  true
+                                            }
+                              },
+                    "firstFrame":  {
+                                       "ok":  true,
+                                       "latencyMs":  24.7896,
+                                       "bytes":  141
+                                   },
+                    "health":  {
+                                   "ok":  true,
+                                   "latencyMs":  1.2681,
+                                   "value":  {
+                                                 "activeVideoPath":  null,
+                                                 "fps":  0,
+                                                 "frameBytes":  141,
+                                                 "frameCount":  8,
+                                                 "frameReachable":  true,
+                                                 "lastFrameServed":  "2026-04-25T07:06:02.132914Z",
+                                                 "lastVideoPath":  null,
+                                                 "recording":  false,
+                                                 "streaming":  true
+                                             }
+                               },
+                    "stop":  {
+                                 "ok":  true,
+                                 "latencyMs":  1.0765,
+                                 "value":  {
+                                               "changed":  true,
+                                               "streaming":  false,
+                                               "success":  true
+                                           }
+                             }
+                },
+    "frames":  {
+                   "attempted":  7,
+                   "successCount":  7,
+                   "polledFps":  3.5,
+                   "avgBytes":  141,
+                   "p50LatencyMs":  21.85,
+                   "p95LatencyMs":  25.03
+               },
+    "recording":  {
+                      "start":  {
+                                    "ok":  true,
+                                    "latencyMs":  16.4524,
+                                    "value":  {
+                                                  "activeVideoPath":  "/tmp/labos-go-recording-1777100762426.mp4",
+                                                  "changed":  true,
+                                                  "recording":  true,
+                                                  "success":  true
+                                              }
+                                },
+                      "stop":  {
+                                   "ok":  true,
+                                   "latencyMs":  1.03,
+                                   "value":  {
+                                                 "changed":  true,
+                                                 "lastVideoPath":  "/tmp/labos-go-recording-1777100762426.mp4",
+                                                 "recording":  false,
+                                                 "success":  true
+                                             }
+                               },
+                      "status":  {
+                                     "ok":  true,
+                                     "latencyMs":  0.89,
+                                     "value":  {
+                                                   "activeVideoPath":  null,
+                                                   "lastVideoPath":  "/tmp/labos-go-recording-1777100762426.mp4",
+                                                   "recording":  false,
+                                                   "source":  "go-edition"
+                                               }
+                                 }
+                  }
+}

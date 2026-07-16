@@ -1,0 +1,6 @@
+rootProject.name = 'OpenLabOSDeviceReference'
+include ':core-sdk'
+include ':core-app'
+include ':camera'
+include ':dashboard-device'
+include ':devtools'

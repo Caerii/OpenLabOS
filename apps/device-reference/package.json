@@ -1,0 +1,10 @@
+{
+  "name": "@openlabos/device-reference",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Reference Android device-owner application. Built with Gradle; the package.json exists only so pnpm sees the workspace member.",
+  "scripts": {
+    "build": "echo 'device build runs via gradle, see gradlew' && exit 0",
+    "test": "echo 'device tests run via gradle' && exit 0"
+  }
+}

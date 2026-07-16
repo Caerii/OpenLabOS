@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.LabOS" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">#00FF88</item>
+        <item name="colorPrimaryDark">#001100</item>
+        <item name="colorAccent">#00FF88</item>
+        <item name="android:windowBackground">#000000</item>
+        <item name="android:statusBarColor">#000000</item>
+    </style>
+</resources>
