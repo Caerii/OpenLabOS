@@ -106,8 +106,8 @@ describe("ProtocolStepSchema", () => {
       },
       {
         kind: "measurement_in_range",
-        quantity: "temperature",
-        unit: "celsius",
+        quantity: "bath_temperature",
+        unit: "C",
         min: 36,
         max: 38,
         description: "x",
@@ -118,5 +118,41 @@ describe("ProtocolStepSchema", () => {
         ProtocolStepSchema.parse({ ...baseStep, success_criteria: [v] }),
       ).not.toThrow();
     }
+  });
+
+  it("rejects a measurement unit outside the canonical vocabulary", () => {
+    expect(() =>
+      ProtocolStepSchema.parse({
+        ...baseStep,
+        success_criteria: [
+          {
+            kind: "measurement_in_range",
+            quantity: "bath_temperature",
+            unit: "celsius",
+            min: 36,
+            max: 38,
+            description: "x",
+          },
+        ],
+      }),
+    ).toThrow();
+  });
+
+  it("rejects a quantity name that is not snake_case", () => {
+    expect(() =>
+      ProtocolStepSchema.parse({
+        ...baseStep,
+        success_criteria: [
+          {
+            kind: "measurement_in_range",
+            quantity: "Bath Temperature",
+            unit: "C",
+            min: 36,
+            max: 38,
+            description: "x",
+          },
+        ],
+      }),
+    ).toThrow(/snake_case/);
   });
 });

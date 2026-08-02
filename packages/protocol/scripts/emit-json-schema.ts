@@ -9,7 +9,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { zodToJsonSchema } from "zod-to-json-schema";
+import { z } from "zod";
 
 import { JudgmentSchema } from "../src/judgment.js";
 import { ProtocolSchema } from "../src/protocol.js";
@@ -29,8 +29,7 @@ const targets: Record<string, unknown> = {
 };
 
 for (const [name, schema] of Object.entries(targets)) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const json = zodToJsonSchema(schema as any, { name, target: "jsonSchema7" });
+  const json = z.toJSONSchema(schema as z.ZodType, { target: "draft-7" });
   const path = resolve(outDir, `${name}.schema.json`);
   writeFileSync(path, JSON.stringify(json, null, 2) + "\n", "utf8");
   console.log(`wrote ${path}`);

@@ -62,8 +62,32 @@ describe("SessionEventSchema", () => {
       succeeded: true,
     },
     { kind: "operator_note", at: ISO, text: "looks good" },
+    {
+      kind: "measurement_recorded",
+      at: ISO,
+      step_id: "verify-ph",
+      quantity: "buffer_ph",
+      value: 7.61,
+      unit: "pH",
+      method: "instrument",
+      instrument_id: "tool:ph-meter",
+    },
     { kind: "session_finalized", at: ISO, status: "completed" },
   ] as const;
+
+  it("rejects a measurement with a non-canonical unit", () => {
+    expect(() =>
+      SessionEventSchema.parse({
+        kind: "measurement_recorded",
+        at: ISO,
+        step_id: "verify-ph",
+        quantity: "buffer_ph",
+        value: 7.6,
+        unit: "pH_units",
+        method: "instrument",
+      }),
+    ).toThrow();
+  });
 
   it("accepts every event variant", () => {
     for (const e of events) {

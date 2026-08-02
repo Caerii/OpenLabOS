@@ -59,4 +59,56 @@ describe("JudgmentSchema", () => {
     });
     expect(j.criteria[0]?.criterion_index).toBe(0);
   });
+
+  it("records how criterion evidence was obtained, with a measured value", () => {
+    const j = JudgmentSchema.parse({
+      ...minimal,
+      criteria: [
+        {
+          criterion_index: 1,
+          satisfied: true,
+          evidence: "hotplate display reads 115",
+          method: "display_readout",
+          measured_value: 115,
+          measured_unit: "C",
+        },
+      ],
+    });
+    expect(j.criteria[0]?.method).toBe("display_readout");
+    expect(j.criteria[0]?.measured_value).toBe(115);
+  });
+
+  it("rejects an evidence method outside the closed set", () => {
+    expect(() =>
+      JudgmentSchema.parse({
+        ...minimal,
+        criteria: [
+          {
+            criterion_index: 0,
+            satisfied: true,
+            evidence: "x",
+            method: "guessed",
+          },
+        ],
+      }),
+    ).toThrow();
+  });
+
+  it("rejects a measured unit outside the canonical vocabulary", () => {
+    expect(() =>
+      JudgmentSchema.parse({
+        ...minimal,
+        criteria: [
+          {
+            criterion_index: 0,
+            satisfied: true,
+            evidence: "x",
+            method: "instrument",
+            measured_value: 115,
+            measured_unit: "celsius",
+          },
+        ],
+      }),
+    ).toThrow();
+  });
 });

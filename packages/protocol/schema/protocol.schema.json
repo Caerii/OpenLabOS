@@ -1,7 +1,423 @@
 {
-  "$ref": "#/definitions/protocol",
-  "definitions": {
-    "protocol": {}
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "protocol_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "protocol_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[\\w.-]+)?$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "modules": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "steps": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "instruction": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_objects": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "object_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^object:[a-z0-9][a-z0-9_-]*$"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^surface:[a-z0-9][a-z0-9_-]*$"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^tool:[a-z0-9][a-z0-9_-]*$"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^reagent:[a-z0-9][a-z0-9_-]*$"
+                    }
+                  ]
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "optional": {
+                  "default": false,
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "object_id",
+                "label",
+                "optional"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "expected_action": {
+            "type": "object",
+            "properties": {
+              "action_id": {
+                "type": "string",
+                "pattern": "^action:[a-z0-9][a-z0-9_-]*$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target_object_id": {
+                "type": "string",
+                "pattern": "^object:[a-z0-9][a-z0-9_-]*$"
+              },
+              "instrument_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^object:[a-z0-9][a-z0-9_-]*$"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^tool:[a-z0-9][a-z0-9_-]*$"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "action_id",
+              "label"
+            ],
+            "additionalProperties": false
+          },
+          "success_criteria": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "object_on_surface"
+                    },
+                    "object_id": {
+                      "type": "string",
+                      "pattern": "^object:[a-z0-9][a-z0-9_-]*$"
+                    },
+                    "surface_id": {
+                      "type": "string",
+                      "pattern": "^surface:[a-z0-9][a-z0-9_-]*$"
+                    },
+                    "description": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "object_id",
+                    "surface_id",
+                    "description"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "liquid_in_object"
+                    },
+                    "container_id": {
+                      "type": "string",
+                      "pattern": "^object:[a-z0-9][a-z0-9_-]*$"
+                    },
+                    "fill_fraction": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "description": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "container_id",
+                    "description"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "component_added"
+                    },
+                    "container_id": {
+                      "type": "string",
+                      "pattern": "^object:[a-z0-9][a-z0-9_-]*$"
+                    },
+                    "component_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^object:[a-z0-9][a-z0-9_-]*$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^reagent:[a-z0-9][a-z0-9_-]*$"
+                        }
+                      ]
+                    },
+                    "description": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "container_id",
+                    "component_id",
+                    "description"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "action_performed"
+                    },
+                    "action_id": {
+                      "type": "string",
+                      "pattern": "^action:[a-z0-9][a-z0-9_-]*$"
+                    },
+                    "target_object_id": {
+                      "type": "string",
+                      "pattern": "^object:[a-z0-9][a-z0-9_-]*$"
+                    },
+                    "instrument_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^object:[a-z0-9][a-z0-9_-]*$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^tool:[a-z0-9][a-z0-9_-]*$"
+                        }
+                      ]
+                    },
+                    "min_count": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "description": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "action_id",
+                    "description"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "measurement_in_range"
+                    },
+                    "quantity": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]*$"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "s",
+                        "min",
+                        "h",
+                        "C",
+                        "K",
+                        "uL",
+                        "mL",
+                        "L",
+                        "ug",
+                        "mg",
+                        "g",
+                        "kg",
+                        "nm",
+                        "um",
+                        "mm",
+                        "cm",
+                        "m",
+                        "M",
+                        "mM",
+                        "uM",
+                        "mg_per_mL",
+                        "rpm",
+                        "g_force",
+                        "Pa",
+                        "kPa",
+                        "bar",
+                        "psi",
+                        "percent",
+                        "pH",
+                        "count"
+                      ]
+                    },
+                    "min": {
+                      "type": "number"
+                    },
+                    "max": {
+                      "type": "number"
+                    },
+                    "description": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "quantity",
+                    "unit",
+                    "description"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "failure_modes": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "missing_object",
+                    "wrong_object",
+                    "wrong_surface",
+                    "wrong_order",
+                    "spill",
+                    "out_of_range",
+                    "safety_violation",
+                    "other"
+                  ]
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "references": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^object:[a-z0-9][a-z0-9_-]*$"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^surface:[a-z0-9][a-z0-9_-]*$"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^tool:[a-z0-9][a-z0-9_-]*$"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^reagent:[a-z0-9][a-z0-9_-]*$"
+                      }
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "kind",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "safety_notes": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "step_id",
+          "order",
+          "title",
+          "instruction",
+          "expected_objects",
+          "expected_action",
+          "success_criteria",
+          "failure_modes",
+          "safety_notes"
+        ],
+        "additionalProperties": false
+      }
+    }
   },
-  "$schema": "http://json-schema.org/draft-07/schema#"
+  "required": [
+    "protocol_id",
+    "protocol_version",
+    "name",
+    "modules",
+    "steps"
+  ],
+  "additionalProperties": false
 }
