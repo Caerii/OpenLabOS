@@ -36,7 +36,7 @@
     "preview:thermal:dual:deep": "tsx src/scripts/preview-thermal-dual-sweep.ts --deep"
   },
   "dependencies": {
-    "@ai-sdk/google": "^3.0.64",
+    "@ai-sdk/google": "^4.0.28",
     "@ai-sdk/openai": "^3.0.53",
     "@google/genai": "^1.6.0",
     "@hono/node-server": "^1.13.7",
