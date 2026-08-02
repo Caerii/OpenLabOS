@@ -1,35 +1,10 @@
-# services/inference — OpenLabOS inference / model gateway
+# Step-check service (`services/inference`)
 
-## Role
+Accepts a protocol-step judgment request from the API and routes it to Ollama,
+LM Studio, or the deterministic mock provider. It does not store session
+state or advance protocol steps.
 
-Protocol-aware reasoning service for OpenLabOS. This is the **sole owner of
-vendor SDK calls** (LM Studio, Ollama, OpenAI, Anthropic, Google GenAI,
-Together, RunPod, ...). The TypeScript coordination API in `services/api`
-talks to this service over HTTP for every model-driven judgment; nothing
-outside `services/inference` should import a vendor SDK.
-
-## Module layout
-
-```
-openlabos_inference/
-  api/
-    routes/        FastAPI routers: health, protocols, sessions, media, judgments
-    deps.py        Dependency providers (registry, db, data root)
-  services/        Application services: protocol registry/loader, ffmpeg,
-                   media processing, frame selection, prompt building,
-                   judgment parsing, LM Studio client.
-  models/          Pydantic models: protocol JSON, session DTOs, media DTOs,
-                   judgment DTOs.
-  persistence/     stdlib sqlite3 repositories + schema bootstrap.
-  storage/         Filesystem path conventions and safe path resolution.
-  providers/       Vendor adapters (OpenAI, Anthropic, Google GenAI, Together,
-                   RunPod, LM Studio, Ollama). Owns all vendor SDK imports.
-  config.py        Env overrides and default paths (pathlib only).
-  main.py          FastAPI app, lifespan, CORS, router wiring.
-scripts/           Dev tooling: smoke_api.py, process_capture.py.
-```
-
-## Bootstrap
+## Start
 
 ```bash
 cd services/inference
@@ -37,64 +12,115 @@ uv sync --python 3.12
 uv run openlabos-inference
 ```
 
-Or with reload during development:
+The service binds to `0.0.0.0:8001`. Verify it with:
 
 ```bash
-uv run uvicorn openlabos_inference.main:app --reload --host 127.0.0.1 --port 8000
+curl http://localhost:8001/v1/healthz
 ```
 
-## Defaults
+For reload during development:
 
-- **Port:** 8000 (bound to `127.0.0.1`).
-- **CORS:** local-first, **permissive in dev** (`allow_origins=["*"]`,
-  `allow_methods=["*"]`, `allow_headers=["*"]`). Tighten before any non-local
-  deployment.
-- **Env overrides:** `LABOS_PROTOCOL_PATH`, `LABOS_SQLITE_PATH`,
-  `LABOS_DATA_ROOT`, `LABOS_LMSTUDIO_BASE_URL`, `LABOS_LMSTUDIO_MODEL`,
-  `LABOS_LMSTUDIO_TIMEOUT_S`, `LABOS_JUDGMENT_MAX_FRAMES`,
-  `LABOS_JUDGMENT_STORE_DEBUG`.
+```bash
+uv run uvicorn openlabos_inference.openlabos_main:app \
+  --reload --host 127.0.0.1 --port 8001
+```
 
-## Contract with `services/api`
+## HTTP contract
 
-`services/api` (the TypeScript coordination API) calls this service with a
-request shaped like:
+`POST /v1/judgments` accepts:
 
 ```json
 {
-  "step":   { "step_id": "...", "title": "...", "expected_action": ..., ... },
-  "frame":  { "clip_id": "...", "frame_paths": ["..."] },
-  "context":{ "session_id": "...", "protocol_id": "...", "protocol_version": "1" }
+  "session_id": "00000000-0000-4000-8000-000000000001",
+  "step": {
+    "step_id": "heat-water",
+    "title": "Heat water",
+    "instruction": "Heat water until steaming.",
+    "expected_objects": [],
+    "success_criteria": [
+      { "kind": "visual", "description": "Steam is visible." }
+    ]
+  },
+  "frame_b64": "...",
+  "provider": "ollama"
 }
 ```
 
-…and receives back a `Judgment` matching
-`openlabos_inference.models.judgment.JudgmentResponse` (which embeds a
-schema-validated `JudgmentResult`: `objects_seen`, `action_detected`,
-`step_complete`, `possible_issue`, `confidence`, `reason`).
+The response is a structured judgment: verdict, rationale, criterion evidence,
+observed objects, source, and identifiers. The API associates that response
+with the session.
 
-The current MVP exposes `POST /judgments` taking `{clip_id, step_id?}` and
-resolving frames and protocol context internally; the `{step, frame, context}`
-shape above is the canonical contract that the router layer normalizes
-incoming requests to before dispatching to a Provider.
+### Provenance and epistemic limits
 
-## Adding a new provider
+- Set `source` with enough detail to interpret the judgment later:
+  `<provider>:<model-id>[:params]` (e.g. `ollama:llama3.2-vision:temp=0`),
+  `human:<id>`, `hybrid:<recipe>`, or `mock:deterministic`. A bare family
+  name is insufficient for eval.
+- Criterion evidence may include `method` (`instrument` |
+  `display_readout` | `operator_attested` | `visual_estimate`),
+  `measured_value`, and `measured_unit` (canonical units only). Omitting
+  `method` means visual estimate.
+- `observed_objects[].confidence` is a producer self-report in `[0, 1]`. It
+  is **not** a calibrated probability and must not be thresholded or
+  averaged across model versions as if it estimated P(correct).
+- Judgments are recorded observations. Re-running the same provider against
+  the same frame is not guaranteed to reproduce the same verdict.
 
-1. Create `openlabos_inference/providers/<vendor>.py`.
-2. Define `class <Vendor>Provider` exposing
-   `async def render_judgment(self, request: JudgmentRequest) -> Judgment`.
-3. Keep all vendor SDK imports inside that module — nothing outside
-   `providers/` should `import openai`/`import anthropic`/etc.
-4. Register the class in the provider router (lookup by vendor key from the
-   incoming request or environment).
-5. Add config knobs (API key env var, base URL, model id) to `config.py` if
-   they need defaults.
+## Providers
 
-## Failure modes
+| Provider | Use | Configuration |
+|---|---|---|
+| `ollama` | Default local model runtime | `OLLAMA_BASE_URL`, `OLLAMA_MODEL` |
+| `lmstudio` | Local OpenAI-compatible runtime | `LMSTUDIO_BASE_URL`, `LMSTUDIO_MODEL` |
+| `mock` | Deterministic integration tests | No external service |
 
-- Missing or invalid protocol file at startup → process exits with a clear
-  message including the path.
-- Unknown `protocol_id` on `POST /sessions` → 422 with
-  `Unknown protocol_id: '...'`.
-- Unknown `session_id`/`clip_id` → 404.
-- Vendor unreachable / non-JSON / schema-invalid response → 502 with the
-  parser's error attached.
+Set the default with `OPENLABOS_PROVIDER`. A request-level `provider` overrides
+it.
+
+Additional provider modules are experimental and are not registered on
+`/v1/judgments`.
+
+## Failure behavior
+
+`GET /v1/healthz` proves that the process is running and reports the configured
+default provider. It does **not** prove that Ollama or LM Studio is reachable
+or that a model is loaded.
+
+`POST /v1/judgments` returns:
+
+- HTTP 400 when `provider` is not one of `ollama`, `lmstudio`, or `mock`
+- HTTP 422 when the request does not satisfy the FastAPI input model
+- HTTP 502 when Ollama or LM Studio cannot be reached or returns unusable
+  output
+
+The mock provider always returns `indeterminate`; it verifies the response
+contract and does not inspect frames.
+
+## Adding a provider
+
+Provider implementations live in
+`openlabos_inference/providers/`. To expose a provider on the active endpoint:
+
+1. implement `render_judgment(request)` and return the complete judgment shape;
+2. define a provider-specific exception for transport and output failures;
+3. register the provider name and exception in
+   `api/routes/openlabos_judgments.py`;
+4. add tests for valid output, unavailable upstream service, malformed model
+   output, and request-level selection.
+
+Do not add session storage or step-advancement logic here. Those remain API
+responsibilities.
+
+## Legacy application
+
+`uv run openlabos-inference-legacy` starts the older stateful FastAPI
+application in `main.py`. It retains protocol/media/session routes for
+migration work, but Compose does not use it.
+
+Send new judgment integrations through `/v1/judgments`.
+
+## Related
+
+- [First successful run](../../docs/runbooks/first-successful-run.md)
+- [Docker Compose](../../docs/runbooks/docker-compose.md)
+- [Writing guide](../../docs/WRITING.md)

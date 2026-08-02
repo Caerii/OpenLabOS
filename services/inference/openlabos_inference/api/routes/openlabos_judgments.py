@@ -9,7 +9,7 @@ documented in decision 0005:
       result:  Judgment
 
 The provider is selected by the env var ``OPENLABOS_PROVIDER`` (default
-``lmstudio``). Adding a new provider is a class import + a branch here.
+``ollama``). Adding a new provider is a class import + a branch here.
 """
 from __future__ import annotations
 
@@ -23,6 +23,7 @@ from openlabos_inference.providers.lmstudio import (
     LMStudioError,
     LMStudioProvider,
 )
+from openlabos_inference.providers.mock import MockProvider
 from openlabos_inference.providers.ollama import OllamaError, OllamaProvider
 
 router = APIRouter(prefix="/v1", tags=["judgments"])
@@ -53,12 +54,14 @@ class JudgmentRequest(BaseModel):
 @router.post("/judgments")
 async def post_judgment(req: JudgmentRequest) -> dict[str, Any]:
     provider_name = (
-        req.provider or os.environ.get("OPENLABOS_PROVIDER", "lmstudio")
+        req.provider or os.environ.get("OPENLABOS_PROVIDER", "ollama")
     ).lower()
     if provider_name == "lmstudio":
         provider: Any = LMStudioProvider()
     elif provider_name == "ollama":
         provider = OllamaProvider()
+    elif provider_name == "mock":
+        provider = MockProvider()
     else:
         raise HTTPException(
             status_code=400, detail=f"Unsupported provider: {provider_name}"

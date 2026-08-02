@@ -1,0 +1,44 @@
+# syntax=docker/dockerfile:1.7
+
+FROM pytorch/pytorch:2.3.1-cuda12.1-cudnn8-runtime
+
+ARG OPENLABOS_VERSION=0.0.0-dev
+ARG GIT_REVISION=unknown
+
+LABEL org.opencontainers.image.title="OpenLabOS Perception (GPU)" \
+      org.opencontainers.image.description="Grounded SAM 2 perception sidecar for OpenLabOS" \
+      org.opencontainers.image.url="https://github.com/Caerii/OpenLabOS" \
+      org.opencontainers.image.source="https://github.com/Caerii/OpenLabOS" \
+      org.opencontainers.image.vendor="OpenLabOS" \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.version="${OPENLABOS_VERSION}" \
+      org.opencontainers.image.revision="${GIT_REVISION}" \
+      openlabos.component="perception" \
+      openlabos.backend="grounded_sam2"
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV HF_HOME=/cache/huggingface
+ENV TORCH_HOME=/cache/torch
+
+WORKDIR /app
+
+COPY services/perception/requirements.txt ./requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir "git+https://github.com/facebookresearch/sam2.git"
+
+COPY services/perception/app.py ./app.py
+
+RUN useradd --create-home --uid 10001 openlabos \
+    && mkdir -p /cache/huggingface /cache/torch \
+    && chown -R openlabos:openlabos /app /cache
+
+USER openlabos
+
+EXPOSE 8002
+
+HEALTHCHECK --interval=10s --timeout=3s --start-period=120s --retries=10 \
+  CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8002/health', timeout=2)"]
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8002", "--no-access-log"]
