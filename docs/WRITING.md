@@ -1,8 +1,11 @@
 # Writing in OpenLabOS
 
-Documentation should let a reader operate, extend, or evaluate the system
-without guessing. Prefer precise statements about behavior and boundaries over
-claims about quality or intent.
+Documentation and operator copy should let a reader **operate, extend, or
+evaluate** the system without guessing. Prefer precise statements about
+behavior and boundaries over claims about quality or destiny.
+
+The project’s substance is a recorded protocol run. Writing should sound like
+someone who has run the stack and checked the files — not like a launch page.
 
 ## Principles
 
@@ -19,8 +22,7 @@ Avoid statements that cannot be checked:
 
 ### Put maturity beside the claim
 
-Do not describe an experimental path as if setup were sufficient proof. State
-the current boundary in the same paragraph:
+State the boundary in the same paragraph as the capability:
 
 > The Grounded SAM 2 overlay requires an NVIDIA runtime and model downloads.
 > It is an experimental path, not part of the default Compose verification.
@@ -31,7 +33,7 @@ feature works.
 
 ### Explain consequences, not intentions
 
-Architecture prose may be reflective when it explains a trade-off:
+Architecture prose may explain a trade-off:
 
 > Session state belongs to the API, so inference workers can restart without
 > changing the active step.
@@ -40,27 +42,32 @@ Avoid manifesto language that only announces conviction:
 
 > Session truth is sacred. Everything else is plumbing.
 
+Significance belongs in
+[architecture/why-openlabos.md](architecture/why-openlabos.md) and short
+pointers from the README — not as slogans repeated on every page.
+
 ### Do not overstate evidence
 
 A protocol criterion declares what would count as success. A vision judgment
-is an observation, not a measurement. Say "the model estimated the fill level"
-or "the pH meter reading was recorded," not "the system measured pH," unless
+is an observation, not a measurement. Say “the model estimated the fill level”
+or “the pH meter reading was recorded,” not “the system measured pH,” unless
 a `measurement_recorded` event or criterion evidence with
-`method: instrument` (or `display_readout`) exists. Do not treat
-`confidence` as a probability. Do not call event replay "bit-for-bit
-reproducibility" of model outputs — only of session state.
+`method: instrument` (or `display_readout`) exists.
+
+Do not treat `confidence` as a calibrated probability. Do not call event
+replay “bit-for-bit reproducibility” of model outputs — only of session state.
 
 ### Preserve technical nouns
 
-Engineering documentation should use canonical contract names such as
-`Protocol`, `Session`, `Judgment`, and `RunManifest`. Define each term once.
-Do not replace a schema name with friendlier copy if the schema itself is the
+Engineering documentation uses canonical contract names: `Protocol`,
+`Session`, `SessionEvent`, `Judgment`, `RunManifest`. Define each once. Do
+not replace a schema name with friendlier copy when the schema itself is the
 subject.
 
-Operator interfaces should use task language:
+Operator interfaces use task language:
 
 | Engineering term | Operator label |
-|---|---|
+| --- | --- |
 | inference gateway | step-check service |
 | perception sidecar | object detection |
 | adherence decision | step check |
@@ -77,8 +84,8 @@ results and troubleshooting. Background belongs after the runnable path.
 
 ### Service READMEs
 
-Define ownership first: what the service accepts, returns, stores, and does not
-own. Then document startup, health semantics, runtime contracts, failure
+Define ownership first: what the service accepts, returns, stores, and does
+not own. Then document startup, health semantics, contracts, failure
 behavior, and extension points.
 
 ### Architecture documents
@@ -100,10 +107,11 @@ the operator can act on them.
 
 Use tables for ports, environment variables, file layouts, and genuine
 comparisons. Use prose for causal explanations. Do not duplicate the same
-status inventory across several pages; link to the roadmap or service README.
+status inventory across several pages; link to the roadmap or a service
+README.
 
-Use acronyms only when the reader needs them to run a command or understand a
-contract. Expand an acronym the first time it appears.
+Expand an acronym the first time it appears unless the reader needs only the
+command form.
 
 ## Style
 
@@ -111,12 +119,26 @@ contract. Expand an acronym the first time it appears.
 - Use concrete nouns and verbs: protocol, frame, append, validate, restart.
 - Keep one main claim per paragraph.
 - Avoid promotional filler: *seamless*, *robust*, *powerful*, *ecosystem*,
-  *unlock*, *production-ready*.
+  *unlock*, *production-ready*, *revolutionize*.
 - Avoid conversational asides, campaign history, and criticism of earlier
   wording.
-- Avoid slogan fragments and rhetorical declarations in reference
-  documentation.
+- Avoid slogan fragments in reference documentation.
 - Use sentence case for headings and controls.
+
+## Voice for openings
+
+Root README and landing openings may state purpose in two or three sentences,
+then move immediately to what the reader can run. Prefer:
+
+> OpenLabOS is an open-source protocol runner… It records an append-only
+> session…
+
+Over:
+
+> The future of laboratory intelligence is here…
+
+If a page needs the longer “why,” link to
+[why-openlabos.md](architecture/why-openlabos.md) instead of restating it.
 
 ## Review checklist
 
@@ -130,3 +152,4 @@ Before merging:
 5. Remove repeated conclusions and unsupported adjectives.
 6. Read operator copy without repository context; every label should imply an
    available action or state.
+7. Confirm evidence language does not turn estimates into measurements.

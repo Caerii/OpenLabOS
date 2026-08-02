@@ -1,24 +1,28 @@
 # Architecture of a recorded run
 
-This document follows one protocol run through the repository. It explains why
-the system separates operator guidance, session state, model judgments, and
-offline learning—and which parts of that design are implemented today.
+This document follows one protocol run through the repository: why operator
+guidance, session state, model judgments, and offline learning are separate,
+and which parts of that design are implemented today.
+
+For the project’s purpose and non-goals, read
+[why-openlabos.md](why-openlabos.md) first. For ownership tables and adapter
+rules, use [ARCHITECTURE.md](../../ARCHITECTURE.md).
 
 ## 1. The unit of work
 
 A laboratory protocol is a sequence of observable actions: place a vessel,
-add a reagent, wait, measure, record. The software must do more than display
-those instructions. It must preserve enough context to answer, after the run:
+add a reagent, wait, measure, record. Displaying those instructions is not
+enough. After the run, the software should still answer:
 
 - Which protocol version did the operator follow?
 - Which step was active when a frame or clip was captured?
 - Why did the run advance, wait, or stop?
-- Which provider produced each judgment?
+- Which producer returned each judgment, and how was any numeric claim obtained?
 
 OpenLabOS represents one execution of one protocol as a `Session`. Session
 events drive the live run. A `RunManifest` is the intended cross-stage record
-for review, replay, evaluation, and experimental training; consolidation from
-the legacy kitchen record into that contract is still in progress.
+for review, state replay, evaluation, and experimental training. Consolidation
+from the legacy kitchen record into that contract is still in progress.
 
 ## 2. Why the code is in one repository
 

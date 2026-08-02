@@ -1,9 +1,14 @@
 # OpenLabOS Architecture
 
-Use this page to locate responsibilities and contracts. For the narrative —
-why these planes exist and what a run means — read
-[docs/architecture/literate-architecture.md](docs/architecture/literate-architecture.md)
-first. Service READMEs own setup and commands.
+Use this page to locate responsibilities and contracts.
+
+- Purpose and non-goals: [docs/architecture/why-openlabos.md](docs/architecture/why-openlabos.md)
+- Narrative of one run: [docs/architecture/literate-architecture.md](docs/architecture/literate-architecture.md)
+- Setup and commands: each service’s README
+
+OpenLabOS separates the operator UI, the session API, model services, and
+offline learning so that a recorded run stays inspectable when a camera,
+model, or GPU path is missing or fails.
 
 ## Service boundaries
 

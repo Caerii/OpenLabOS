@@ -1,16 +1,20 @@
 # Services
 
-Run live coordination in `api`, model judgments in `inference`, segmentation in
-`perception`, and voice coaching in `voice`. Training and evaluation are
-offline tools, not request-path services.
+Live coordination runs in `api`. Step checks and optional object detection run
+in `inference` and `perception`. Voice coaching is optional. Training and
+evaluation are offline tools — they read saved runs and are not on the live
+request path.
 
-| Service           | Stack                | Talks to                                  |
-| ----------------- | -------------------- | ----------------------------------------- |
-| `api/`            | Node 20, TypeScript, Hono | Web app, devices, inference, perception |
-| `inference/`      | Python 3.12, FastAPI | LLM providers, local runtimes             |
-| `perception/`     | Python 3.12, FastAPI | Segmentation/tracker models               |
-| `training/`       | Python 3.12, PyTorch + TRL | Datasets, checkpoints (offline)      |
-| `eval/`           | Python 3.12          | Manifests, metric reports (offline)       |
-| `voice/`          | Python 3.12, LiveKit | Web app via WebRTC                        |
+| Service | Stack | Role |
+| --- | --- | --- |
+| `api/` | Node 20, TypeScript, Express + Hono | Sessions, protocols, device routing, artifacts |
+| `inference/` | Python 3.12, FastAPI | Step-check routing (Ollama, LM Studio, mock) |
+| `perception/` | Python 3.12, FastAPI | Object detection / segmentation backends |
+| `training/` | Python 3.12, PyTorch + TRL | Dataset prep and adaptation (offline) |
+| `eval/` | Python 3.12 | Frozen splits and metrics (offline) |
+| `voice/` | Python 3.12, LiveKit | Optional voice coaching over WebRTC |
 
-Open a service README for its contract, configuration, and start command.
+Each service README owns its contract, configuration, and start command.
+For how these planes fit a recorded run, see
+[docs/architecture/why-openlabos.md](../docs/architecture/why-openlabos.md)
+and [ARCHITECTURE.md](../ARCHITECTURE.md).

@@ -35,10 +35,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
-- Root documentation now distinguishes working, experimental, and planned
-  capabilities.
-- Operator labels now distinguish step checks, saved runs, and object detection
-  from the internal service names.
+- Root documentation and landing copy state purpose (open recorded runs) and
+  maturity without promotional language; added
+  `docs/architecture/why-openlabos.md` as the canonical “why” note.
+- Writing guide tightened around evidence honesty and openings that link to
+  purpose instead of restating slogans.
+- Operator labels distinguish step checks, saved runs, and object detection
+  from internal service names.
 
 ### Fixed
 

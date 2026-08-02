@@ -4,6 +4,8 @@ OpenLabOS is pre-1.0 research software. Use this list to distinguish completed
 work from the next engineering targets. Dates and release commitments are not
 implied.
 
+Purpose and non-goals: [why-openlabos.md](why-openlabos.md).
+
 ## Working now
 
 - [x] Shared Zod protocol schema with emitted JSON Schema

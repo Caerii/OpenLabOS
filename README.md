@@ -1,17 +1,22 @@
 # OpenLabOS
 
-OpenLabOS is an open-source protocol runner for camera-assisted laboratory
-work. It presents a versioned protocol one step at a time and records the
-session events associated with each run. Configured device and model paths can
-add camera evidence and structured judgments.
+OpenLabOS is an open-source **protocol runner** for camera-assisted laboratory
+work. It shows a versioned protocol one step at a time and records what
+happened as an append-only session. Optional device and model paths can add
+frames and structured step judgments.
 
-OpenLabOS is pre-1.0 research software. It is **not** validated for clinical,
+The point of the stack is not a chat next to a procedure. It is a shared,
+forkable record of **which protocol ran, what the operator did, and what
+evidence supported each advance** — without requiring a cloud vendor.
+
+OpenLabOS is **pre-1.0 research software**. It is not validated for clinical,
 diagnostic, safety-critical, or regulated laboratory use.
+
+**Why this exists:** [docs/architecture/why-openlabos.md](docs/architecture/why-openlabos.md)
 
 ## Quickstart: software-only demonstration
 
-The default Docker Compose path requires no laboratory hardware or cloud
-credentials.
+No laboratory hardware or cloud credentials are required.
 
 ```bash
 docker compose up --build --wait
@@ -21,8 +26,8 @@ Open <http://localhost:3847/operate/kitchen>, select **Tea preparation**, and
 start a guided run. The stack uses deterministic object detection. Interactive
 step judgments use Ollama on the host when it is available.
 
-With Node and pnpm installed, verify the service connections and complete a
-protocol through the API:
+With Node 20+ and pnpm, verify the connections and complete a protocol through
+the API:
 
 ```bash
 pnpm compose:smoke
@@ -30,75 +35,76 @@ pnpm compose:protocol-run
 pnpm compose:restart-persistence
 ```
 
-`compose:restart-persistence` creates its own session, restarts the API, and
-verifies that the session and its events remain available.
+| Script | What it proves |
+| --- | --- |
+| `compose:smoke` | Web bundle, health/ready probes, perception sidecar, mock judgment bridge |
+| `compose:protocol-run` | Full kitchen-tea session finalized through the API |
+| `compose:restart-persistence` | Its own session and events survive `docker compose restart api` |
 
-To enable interactive judgments with a local vision model:
+For interactive model judgments:
 
 ```bash
 ollama pull llama3.2-vision
 ollama serve
 ```
 
-Copy `.env.compose.example` to `.env` only when you need to change Compose
-defaults — see the [Docker Compose runbook](docs/runbooks/docker-compose.md).
-
-`docker compose down` keeps the artifact volume;
-`docker compose down --volumes` deletes it.
-
-For expected results and failure diagnosis, see
-[First successful run](docs/runbooks/first-successful-run.md) and the
+Copy `.env.compose.example` to `.env` only when changing defaults. See the
 [Docker Compose runbook](docs/runbooks/docker-compose.md).
+
+`docker compose down` keeps session volumes;
+`docker compose down --volumes` deletes them.
+
+Expected results and failure diagnosis:
+[First successful run](docs/runbooks/first-successful-run.md).
 
 ## What a run records
 
-OpenLabOS uses four related records:
+| Record | Meaning |
+| --- | --- |
+| **Protocol** | Versioned sequence of steps, criteria, and vocabulary |
+| **Session** | One attempt to execute a protocol |
+| **SessionEvent** | Append-only history; replaying it reconstructs session state |
+| **Judgment** | A model, human, or hybrid producer’s verdict on one step |
+| **RunManifest** | Intended closure: protocol hash, events, judgments, artifact pointers |
 
-- A **Protocol** is a versioned sequence of steps.
-- A **Session** is one attempt to execute a protocol. Its events are
-  append-only.
-- A **Judgment** is a model or deterministic provider's verdict on one step
-  using the available evidence.
-- A **RunManifest** is the shared contract intended to collect the protocol,
-  events, judgments, and artifact pointers needed for review or replay.
+Schemas live in `packages/protocol`. The API uses them directly. Python
+services still use local models in places; the training package can regenerate
+Python types from the emitted JSON Schema.
 
-The shared TypeScript schemas and emitted JSON Schema live in
-`packages/protocol`. The API uses these records directly. Python services
-currently use local Pydantic models or typed dictionaries, and the training
-package can regenerate Python protocol types from the emitted schemas.
+**Evidence honesty.** Measurement criteria declare acceptance ranges. They
+become measurements only when a `measurement_recorded` event or criterion
+evidence carries `method: instrument` or `display_readout`. A vision judgment
+without that method is an estimate. See
+[Writing a protocol](docs/protocols/authoring.md).
 
-To write and run a protocol of your own, see
-[Writing a protocol](docs/protocols/authoring.md); three validated examples
-live in `examples/protocols/`. Measurement criteria declare acceptance
-ranges; they become measurements only when evidence (or a
-`measurement_recorded` event) carries an instrument or display-readout
-method — see the authoring guide's evidence-channel section.
+Examples under `examples/protocols/`: kitchen tea (integration fixture),
+buffer preparation (1× TBS SOP), spin-coat photoresist (cleanroom reference).
 
 ## Current scope
 
 | Area | Status | Boundary |
-|---|---|---|
-| Protocol schemas and web console | Working | Versioned schemas, guided operator flow, and engineering views |
-| Docker Compose demonstration | Working | Software-only path with deterministic perception and persisted sessions |
-| Android device integration | Hardware-dependent | Implemented adapter and reference app; requires device setup |
-| Ollama and LM Studio judgments | Experimental | Local providers; model quality and availability are external |
-| Run review, replay, and export | Working, pre-1.0 | Implemented paths with contracts still stabilizing |
-| Grounded SAM 2 object detection | Experimental | GPU overlay exists; requires NVIDIA runtime and model downloads |
-| Training and evaluation | Experimental | Offline utilities, not part of the live run path |
-| Webcam, ROS 2, and serial adapters | Planned / partial | Webcam scaffold only; ROS 2 and serial are not implemented |
-| Voice coaching | Optional experiment | Requires LiveKit and provider configuration |
+| --- | --- | --- |
+| Protocol schemas and web console | Working | Versioned schemas, guided operator flow, engineering views |
+| Docker Compose demonstration | Working | Software-only path; mock perception; persisted sessions |
+| Android device integration | Hardware-dependent | Adapter and reference app; requires device setup |
+| Ollama / LM Studio judgments | Experimental | Local providers; quality and availability are external |
+| Run review, replay, export | Working, pre-1.0 | Paths exist; contracts still stabilizing |
+| Grounded SAM 2 object detection | Experimental | GPU overlay; NVIDIA runtime and model downloads |
+| Training and evaluation | Experimental | Offline only; not on the live path |
+| Webcam, ROS 2, serial adapters | Planned / partial | Webcam scaffold only |
+| Voice coaching | Optional experiment | LiveKit and provider configuration |
 
-See the [roadmap](docs/architecture/roadmap.md) for the implementation backlog.
+Roadmap: [docs/architecture/roadmap.md](docs/architecture/roadmap.md).
 
 ## Choose a runtime
 
-| Setup | Requirements | Intended use |
-|---|---|---|
+| Setup | Requirements | Use |
+| --- | --- | --- |
 | Default Compose | Docker Compose v2 | Reproduce the software-only demonstration |
-| Compose with Ollama | Docker Compose v2, Ollama, vision model | Exercise interactive local judgments |
-| Source development | Node 20+, pnpm 9+, Python 3.12, uv | Edit services with hot reload |
-| Local device path | Source setup, ADB, supported Android device | Capture from the implemented hardware adapter |
-| GPU overlay | NVIDIA GPU and Container Toolkit | Experiment with Grounded SAM 2 object detection |
+| Compose + Ollama | Compose, Ollama, vision model | Interactive local judgments |
+| Source development | Node 20+, pnpm 9+, Python 3.12, uv | Hot-reload services |
+| Local device path | Source setup, ADB, supported Android device | Hardware capture |
+| GPU overlay | NVIDIA GPU and Container Toolkit | Experimental Grounded SAM 2 |
 
 ## How the pieces fit
 
@@ -115,20 +121,20 @@ flowchart LR
     Evidence --> Eval[Evaluation and training]
 ```
 
-- The React web app shows the protocol and the live run.
-- The Node API owns sessions, device connections, and artifacts on disk.
-- Python services handle step checks and optional object detection.
+- The web app presents the protocol and the live run.
+- The API owns sessions, device routing, and artifacts on disk.
+- Python services produce step checks and optional object detection.
 - Training and evaluation read saved runs; they are not on the live path.
 
-For the longer story, read the
-[literate architecture](docs/architecture/literate-architecture.md), then
-[ARCHITECTURE.md](ARCHITECTURE.md) and the
-[decision records](docs/decisions/README.md).
+Deeper reading:
+[Why OpenLabOS exists](docs/architecture/why-openlabos.md) ·
+[Literate architecture](docs/architecture/literate-architecture.md) ·
+[ARCHITECTURE.md](ARCHITECTURE.md) ·
+[Decisions](docs/decisions/README.md)
 
 ## Develop from source
 
-Prerequisites: Node 20+, pnpm 9+, Python 3.12, and
-[uv](https://docs.astral.sh/uv/).
+Prerequisites: Node 20+, pnpm 9+, Python 3.12, [uv](https://docs.astral.sh/uv/).
 
 ```bash
 pnpm install
@@ -143,7 +149,7 @@ cp services/api/.env.example services/api/.env
 pnpm --filter @openlabos/api dev
 ```
 
-In another terminal, web at <http://localhost:5174>:
+In another terminal (web at <http://localhost:5174>):
 
 ```bash
 pnpm --filter @openlabos/web dev
@@ -154,14 +160,12 @@ pnpm typecheck
 pnpm test:offline
 ```
 
-`pnpm check` also runs the Python perception smoke and needs its smoke
-dependencies. Device and provider tests stay explicitly separated; see
-[Testing](docs/TESTING.md).
+See [Testing](docs/TESTING.md) and [local development](docs/architecture/local-dev.md).
 
 ## Repository map
 
 | Path | Purpose |
-|---|---|
+| --- | --- |
 | `apps/web` | Operator console and engineering views |
 | `apps/device-reference` | Reference Android device-owner app |
 | `services/api` | Session API, device routing, artifact store |
@@ -174,6 +178,7 @@ dependencies. Device and provider tests stay explicitly separated; see
 | `packages/preview` | Preview transport and metrics |
 | `packages/sdk-ts` | TypeScript API client |
 | `adapters/device-android` | Android adapter |
+| `adapters/device-webcam` | Webcam adapter scaffold |
 | `desktop` | Tauri desktop packaging |
 | `examples/protocols` | Versioned example protocols |
 | `docs` | Architecture, decisions, runbooks |
@@ -183,18 +188,18 @@ dependencies. Device and provider tests stay explicitly separated; see
 - `packages/protocol` owns protocol and run wire formats.
 - Device and model integrations stay behind typed contracts.
 - The default operator workflow hides engineering controls.
-- Session events and artifacts must support replay and audit.
+- Session events must support replay of state and audit of provenance.
 - Cross-service decisions belong in append-only ADRs.
 - Prose follows [docs/WRITING.md](docs/WRITING.md).
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Security and support
 
 Compose binds to loopback. The API has no user accounts; an optional bearer
-token exists for remote experiments, but that is not production identity.
-Do not expose the stack to an untrusted network. Report issues privately via
+token exists for remote experiments and is not production identity. Do not
+expose the stack to an untrusted network. Report vulnerabilities via
 [SECURITY.md](SECURITY.md).
-
-Development workflow: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
@@ -202,4 +207,4 @@ Development workflow: [CONTRIBUTING.md](CONTRIBUTING.md).
   [Apache-2.0](LICENSE).
 - **Documentation** (`docs/`): [CC0 1.0](docs/LICENSE).
 
-See [ADR 0018](docs/decisions/0018-dual-license.md) for the rationale.
+See [ADR 0018](docs/decisions/0018-dual-license.md).
