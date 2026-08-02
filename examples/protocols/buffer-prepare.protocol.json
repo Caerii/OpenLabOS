@@ -1,0 +1,188 @@
+{
+  "protocol_id": "buffer-prepare",
+  "protocol_version": "2.0.0",
+  "name": "Prepare 1 L of 1× TBS from 10× stock",
+  "description": "Dilute 100 mL of 10× Tris-buffered saline (TBS) stock to 1 L with lab water and verify pH 7.6 ± 0.1 at room temperature (~22 °C). A realistic wet-lab SOP that exercises volume and pH measurement criteria; satisfied judgments on those criteria require instrument or display-readout evidence, not visual estimate alone.",
+  "modules": [],
+  "steps": [
+    {
+      "step_id": "gather-materials",
+      "order": 0,
+      "title": "Gather materials on the bench",
+      "instruction": "Place the 10× TBS stock bottle, a 1 L graduated cylinder, a clean 1 L storage bottle, and a calibrated pH meter with electrode on the bench.",
+      "expected_objects": [
+        { "object_id": "reagent:tbs-10x", "label": "10× TBS stock", "optional": false },
+        { "object_id": "object:graduated-cylinder-1l", "label": "1 L graduated cylinder", "optional": false },
+        { "object_id": "object:storage-bottle-1l", "label": "1 L storage bottle", "optional": false },
+        { "object_id": "tool:ph-meter", "label": "pH meter", "optional": false },
+        { "object_id": "surface:bench", "label": "bench", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:place",
+        "label": "Place",
+        "target_object_id": "object:graduated-cylinder-1l"
+      },
+      "success_criteria": [
+        {
+          "kind": "object_on_surface",
+          "object_id": "object:graduated-cylinder-1l",
+          "surface_id": "surface:bench",
+          "description": "graduated cylinder upright on the bench with stock, bottle, and pH meter beside it"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "missing_object", "description": "stock, cylinder, bottle, or pH meter not visible on the bench" }
+      ],
+      "safety_notes": [
+        "Wear a lab coat, safety glasses, and nitrile gloves.",
+        "Confirm the pH meter was calibrated the same day with pH 7.00 and pH 4.00 (or 10.00) buffers."
+      ]
+    },
+    {
+      "step_id": "measure-stock",
+      "order": 1,
+      "title": "Measure 100 mL of 10× TBS stock",
+      "instruction": "Pour 100 mL of 10× TBS stock into the 1 L graduated cylinder. Read the meniscus at eye level on the 100 mL mark.",
+      "expected_objects": [
+        { "object_id": "reagent:tbs-10x", "label": "10× TBS stock", "optional": false },
+        { "object_id": "object:graduated-cylinder-1l", "label": "1 L graduated cylinder", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:pour",
+        "label": "Pour",
+        "target_object_id": "object:graduated-cylinder-1l"
+      },
+      "success_criteria": [
+        {
+          "kind": "liquid_in_object",
+          "container_id": "object:graduated-cylinder-1l",
+          "description": "stock liquid visible in the cylinder near the 100 mL mark"
+        },
+        {
+          "kind": "measurement_in_range",
+          "quantity": "stock_volume",
+          "unit": "mL",
+          "min": 98,
+          "max": 102,
+          "description": "meniscus at 100 ± 2 mL"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "out_of_range", "description": "volume clearly below 98 mL or above 102 mL" },
+        { "kind": "spill", "description": "stock spilled outside the cylinder" }
+      ],
+      "safety_notes": []
+    },
+    {
+      "step_id": "dilute-to-volume",
+      "order": 2,
+      "title": "Dilute to 1 L with lab water",
+      "instruction": "Add lab water (or ultrapure water) to the cylinder until the meniscus reaches the 1 L mark. Mix by gentle inversion after transferring to the storage bottle, or stir in the cylinder if using a stir bar.",
+      "expected_objects": [
+        { "object_id": "object:graduated-cylinder-1l", "label": "1 L graduated cylinder", "optional": false },
+        { "object_id": "reagent:lab-water", "label": "lab water", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:pour",
+        "label": "Pour",
+        "target_object_id": "object:graduated-cylinder-1l"
+      },
+      "success_criteria": [
+        {
+          "kind": "liquid_in_object",
+          "container_id": "object:graduated-cylinder-1l",
+          "fill_fraction": 1.0,
+          "description": "cylinder filled to the 1 L mark"
+        },
+        {
+          "kind": "measurement_in_range",
+          "quantity": "final_volume",
+          "unit": "mL",
+          "min": 990,
+          "max": 1010,
+          "description": "meniscus at 1000 ± 10 mL"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "out_of_range", "description": "final volume outside 990–1010 mL" },
+        { "kind": "spill", "description": "water or buffer spilled during dilution" }
+      ],
+      "safety_notes": []
+    },
+    {
+      "step_id": "verify-ph",
+      "order": 3,
+      "title": "Verify pH 7.6 ± 0.1 at room temperature",
+      "instruction": "Transfer a small aliquot to a clean beaker if required by your meter. Insert the calibrated electrode, wait for a stable reading, and record the pH. Accept 7.5–7.7 at approximately 22 °C. Adjust with dilute HCl or NaOH only if outside that range and lab policy allows.",
+      "expected_objects": [
+        { "object_id": "object:graduated-cylinder-1l", "label": "diluted buffer", "optional": false },
+        { "object_id": "tool:ph-meter", "label": "pH meter", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:measure",
+        "label": "Measure pH",
+        "target_object_id": "object:graduated-cylinder-1l",
+        "instrument_id": "tool:ph-meter"
+      },
+      "success_criteria": [
+        {
+          "kind": "action_performed",
+          "action_id": "action:measure",
+          "instrument_id": "tool:ph-meter",
+          "description": "pH meter electrode immersed and display showing a stable reading"
+        },
+        {
+          "kind": "measurement_in_range",
+          "quantity": "buffer_ph",
+          "unit": "pH",
+          "min": 7.5,
+          "max": 7.7,
+          "description": "pH meter reads 7.6 ± 0.1"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "out_of_range", "description": "pH outside 7.5–7.7 after equilibration" },
+        { "kind": "other", "description": "meter reading unstable or electrode not immersed" }
+      ],
+      "safety_notes": [
+        "Rinse the electrode with lab water before and after immersion; blot dry — do not wipe the bulb."
+      ]
+    },
+    {
+      "step_id": "label-and-store",
+      "order": 4,
+      "title": "Transfer, label, and store",
+      "instruction": "Transfer the 1× TBS into the storage bottle. Label with name (1× TBS), concentration, pH, preparation date, expiry (typically 1–3 months at 4 °C per lab policy), and preparer initials.",
+      "expected_objects": [
+        { "object_id": "object:storage-bottle-1l", "label": "1 L storage bottle", "optional": false },
+        { "object_id": "tool:marker", "label": "marker", "optional": false }
+      ],
+      "expected_action": {
+        "action_id": "action:label",
+        "label": "Label",
+        "target_object_id": "object:storage-bottle-1l",
+        "instrument_id": "tool:marker"
+      },
+      "success_criteria": [
+        {
+          "kind": "action_performed",
+          "action_id": "action:label",
+          "target_object_id": "object:storage-bottle-1l",
+          "instrument_id": "tool:marker",
+          "description": "label visible with name, pH, date, and initials"
+        },
+        {
+          "kind": "liquid_in_object",
+          "container_id": "object:storage-bottle-1l",
+          "description": "storage bottle contains the prepared 1× TBS"
+        }
+      ],
+      "failure_modes": [
+        { "kind": "other", "description": "label missing name, pH, date, or initials" }
+      ],
+      "safety_notes": [
+        "Store at 4 °C unless lab SOP specifies otherwise. Discard if cloudy or contaminated."
+      ]
+    }
+  ]
+}
