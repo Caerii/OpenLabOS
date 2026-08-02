@@ -9,8 +9,11 @@ import { AndroidDeviceAdapter } from "@openlabos/device-android";
 import { AdapterRegistry } from "../core/adapters/registry.js";
 import type { DeviceAdapter } from "../core/adapters/types.js";
 import { ModuleRegistry } from "../core/modules/registry.js";
-import { InMemorySessionStore } from "../core/sessions/store.js";
+import { createSessionStore, closeSessionStore } from "../core/sessions/create-store.js";
+import { initKitchenSessionBridge } from "../bridge/kitchen-session-link.js";
 import { createApp } from "./app.js";
+
+export { closeSessionStore };
 
 const HONO_EXACT_PATHS = new Set(["/api/healthz", "/api/readyz"]);
 
@@ -19,6 +22,8 @@ const HONO_PREFIX_PATHS = [
   "/api/adapters",
   "/api/modules",
   "/api/judgments",
+  "/api/runs",
+  "/api/protocols",
   "/api/device/api/",
 ] as const;
 
@@ -40,7 +45,8 @@ async function registerEnvAdapter(adapters: AdapterRegistry): Promise<void> {
 }
 
 export async function mountHonoOnExpress(app: Express): Promise<void> {
-  const sessions = new InMemorySessionStore();
+  const sessions = createSessionStore();
+  initKitchenSessionBridge(sessions);
   const adapters = new AdapterRegistry();
   const modules = new ModuleRegistry();
   await registerEnvAdapter(adapters);

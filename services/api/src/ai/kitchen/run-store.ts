@@ -1,4 +1,5 @@
 import fs from "fs";
+import { bridgeKitchenRunEvent } from "../../bridge/kitchen-session-link.js";
 import path from "path";
 import { openLabosDataDir } from "../../data-root.js";
 import type { ProtocolRun, RunSummary, StepState } from "./tracker.js";
@@ -159,6 +160,7 @@ export async function appendKitchenEvent(evt: Omit<KitchenRunEvent, "ts">): Prom
   await ensureDirs();
   const record: KitchenRunEvent = { ts: Date.now(), ...evt };
   await fs.promises.appendFile(KITCHEN_EVENTS_FILE, JSON.stringify(record) + "\n");
+  void bridgeKitchenRunEvent(record).catch(() => {});
 }
 
 export async function readKitchenEvents(runId?: string): Promise<KitchenRunEvent[]> {

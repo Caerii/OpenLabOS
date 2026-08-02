@@ -16,7 +16,6 @@ import {
   energyQualityPareto,
   estimatePreviewEnergyMw,
   fitEnergyCoefficients,
-  inferMeasuredPowerMw,
   resolveParetoCandidates,
   type PreviewProtocolConfig,
   type PreviewProfileId,
@@ -320,15 +319,19 @@ async function main() {
   const results = [];
   for (const candidate of candidates) {
     const row = await measureCandidate(candidate.id, candidate.config, outDir);
-    log("measured", {
-      id: row.id,
-      measuredMw: row.measuredMw,
-      method: row.measurementMethod,
-      coulombSoc: row.timeSeries.soc.socFractionalEnd,
-      syncSkewP95Ms: row.timeSeries.syncSkewMs.p95,
-      latencyP50Ms: row.timeSeries.pipeline.glassToGlassMs.p50 ?? row.timeSeries.pipeline.streamFrameAgeMs.p50,
-      traceJsonl: row.traceJsonl,
-    });
+    if (row.timeSeries) {
+      log("measured", {
+        id: row.id,
+        measuredMw: row.measuredMw,
+        method: row.measurementMethod,
+        coulombSoc: row.timeSeries.soc.socFractionalEnd,
+        syncSkewP95Ms: row.timeSeries.syncSkewMs.p95,
+        latencyP50Ms:
+          row.timeSeries.pipeline.glassToGlassMs.p50
+          ?? row.timeSeries.pipeline.streamFrameAgeMs.p50,
+        traceJsonl: row.traceJsonl,
+      });
+    }
     results.push(row);
   }
 
