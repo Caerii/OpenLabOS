@@ -6,40 +6,43 @@ export function PerceptionStackCard({ segmentationStatus, supervisorStatus }: {
   supervisorStatus: KitchenRealtimeSupervisorStatus | null;
 }) {
   const mode = segmentationStatus?.mode || "mock";
-  const sidecarHealthy = segmentationStatus?.health?.ok;
+  const detectionHealthy = segmentationStatus?.health?.ok;
   const color =
     mode === "sidecar"
-      ? sidecarHealthy === false ? "red" : "green"
+      ? detectionHealthy === false ? "red" : "green"
       : mode === "disabled"
         ? "yellow"
         : "blue";
   const label =
     mode === "sidecar"
-      ? sidecarHealthy === false ? "sidecar offline" : "sidecar active"
+      ? detectionHealthy === false ? "object detection offline" : "object detection online"
       : mode === "disabled"
-        ? "segmentation off"
-        : "mock contract";
+        ? "object detection off"
+        : "practice masks";
 
   return (
     <Card>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <SectionLabel>Perception Stack</SectionLabel>
+          <SectionLabel>Object detection</SectionLabel>
           <p className="text-[11px] text-muted leading-relaxed">
-            Adherence uses live frames, rolling video chunks, Gemini/ER judgments, and entity masks when the sidecar is active.
+            Step checks use live frames and short video clips. When object
+            detection is online, entity masks can be attached to the same check.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Badge color={color}>{label}</Badge>
           <Badge color={supervisorStatus?.running ? "green" : "gray"}>
-            {supervisorStatus?.running ? "adherence polling" : "manual checks"}
+            {supervisorStatus?.running ? "auto-check on" : "manual checks"}
           </Badge>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
         <div className="rounded-lg border border-border/15 bg-border/10 p-2">
-          <div className="uppercase tracking-wide text-subtle">Entity layer</div>
-          <div className="mt-1 text-fg">{mode}</div>
+          <div className="uppercase tracking-wide text-subtle">Detection mode</div>
+          <div className="mt-1 text-fg">
+            {mode === "sidecar" ? "live service" : mode === "disabled" ? "off" : "mock"}
+          </div>
         </div>
         <div className="rounded-lg border border-border/15 bg-border/10 p-2">
           <div className="uppercase tracking-wide text-subtle">Backend</div>
@@ -53,7 +56,8 @@ export function PerceptionStackCard({ segmentationStatus, supervisorStatus }: {
       )}
       {mode === "mock" && (
         <div className="mt-3 rounded-lg border border-blue-500/20 bg-blue-500/10 p-2 text-[11px] text-blue-200">
-          Mock mode proves the UI/API contract only. Use the RunPod sidecar for real object masks before relying on entity evidence.
+          Mock mode proves the UI and API contract only. Run a real object-detection
+          service before trusting entity evidence in review.
         </div>
       )}
     </Card>

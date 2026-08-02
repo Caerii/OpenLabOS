@@ -82,7 +82,7 @@ export function DesktopRunControl({
   return (
     <Card padding="none" className={`hidden lg:block labos-panel !bg-surface-2 ${className}`}>
       <CardHeader>
-        <CardTitle icon={<Icon d={ICON.play} size={16} className="text-good-fg" />} sub={capabilities.handsFree ? "Hands-free mode starts recording, protocol state, and realtime supervision" : "Simple mode starts recording and moves through explicit step confirmations"}>
+        <CardTitle icon={<Icon d={ICON.play} size={16} className="text-good-fg" />} sub={capabilities.handsFree ? "Hands-free mode starts recording and automatic step checks" : "Manual mode records the run and moves forward when each step is confirmed"}>
           Run Control
         </CardTitle>
         {isActive && <Badge color={run?.status === "running" ? "green" : "yellow"}>{run?.status}</Badge>}
@@ -91,7 +91,7 @@ export function DesktopRunControl({
       {terminalReview ? (
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_16rem]">
           <div className="rounded-xl border border-highlight-border/20 bg-highlight-bg/10 p-3">
-            <div className="text-[11px] font-semibold uppercase tracking-wide text-highlight">Evidence Package</div>
+            <div className="text-[11px] font-semibold uppercase tracking-wide text-highlight">Saved Run</div>
             <p className="mt-1 text-xs text-muted">{primaryAction.detail}</p>
             {savedManifestRef ? (
               <>
@@ -116,7 +116,7 @@ export function DesktopRunControl({
               </>
             ) : (
               <div className="mt-2 labos-callout-warn p-2 text-xs text-warn-fg">
-                Save the evidence package before starting another run.
+                Save this run before starting another one.
               </div>
             )}
           </div>
@@ -172,7 +172,7 @@ export function DesktopRunControl({
               </Btn>
             ) : supervisor?.running ? (
               <Btn variant="secondary" size="md" loading={busy === "supervisor"} onClick={secondaryActions.find((action) => action.key === "stop-realtime")?.onClick}>
-                Stop Realtime
+                Stop Auto-Check
               </Btn>
             ) : capabilities.realtimeSupervisor ? (
               <Btn
@@ -182,7 +182,7 @@ export function DesktopRunControl({
                 loading={busy === "supervisor"}
                 onClick={onStartSupervisor}
               >
-                Start Realtime Supervisor
+                Start Auto-Check
               </Btn>
             ) : (
               <Btn variant="secondary" size="md" disabled>
@@ -212,12 +212,12 @@ export function DesktopRunControl({
 
           {!shouldStartRun && !isActive && (
             <div className="labos-callout-warn p-3 text-xs text-warn-fg">
-              Complete blocked preflight rows before starting the live run.
+              Finish the setup items above before starting the run.
             </div>
           )}
           {capabilities.realtimeSupervisor && shouldStartSupervisor && (
             <div className="labos-callout-info p-3 text-xs">
-              Run is active. Start realtime supervision so checks happen hands-free.
+              The run is active. Start Auto-Check for hands-free step checks.
             </div>
           )}
         </div>

@@ -38,6 +38,10 @@ import {
   SetupHintBanner,
   SetupFixNext,
   KitchenInstrumentationDrawer,
+  CaptureConsentModal,
+  DependencyStatusPanel,
+  JudgmentSourceBadge,
+  hasCaptureConsent,
 } from "./guided";
 
 export default function GuidedDemoView({
@@ -120,6 +124,8 @@ export default function GuidedDemoView({
   const [dismissedFocusKey, setDismissedFocusKey] = useState("");
   const [readinessGraceExpired, setReadinessGraceExpired] = useState(false);
   const [runFrameBaseline, setRunFrameBaseline] = useState<{ runId: string; frameCount: number } | null>(null);
+  const [consentOpen, setConsentOpen] = useState(false);
+  const [pendingProtocolId, setPendingProtocolId] = useState("");
   const defaultProtocol = defaultProtocolFor(protocols, selectedProtocol);
   const protocolId = defaultProtocol?.id || "";
   const readinessSummary = operatorReadiness?.summary;
@@ -186,7 +192,7 @@ export default function GuidedDemoView({
           : {
               ...check,
               state: "checking" as const,
-              detail: "Checking the glasses connection and LabOS services automatically...",
+              detail: "Checking the glasses and required services...",
               action: undefined,
             }
       ))
@@ -196,6 +202,16 @@ export default function GuidedDemoView({
   const nextCheck = visibleChecks.find((check) => check.state === "blocked") || visibleChecks.find((check) => check.state === "warn") || null;
   const progress = isActive ? Math.max(run?.stepsCompleted || 0, 0) : 0;
   const max = isActive ? run?.totalSteps || 1 : visibleChecks.length;
+
+  const requestGuidedRunStart = (protocolId: string) => {
+    if (!protocolId) return;
+    if (hasCaptureConsent()) {
+      onStartRun(protocolId);
+      return;
+    }
+    setPendingProtocolId(protocolId);
+    setConsentOpen(true);
+  };
 
   const primaryAction = buildPrimaryAction({
     completed: run?.status === "completed" || run?.status === "aborted",
@@ -217,7 +233,7 @@ export default function GuidedDemoView({
     onSaveManifest,
     onLaunchLabos,
     onStartPreview,
-    onStartRun,
+    onStartRun: requestGuidedRunStart,
     onStartSupervisor,
     onConfirmStep,
   });
@@ -315,6 +331,21 @@ export default function GuidedDemoView({
 
       <SetupFixNext checks={visibleChecks} readyCount={readyCount} setupReady={setupReady} />
 
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_14rem]">
+        <DependencyStatusPanel />
+        <div className="rounded-lg border border-border/15 bg-surface-2 p-3">
+          <div className="text-xs font-semibold uppercase tracking-wide text-subtle">Check source</div>
+          <div className="mt-2">
+            <JudgmentSourceBadge
+              lastAdherence={lastAdherence}
+              supervisor={supervisor}
+              segmentation={segmentation}
+              runpodGuard={runpodGuard}
+            />
+          </div>
+        </div>
+      </div>
+
       <KitchenInstrumentationDrawer
         featureFlags={featureFlags}
         featureExperience={featureExperience}
@@ -325,6 +356,7 @@ export default function GuidedDemoView({
         segmentation={segmentation}
         runpodGuard={runpodGuard}
         supervisor={supervisor}
+        lastAdherence={lastAdherence}
       />
 
       <div className="oc-workspace">
@@ -393,7 +425,7 @@ export default function GuidedDemoView({
           completed={workflow.terminalReview}
           secondaryActions={workflow.secondaryActions}
           onSelectProtocol={onSelectProtocol}
-          onStartRun={onStartRun}
+          onStartRun={requestGuidedRunStart}
           onStartSupervisor={onStartSupervisor}
           onConfirmStep={onConfirmStep}
         />
@@ -417,9 +449,23 @@ export default function GuidedDemoView({
           size="sm"
           onClick={() => setDismissedFocusKey("")}
         >
-          Open Focused Run
+          Open Run View
         </Btn>
       )}
+
+      <CaptureConsentModal
+        open={consentOpen}
+        onClose={() => {
+          setConsentOpen(false);
+          setPendingProtocolId("");
+        }}
+        onConfirm={() => {
+          setConsentOpen(false);
+          const protocolToStart = pendingProtocolId || protocolId;
+          setPendingProtocolId("");
+          if (protocolToStart) onStartRun(protocolToStart);
+        }}
+      />
 
       <FocusedRunModal
         open={focusModalOpen}

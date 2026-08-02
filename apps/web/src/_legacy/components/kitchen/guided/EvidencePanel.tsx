@@ -41,31 +41,31 @@ export function EvidencePanel({ result, supervisor, savingManifest, savedManifes
   return (
     <Card>
       <CardHeader>
-        <CardTitle icon={<Icon d={ICON.grid} size={16} className="text-blue-400" />} sub="Explain why the system is advancing, waiting, or warning">
-          Evidence Timeline
+        <CardTitle icon={<Icon d={ICON.grid} size={16} className="text-blue-400" />} sub="Why the run is advancing, waiting, or asking for attention">
+          Step checks
         </CardTitle>
         <div className="flex flex-wrap gap-2">
           <Btn size="xs" variant="secondary" onClick={onAdherenceTick}>Check Now</Btn>
-          <Btn size="xs" variant="secondary" loading={savingManifest} onClick={onSaveManifest}>Save Manifest</Btn>
+          <Btn size="xs" variant="secondary" loading={savingManifest} onClick={onSaveManifest}>Save Run</Btn>
         </div>
       </CardHeader>
 
       <div className="space-y-2">
         <EvidenceRow
-          title="Current decision"
+          title="Latest step check"
           detail={decision
-            ? `${decision.action.replace(/_/g, " ")} / ${decision.state} / ${Math.round((decision.confidence || 0) * 100)}% confidence. ${decision.spokenSummary}`
-            : "No adherence decision yet. Start realtime supervision or run a manual check."}
+            ? `${decision.action.replace(/_/g, " ")} · ${decision.state} · ${Math.round((decision.confidence || 0) * 100)}% confidence. ${decision.spokenSummary}`
+            : "No step check yet. Start Auto-Check or select Check Now."}
           tone={tone}
         />
         <EvidenceRow
-          title="Frame buffer"
-          detail={`${supervisor?.buffer.frameCount || 0} frames buffered${supervisor?.buffer.approxFps ? ` at ${supervisor.buffer.approxFps.toFixed(1)} fps` : ""}. Preview tap is ${supervisor?.previewTap.running ? "running" : "idle"}.`}
+          title="Live camera buffer"
+          detail={`${supervisor?.buffer.frameCount || 0} recent frames${supervisor?.buffer.approxFps ? ` at ${supervisor.buffer.approxFps.toFixed(1)} fps` : ""}. Sampling is ${supervisor?.previewTap.running ? "active" : "idle"}.`}
         />
         {rollingChunk && (
           <EvidenceRow
-            title="Rolling video chunk"
-            detail={`${rollingChunk.frameCount} frames, ${(rollingChunk.durationMs / 1000).toFixed(1)}s, ${rollingChunk.actualFps.toFixed(1)} fps. Ref: ${rollingChunk.chunkRef}`}
+            title="Recent video clip"
+            detail={`${rollingChunk.frameCount} frames over ${(rollingChunk.durationMs / 1000).toFixed(1)}s (${rollingChunk.actualFps.toFixed(1)} fps).`}
             tone="good"
           />
         )}
@@ -80,14 +80,14 @@ export function EvidencePanel({ result, supervisor, savingManifest, savedManifes
           ))
         ) : (
           <EvidenceRow
-            title="Per-check evidence"
-            detail="Manual checks show full per-check evidence here. Supervisor status intentionally keeps a compact last decision for polling."
+            title="Check details"
+            detail="Select Check Now to see the observations behind the latest step result."
           />
         )}
         {savedManifestRef && (
           <EvidenceRow
-            title="Saved review package"
-            detail={`Manifest saved to dashboard/data/${savedManifestRef}. This is the artifact to inspect after the run and move into training data.`}
+            title="Saved run"
+            detail="This run is on disk and ready to open in review or export."
             tone="good"
           />
         )}
@@ -100,7 +100,7 @@ export function MobileEvidenceDetails(props: Parameters<typeof EvidencePanel>[0]
   return (
     <details className="lg:hidden rounded-xl border border-border/20 bg-surface-2">
       <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-fg">
-        Evidence and manifest
+        Step checks and session log
       </summary>
       <div className="border-t border-border/15 p-3">
         <EvidencePanel {...props} />

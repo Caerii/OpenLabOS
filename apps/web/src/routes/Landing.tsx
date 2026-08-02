@@ -49,30 +49,31 @@ export function Landing() {
 
         <div className="relative z-10 mx-auto max-w-7xl h-full px-6 flex items-center">
           <div className="max-w-3xl">
-            <motion.span
+            <motion.p
               {...reveal(0)}
-              className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-accent-300 font-mono"
+              className="text-xs uppercase font-mono tracking-[0.18em] text-accent-300"
             >
-              <span className="block w-1.5 h-1.5 rounded-full bg-accent-400 animate-pulseGlow" />
-              Open lab operating system
-            </motion.span>
+              OpenLabOS · pre-1.0 research software
+            </motion.p>
 
             <motion.h1
               {...reveal(0.05)}
-              className="mt-6 text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight leading-[1.05] text-ink-high"
+              className="mt-5 text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight leading-[1.05] text-ink-high"
             >
-              Augmented science,{" "}
-              <span className="text-accent-400 glow-emerald">measurably</span>{" "}
-              done.
+              Run lab protocols.{" "}
+              <span className="text-accent-400 glow-emerald">
+                Keep a record of every step.
+              </span>
             </motion.h1>
 
             <motion.p
               {...reveal(0.15)}
-              className="mt-6 max-w-xl text-lg leading-relaxed text-ink-mid"
+              className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-mid"
             >
-              OpenLabOS turns sensor-equipped devices into protocol-aware
-              scientific instruments. Capture the bench. Judge the step. Train
-              on what you learn. Local-first, vendor-neutral, fully open.
+              OpenLabOS is an open-source protocol runner for camera-assisted
+              laboratory work. It presents one instruction at a time and links
+              the protocol version to an append-only session history. Configured
+              hardware and model paths can add camera evidence and judgments.
             </motion.p>
 
             <motion.div
@@ -80,10 +81,10 @@ export function Landing() {
               className="mt-10 flex flex-wrap items-center gap-3"
             >
               <Link
-                to="/dashboard"
+                to="/operate"
                 className="group relative inline-flex items-center gap-2 px-5 py-3 rounded-md bg-accent-400 text-surface-0 font-medium hover:bg-accent-300 transition shadow-glow"
               >
-                Open the dashboard
+                Open the guided demo
                 <svg
                   width="16"
                   height="16"
@@ -102,115 +103,167 @@ export function Landing() {
                 </svg>
               </Link>
               <Link
-                to="/operate"
+                to="/dashboard"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-md text-ink-high border border-white/10 hover:border-accent-400/40 hover:text-accent-300 transition"
               >
-                Operator console
+                Inspect the system
               </Link>
               <a
-                href="#why"
+                href="#how"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-md text-ink-mid hover:text-accent-300 transition"
               >
-                Why OpenLabOS
+                See what it records
               </a>
-            </motion.div>
-
-            <motion.div
-              {...reveal(0.35)}
-              className="mt-12 flex items-center gap-8 text-xs font-mono text-ink-low"
-            >
-              <Spec label="Schema" value="Zod / JSON-Schema" />
-              <Spec label="API" value="Hono · OpenAPI 3.1" />
-              <Spec label="Local model" value="Ollama · LM Studio" />
             </motion.div>
           </div>
         </div>
       </section>
 
-      <PlanesSection />
-      <Differentiators />
-      <CTASection />
+      <CurrentScopeSection />
+      <RunRecordSection />
+      <QuickstartSection />
     </div>
   );
 }
 
-function Spec({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex flex-col">
-      <span className="uppercase tracking-[0.18em] text-ink-muted">{label}</span>
-      <span className="mt-1 text-ink-mid">{value}</span>
-    </div>
-  );
-}
-
-function PlanesSection() {
-  const planes = [
+function RunRecordSection() {
+  const stages = [
     {
-      title: "Presentation",
-      body: "Web app and reference glasses surface the next step and capture the bench.",
-      foot: "apps/web · apps/device-reference",
+      title: "Load a versioned protocol",
+      body: "Each run starts from a specific protocol ID and version. The operator sees the current instruction, required objects, success criteria, and safety notes.",
     },
     {
-      title: "Coordination",
-      body: "A small Hono API owns sessions, protocols, and routes by capability.",
-      foot: "services/api",
+      title: "Record what the operator does",
+      body: "Starting, completing, or skipping a step appends an event to the session. A configured device adapter can add frames, preview video, and short clips.",
     },
     {
-      title: "Reasoning",
-      body: "An inference gateway picks providers; a perception sidecar prepares evidence.",
-      foot: "services/inference · services/perception",
+      title: "Request a step judgment",
+      body: "When model checks are enabled, the API sends the current step and available evidence to the inference service. That service selects Ollama, LM Studio, or the deterministic provider and returns a structured verdict.",
     },
     {
-      title: "Learning",
-      body: "Frozen datasets, manifested runs, SFT/DPO/GRPO and judgment LoRA.",
-      foot: "services/training · services/eval",
+      title: "Close the session",
+      body: "The session store preserves the protocol reference and event history. The legacy kitchen workflow also writes media and review data while those records are being consolidated into the shared RunManifest contract.",
     },
   ];
   return (
-    <section id="why" className="relative py-28 px-6">
-      <div className="mx-auto max-w-7xl">
+    <section id="how" className="relative py-28 px-6">
+      <div className="mx-auto max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-2xl"
         >
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
-            Four planes, one repository.
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight max-w-3xl">
+            A run is more than a video
           </h2>
-          <p className="mt-4 text-ink-mid">
-            Each plane talks to the next through a small, documented contract.
-            Never by reaching across.
+          <p className="mt-4 max-w-3xl text-ink-mid leading-relaxed">
+            Video alone does not say which instruction was active, why a step
+            advanced, or which model produced a verdict. OpenLabOS keeps those
+            facts together as one session instead of reconstructing them after
+            the experiment.
           </p>
         </motion.div>
 
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {planes.map((plane, i) => (
-            <motion.div
-              key={plane.title}
+        <ol className="mt-14 grid gap-x-12 gap-y-10 md:grid-cols-2">
+          {stages.map((stage, i) => (
+            <motion.li
+              key={stage.title}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-15%" }}
               transition={{
                 duration: 0.55,
-                delay: i * 0.08,
+                delay: i * 0.05,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="relative rounded-xl border border-white/5 bg-surface-1/60 backdrop-blur p-5 hover:border-accent-400/40 transition group"
+              className="grid gap-3 sm:grid-cols-[3rem_1fr] sm:gap-5"
             >
-              <span className="absolute top-4 right-4 text-[10px] font-mono uppercase tracking-widest text-ink-muted">
-                0{i + 1}
+              <span className="font-mono text-sm text-accent-300/90 tabular-nums">
+                {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="text-ink-high text-lg font-medium">{plane.title}</h3>
-              <p className="mt-3 text-sm text-ink-mid leading-relaxed">{plane.body}</p>
-              <div className="mt-6 text-[11px] font-mono text-accent-300/80">
-                {plane.foot}
+              <div>
+                <h3 className="text-xl font-medium text-ink-high">{stage.title}</h3>
+                <p className="mt-2 text-sm text-ink-mid leading-relaxed">{stage.body}</p>
               </div>
-              <div
-                aria-hidden
-                className="absolute inset-x-5 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-400/40 to-transparent opacity-0 group-hover:opacity-100 transition"
-              />
+            </motion.li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function CurrentScopeSection() {
+  const items = [
+    {
+      label: "Works without hardware",
+      title: "Docker demonstration",
+      body: "The default Compose stack serves the web console, API, inference service, and deterministic object-detection backend. It can complete the kitchen protocol and persist the session across an API restart.",
+    },
+    {
+      label: "Hardware-dependent",
+      title: "Live camera capture",
+      body: "The implemented Android adapter supports the reference device path. Camera glasses require device setup. The webcam adapter is still a scaffold; ROS 2 and serial adapters are planned.",
+    },
+    {
+      label: "Optional",
+      title: "Model-assisted step checks",
+      body: "Ollama and LM Studio can produce structured judgments from protocol steps and visual evidence. The deterministic provider verifies the contract in tests but does not inspect the scene.",
+    },
+    {
+      label: "Experimental",
+      title: "Object detection and learning",
+      body: "A GPU overlay exists for Grounded SAM 2, but it requires separate NVIDIA setup and model downloads. Dataset preparation, evaluation, and training utilities are present and remain research workflows.",
+    },
+  ];
+  return (
+    <section className="relative py-28 px-6 border-t border-white/5">
+      <div className="mx-auto max-w-5xl">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-3xl md:text-4xl font-semibold tracking-tight"
+        >
+          What is available today
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.6, delay: 0.04, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-4 max-w-3xl text-ink-mid leading-relaxed"
+        >
+          The software-only demonstration is the verified starting point.
+          Hardware capture, local model judgments, GPU object detection, and
+          offline learning require additional setup and remain experimental or
+          hardware-dependent. OpenLabOS is not validated for clinical,
+          diagnostic, safety-critical, or regulated laboratory use.
+        </motion.p>
+
+        <div className="mt-14 grid gap-5 md:grid-cols-2">
+          {items.map((item, i) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{
+                duration: 0.6,
+                delay: i * 0.04,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="rounded-xl border border-white/5 bg-surface-1/60 p-6"
+            >
+              <p className="text-[11px] uppercase tracking-[0.18em] font-mono text-accent-300">
+                {item.label}
+              </p>
+              <h3 className="mt-3 text-xl font-semibold tracking-tight text-ink-high">
+                {item.title}
+              </h3>
+              <p className="mt-3 text-sm text-ink-mid leading-relaxed">{item.body}</p>
             </motion.div>
           ))}
         </div>
@@ -219,62 +272,10 @@ function PlanesSection() {
   );
 }
 
-function Differentiators() {
-  const items = [
-    {
-      kicker: "Schema as truth",
-      title: "One Zod schema generates everything.",
-      body: "Protocols, sessions, judgments, run manifests — declared once in TypeScript, exported as JSON Schema, regenerated as Pydantic. No hand-typed wires.",
-    },
-    {
-      kicker: "Capability routing",
-      title: "Devices are adapters, not assumptions.",
-      body: "A webcam, a Mentra Live, a ROS 2 station — they all plug into the same DeviceAdapter contract. The API doesn't know or care which.",
-    },
-    {
-      kicker: "Replay-as-test",
-      title: "Every captured run is a regression test.",
-      body: "Commit a RunManifest, replay it against a future build, and a single key-set diff fails CI before anything ships.",
-    },
-    {
-      kicker: "Local-first",
-      title: "It works without the cloud.",
-      body: "Ollama, LM Studio, vLLM — provider keys are opt-in. The default path runs offline against the bench you have today.",
-    },
-  ];
-  return (
-    <section className="relative py-28 px-6 border-t border-white/5">
-      <div className="mx-auto max-w-7xl grid gap-16 lg:grid-cols-2">
-        {items.map((item, i) => (
-          <motion.div
-            key={item.title}
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{
-              duration: 0.6,
-              delay: i * 0.06,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-          >
-            <span className="text-[11px] uppercase tracking-[0.2em] text-accent-300 font-mono">
-              {item.kicker}
-            </span>
-            <h3 className="mt-3 text-2xl md:text-3xl font-semibold tracking-tight text-ink-high">
-              {item.title}
-            </h3>
-            <p className="mt-4 text-ink-mid leading-relaxed">{item.body}</p>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function CTASection() {
+function QuickstartSection() {
   return (
     <section className="relative py-32 px-6 border-t border-white/5">
-      <div className="mx-auto max-w-4xl text-center">
+      <div className="mx-auto max-w-2xl">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -282,30 +283,47 @@ function CTASection() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="text-4xl md:text-5xl font-semibold tracking-tight"
         >
-          Bring your bench. Start in five minutes.
+          Run the software-only demonstration
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.6, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-4 text-ink-mid max-w-xl mx-auto"
+          className="mt-5 text-ink-mid leading-relaxed"
         >
-          Connect a device, pick a protocol, hit run. The dashboard takes it
-          from there.
+          Start the Compose stack, then open the guided kitchen console. The
+          demonstration uses deterministic object detection and does not
+          require a camera or cloud credentials. Ollama is needed only for
+          interactive model judgments.
         </motion.p>
+        <motion.pre
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 overflow-x-auto rounded-lg border border-white/10 bg-surface-1 px-5 py-4 text-sm font-mono text-accent-300"
+        >
+          docker compose up --build --wait
+        </motion.pre>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10"
+          transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-10 flex flex-wrap gap-3"
         >
           <Link
-            to="/dashboard"
+            to="/operate/kitchen"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-accent-400 text-surface-0 font-medium hover:bg-accent-300 transition shadow-glow"
           >
-            Open dashboard →
+            Open /operate/kitchen
+          </Link>
+          <Link
+            to="/dashboard"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-ink-high border border-white/10 hover:border-accent-400/40 hover:text-accent-300 transition"
+          >
+            Inspect the dashboard
           </Link>
         </motion.div>
       </div>

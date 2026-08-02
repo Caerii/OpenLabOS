@@ -101,7 +101,12 @@ export function DevicePreview({
         const start = performance.now();
         const res = await fetch(`${HEALTH_URL}?lite=1`);
         if (!res.ok) {
-          if (!cancelled) setStatus({ kind: "stalled", reason: `health ${res.status}` });
+          if (!cancelled) {
+            setStatus({
+              kind: "stalled",
+              reason: `Preview health check returned ${res.status}`,
+            });
+          }
           return;
         }
         const h = (await res.json()) as PreviewHealth & { streamFrameAgeMs?: number };
@@ -118,7 +123,7 @@ export function DevicePreview({
           if (stallCount > 6) {
             setStatus({
               kind: "stalled",
-              reason: "camera bridge not streaming on this firmware",
+              reason: "The device camera is not sending frames",
             });
           }
           // Even if /preview/health says streaming:false, the underlying MJPEG
@@ -219,10 +224,10 @@ export function DevicePreview({
   }, []);
 
   const overlay = useMemo(() => {
-    if (paused) return { label: "paused", tone: "warn" as const };
+    if (paused) return { label: "Preview paused", tone: "warn" as const };
     switch (status.kind) {
       case "starting":
-        return { label: "warming camera…", tone: "muted" as const };
+        return { label: "Starting camera…", tone: "muted" as const };
       case "streaming":
         return {
           label: `${status.mode} · ${status.fps.toFixed(1)} fps · ${latencyMs !== null ? `${latencyMs} ms` : "…"} · ${status.frameCount} frames`,
@@ -231,7 +236,7 @@ export function DevicePreview({
       case "stalled":
         return { label: status.reason, tone: "warn" as const };
       case "paused":
-        return { label: "paused", tone: "warn" as const };
+        return { label: "Preview paused", tone: "warn" as const };
       case "error":
         return { label: status.detail, tone: "bad" as const };
     }
@@ -247,7 +252,7 @@ export function DevicePreview({
       {mode === "mjpeg" && !paused && (
         <img
           src={STREAM_URL}
-          alt="device preview"
+          alt="Live device camera preview"
           className="absolute inset-0 w-full h-full object-cover"
           onError={onMjpegError}
         />
@@ -255,7 +260,7 @@ export function DevicePreview({
       {mode === "polling" && (
         <img
           ref={imgRef}
-          alt="device preview"
+          alt="Live device camera preview"
           className="absolute inset-0 w-full h-full object-cover"
         />
       )}

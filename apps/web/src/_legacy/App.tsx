@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Navigate, Outlet, Route, Routes, useOutletContext, useParams } from "react-router-dom";
+import { Navigate, Outlet, useOutletContext, useParams } from "react-router-dom";
 import { usePolling } from "./hooks/usePolling";
 import {
   deviceStatus,
@@ -55,7 +55,7 @@ type ShellOutletContext = {
   featureFlagsLoaded: boolean;
 };
 
-function RoutedPanel() {
+export function RoutedPanel() {
   const { connected, featureFlags, featureExperience, featureFlagsLoaded } = useOutletContext<ShellOutletContext>();
   const { page } = useParams<{ page: string }>();
   const tab = tabFromPathSegment(page);
@@ -98,14 +98,13 @@ function RoutedPanel() {
 
   return panelMap[tab];
 }
-
-function IndexRedirect() {
+export function IndexRedirect() {
   const { featureFlags, featureExperience, featureFlagsLoaded } = useOutletContext<ShellOutletContext>();
   if (!featureFlagsLoaded) return <LoadingState className="py-16" />;
   return <Navigate to={pathForTab(defaultTabForFeatures(featureFlags, featureExperience))} replace />;
 }
 
-function AppShell() {
+export function AppShell() {
   const { theme } = useTheme();
   const { data: status, refresh: refreshStatus } = usePolling(deviceStatus, 5000);
   const { data: featureData } = usePolling(kitchenFeatures, 30000);
@@ -235,17 +234,5 @@ function AppShell() {
         ) : null}
       </Modal>
     </div>
-  );
-}
-
-export default function App() {
-  return (
-    <Routes>
-      <Route element={<AppShell />}>
-        <Route index element={<IndexRedirect />} />
-        <Route path=":page" element={<RoutedPanel />} />
-      </Route>
-      <Route path="*" element={<Navigate to=".." replace />} />
-    </Routes>
   );
 }

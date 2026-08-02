@@ -514,7 +514,7 @@ export default function FileExplorer({ connected, featureFlags, featureExperienc
   const [searchParams, setSearchParams] = useSearchParams();
   const experience = deriveLabOSExperience(featureFlags, featureExperience);
   const tabs = useMemo(
-    () => FILE_EXPLORER_SUB_TABS.filter((tab) => tab.id !== "browse" || experience.mode === "experimental"),
+    () => FILE_EXPLORER_SUB_TABS.filter((tab) => tab.id !== "browse" || experience.mode === "engineering"),
     [experience.mode],
   );
   const [subTab, setSubTab] = useState<SubTab>("runs");

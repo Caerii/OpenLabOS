@@ -10,10 +10,10 @@ export function terminalRunOperatorMessage(run: KitchenRunSummary | null, savedM
   const partial = run?.status === "aborted";
   if (savedManifestRef) {
     return partial
-      ? "Partial evidence is saved. Review this run or start another attempt from step 1."
-      : "Evidence is saved. Review this run or start another attempt from step 1.";
+      ? "The partial run is saved. Review it or start another attempt from step 1."
+      : "The run is saved. Review it or start another attempt from step 1.";
   }
   return partial
-    ? "Run stopped. Save the partial evidence package before starting another attempt."
-    : "Run complete. Save the evidence package so this attempt appears in the run library.";
+    ? "Run stopped. Save the partial run before starting another attempt."
+    : "Run complete. Save the run so it appears in the run library.";
 }

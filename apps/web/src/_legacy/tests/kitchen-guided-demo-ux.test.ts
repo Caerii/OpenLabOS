@@ -272,7 +272,7 @@ async function main() {
     shouldStartSupervisor: true,
     featureFlags: realtimeFlags,
   });
-  assert.equal(startSupervisor.label, "Start Realtime Supervisor");
+  assert.equal(startSupervisor.label, "Start Auto-Check");
 
   const confirmStep = primaryAction({
     isActive: true,
@@ -483,7 +483,7 @@ async function main() {
     savedManifestRef: "",
   }));
   assert.match(terminalFocusedMarkup, /Run complete/);
-  assert.match(terminalFocusedMarkup, /Save the evidence package so this attempt appears in the run library/);
+  assert.match(terminalFocusedMarkup, /Save the run so it appears in the run library/);
   assert.doesNotMatch(terminalFocusedMarkup, /Place the mug on the tray/);
 
   const terminalMobileMarkup = renderToStaticMarkup(createElement(OperatorActionDock, {

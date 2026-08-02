@@ -66,7 +66,7 @@ export function MobileOperatorCommand({
     <Card className={`lg:hidden labos-panel !bg-surface-2 ${className}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="oc-instruction-kicker">Operator command</div>
+          <div className="oc-instruction-kicker">Next action</div>
           <h3 className="oc-instruction-text text-lg">{stageLabel}</h3>
           <p className="mt-1 text-xs leading-relaxed text-muted">{primaryAction.detail}</p>
         </div>
@@ -102,7 +102,7 @@ export function MobileOperatorCommand({
 
       {savedManifestRef && (
         <div className="mt-3 rounded-lg border border-highlight-border/20 bg-highlight-bg/10 p-3">
-          <div className="text-[10px] font-semibold uppercase tracking-wide text-highlight">Saved Evidence</div>
+          <div className="text-[10px] font-semibold uppercase tracking-wide text-highlight">Saved Run</div>
           <a className="mt-2 block rounded-lg border border-highlight-border/25 bg-surface-2/70 p-3 text-sm font-semibold text-accentText" href={runReviewHref(run?.id)}>
             Review {runNaturalLabel(savedRunNumber)}
           </a>
