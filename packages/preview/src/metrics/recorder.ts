@@ -60,7 +60,7 @@ export class RollingLatencyRecorder {
     };
   }
 
-  snapshot(extra: Partial<PreviewFrameTrace> = {}) {
+  snapshot(extra: Record<string, unknown> = {}) {
     const stages: PreviewPipelineStage[] = [
       "captureToEncode",
       "encodeToPublish",

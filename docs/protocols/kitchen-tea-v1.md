@@ -1,10 +1,14 @@
-# Protocol: Kitchen tea (closed-world demo)
+# Kitchen tea demo protocol
 
-This document describes the **kitchen-tea-v1** demo protocol in plain language. The machine-readable source of truth is `[packages/protocol-schema/examples/kitchen-tea-v1.json](../../packages/protocol-schema/examples/kitchen-tea-v1.json)`, validated by Zod schemas in `@labos/protocol-schema`.
+The kitchen tea demo has five fixed steps. Its machine-readable protocol is
+[`examples/protocols/kitchen-tea.protocol.json`](../../examples/protocols/kitchen-tea.protocol.json)
+and is validated by `@openlabos/protocol`.
 
 ## Intent
 
-An operator wearing POV capture follows five fixed steps to make tea with a **mug**, **kettle**, **tea bag**, **spoon**, and **tray**. The system never tries to understand arbitrary lab tasks in this MVP; it only reasons about the enumerated objects, actions, surfaces, and issues defined in the schema package.
+An operator wearing a point-of-view camera makes tea with a **mug**, **kettle**,
+**tea bag**, **spoon**, and **tray**. Checks are limited to the objects, actions,
+surfaces, and problems named in the protocol.
 
 ## Stable step ids
 
@@ -13,11 +17,11 @@ All session state and model judgments refer to steps by `**step_id`**, not by ar
 
 | Order | `step_id`              | Title                |
 | ----- | ---------------------- | -------------------- |
-| 0     | `place-mug-on-counter` | Place mug on counter |
-| 1     | `pour-water-into-mug`  | Pour water into mug  |
+| 0     | `place-mug`            | Place mug on counter |
+| 1     | `pour-water`           | Pour water into mug  |
 | 2     | `add-tea-bag`          | Add tea bag          |
-| 3     | `stir-with-spoon`      | Stir with spoon      |
-| 4     | `place-mug-on-tray`    | Place mug on tray    |
+| 3     | `stir`                 | Stir with spoon      |
+| 4     | `place-on-tray`        | Place mug on tray    |
 
 
 `order` exists only to sort steps in the UI.
@@ -45,11 +49,19 @@ Each step lists **success_criteria** as small structured records (`criterion_typ
 
 Automated eval and LM prompts should prefer these structured fields over free prose inside descriptions.
 
-## Judgments (preview)
+## Judgments
 
-When the VLM integration lands, each **JudgmentResult** will include the same `**step_id`**, structured detections (`objects_seen`, `action_detected`, `step_complete`, `possible_issue`, `confidence`), and a `**reason` string** that is **explanatory only**—metrics must use the structured fields, not parsed natural language from `reason`.
+Each `Judgment` records a `step_id`, `verdict`, structured `criteria`
+evidence (indexed into this protocol's `success_criteria`), optional
+`observed_objects`, and a `rationale` that is explanatory only — metrics
+must use the structured fields, not parsed natural language from
+`rationale`. Object `confidence` values are uncalibrated producer
+self-reports. Kitchen-tea steps are visual placement and action checks;
+they do not claim instrument measurements.
 
 ## Related documents
 
+- [Writing a protocol](authoring.md) — the schema field by field, with
+  validation and run instructions
 - decision 0011 — closed-world decision and vocabulary discipline
-- `packages/protocol-schema/README.md` — schema invariants and scripts
+- `packages/protocol/src/protocol.ts` — schema source of truth

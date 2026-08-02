@@ -1,133 +1,132 @@
-# A Literate Architecture of OpenLabOS
+# Architecture of a recorded run
 
-> *Read this top-to-bottom and you will know how OpenLabOS thinks. Each section
-> tells one story; each diagram is a sentence in that story.*
+This document follows one protocol run through the repository. It explains why
+the system separates operator guidance, session state, model judgments, and
+offline learning—and which parts of that design are implemented today.
 
-## 1. The thing we are building
+## 1. The unit of work
 
-A laboratory protocol is a sequence of small, observable acts: *place this on
-that, pour that into this, wait, measure, record.* When you watch a careful
-operator at the bench, almost all of the work is happening at the level of
-visible objects on visible surfaces. OpenLabOS is the substrate that turns a
-camera pointed at a bench — plus a model that can describe what it sees — into
-a system that knows when the operator has done the next step, and can say so
-in time to be useful.
+A laboratory protocol is a sequence of observable actions: place a vessel,
+add a reagent, wait, measure, record. The software must do more than display
+those instructions. It must preserve enough context to answer, after the run:
 
-The system has four jobs:
+- Which protocol version did the operator follow?
+- Which step was active when a frame or clip was captured?
+- Why did the run advance, wait, or stop?
+- Which provider produced each judgment?
 
-> Tell the operator what to do next, watch them try, decide whether they
-> succeeded, and remember what happened so we can do it better next time.
+OpenLabOS represents one execution of one protocol as a `Session`. Session
+events drive the live run. A `RunManifest` is the intended cross-stage record
+for review, replay, evaluation, and experimental training; consolidation from
+the legacy kitchen record into that contract is still in progress.
 
-That is the entire product. Everything else is plumbing.
+## 2. Why the code is in one repository
 
-## 2. Why a monorepo, and why these languages
-
-The natural shape of this work is polyglot. Web UI is best in TypeScript. ML
-is best in Python. Device-side code is whatever the device speaks. A monorepo
-is the only place where a change to a shared schema can land atomically across
-all three.
+The web console and API are TypeScript. Model services and training utilities
+are Python. Device integration uses the language and runtime required by the
+hardware. Keeping these projects in one repository allows a contract change
+to update its TypeScript definition, generated schema, Python consumer, tests,
+and documentation in the same review.
 
 We use **pnpm** for the JavaScript/TypeScript workspace and **uv** for each
-Python project. Turbo coordinates builds across the TS half. The Python halves
-are independent uv projects so they can pin different ML dependencies without
-fighting. The cost is a small bootstrapping ritual; the benefit is that each
-service evolves at its own cadence without dragging the others behind it.
+Python project. Turbo coordinates TypeScript workspace tasks. Each Python
+service keeps its own environment so inference, perception, and training can
+pin different ML dependencies.
 
-## 3. The protocol schema is the spine
+## 3. Shared schemas connect the stages
 
-If you read only one folder of this repository, read `packages/protocol`.
-Everything else is an interpreter of it.
+`packages/protocol` owns the public protocol and run wire formats.
 
-A `Protocol` is a list of `Step`s. A `Step` declares the objects it expects to
-see, the action the operator is about to perform, and a list of
-`SuccessCriteria` — each a small typed predicate the system can evaluate
-against the scene. A `Session` is one operator running one `Protocol` once,
-producing an append-only list of `SessionEvent`s. A `Judgment` is the model's
-verdict on one `Frame` against one `Step`. A `RunManifest` closes over the
-session: protocol hash, every event, every judgment, every artifact pointer.
+A `Protocol` contains ordered `Step` records. A `Session` identifies one
+attempt to execute a protocol and accumulates append-only `SessionEvent`
+records. A `Judgment` records a provider's verdict on one step. A
+`RunManifest` references the protocol, session history, judgments, and stored
+artifacts needed for later review.
 
-These are the only nouns the rest of the system is allowed to invent contracts
-around. They are defined once, in TypeScript with Zod, and **generated** —
-never re-typed — into Python via JSON Schema codegen during `uv sync`. If
-those generated files diverge from the source, the build breaks, on purpose.
+**What is reproducible.** Replaying session events in append order
+reconstructs the folded session state exactly. Judgments are not reproducible
+computations: they are observations stamped with a `source` string that must
+name the producer (model id and parameters, human id, or hybrid recipe)
+precisely enough to interpret them later. Event `at` timestamps are
+wall-clock hints; append order is authoritative.
 
-## 4. The four planes again, slowly
+**What a criterion claims.** A `measurement_in_range` criterion declares an
+acceptance band. It becomes a measurement only when criterion evidence (or a
+`measurement_recorded` event) carries a value with `method` of `instrument`
+or `display_readout`. Visual estimates and omitted methods are estimates.
+Object `confidence` scores are uncalibrated self-reports until a producer is
+calibrated against labeled data.
 
-The repository's services partition into four planes, in order of how often
-they run.
+The TypeScript source emits JSON Schema. The training package contains
+generated Python protocol models and a regeneration script. CI checks schema
+generation and committed outputs; this path is still being consolidated, so
+service READMEs remain the authority for their accepted request shapes.
 
-**The Presentation plane** runs on the operator's device. It shows the next
+## 4. Responsibility boundaries
+
+**Presentation** runs on the operator's device. It shows the next
 step, captures frames, and streams them outward. It does not know how
 judgments are produced — only how to display them. The web app is a React +
 Vite + TypeScript single-page app. The reference device app is a small
 Android client; other devices are adapters.
 
-**The Coordination plane** runs as `services/api`. It is a Hono server that
-holds the *truth* about a session: which protocol is active, which step is
-current, which artifacts belong to which session. It is forbidden from calling
-a model or speaking a device wire protocol; it is not interesting on purpose.
-This is where reliability lives.
+**Coordination** runs as `services/api`. The current runtime is Express with
+mounted Hono routes during an active migration. It owns session lifecycle,
+protocol registration, device routing, and artifact storage. It forwards model
+work to inference and hardware work to adapters rather than embedding either
+implementation.
 
-**The Reasoning plane** runs as `services/inference` and `services/perception`.
-Inference is a Python FastAPI service that owns one job: given a step and a
-frame, return a `Judgment`. It hides the routing between cloud providers,
-local runtimes (Ollama, LM Studio, vLLM) and any specialised reasoner you
-plug in. Perception is the cheaper sibling: segmentations, trackers, spatial
-summaries — small models that prepare evidence for the larger ones.
+**Reasoning** runs as `services/inference` and `services/perception`. Inference
+accepts a step and available frame evidence, selects a registered provider,
+and returns a `Judgment`. The active endpoint supports Ollama, LM Studio, and
+a deterministic mock. Perception exposes normalized object observations from
+either a mock backend or an experimental Grounded SAM 2 setup.
 
-**The Learning plane** runs as `services/training` and `services/eval`.
-Training consumes manifests, freezes datasets, and runs SFT / DPO / GRPO /
-judgment-LoRA jobs. Eval consumes the resulting checkpoints (or any judgment
-producer at all, including humans) and produces metric reports. Neither plane
-runs in the request path; both are reproducible from a manifest hash.
+**Learning** runs as `services/training` and `services/eval`. These packages
+contain dataset preparation, SFT / DPO / GRPO utilities, replay fixtures, and
+validators. They are experimental and run offline; neither service is required
+to execute a live protocol.
 
 ## 5. The device is an adapter
 
-The easiest way to ruin a system like this is to bake a particular device into
-its core: route paths that mention a specific HMD, package names that hint at
-a vendor, prebuilt artefacts that only run on one rig. OpenLabOS refuses that
-trap. Devices are polymorphic: an adapter
-is a small package that exposes a `DeviceAdapter` interface (capabilities,
-preview stream, sensor stream, shell). The Coordination plane talks to
-adapters by ID; it does not know whether the adapter is an Android phone, a
-laptop webcam, a ROS 2 station, or a serial-attached fixture. Adding a new
-device family is a new package under `adapters/`, not a change to the API.
+Device-specific operations belong behind adapter contracts so protocols and
+sessions do not depend on a hardware brand. The implemented Android adapter
+supports the reference device path. A webcam adapter scaffold is present; ROS
+2 and serial adapters remain planned. As the adapter contract stabilizes, new
+device families should be added under `adapters/` without changing protocol
+documents.
 
-## 6. Modules are how labs add their world
+## 6. Domain modules are migration-era scaffolding
 
-A *module* is a package that contributes vocabulary (object kinds, actions,
-reagents) and prompt fragments to the reasoning plane. We ship a small set
-(`biotech`, `chemistry`, `materials`, `field-bio`, `nanotech`) as references.
-A lab with private workflows ships its own module package without forking
-core. Modules cannot patch the protocol schema; they can only register new
-success-criterion *kinds* with a Zod validator and a verifier.
+The API source contains domain modules for biotech, chemistry, materials,
+field biology, nanotechnology, and the kitchen demonstration. They currently
+contribute prompt and vocabulary data inside the legacy API tree. They are not
+yet independent, versioned packages, and the public extension contract remains
+planned.
 
-This rule is the whole reason a closed-world DSL still feels open.
+## 7. Observability is incomplete
 
-## 7. Telemetry is non-optional
+The API contains OpenTelemetry initialization and trace helpers. End-to-end
+context propagation across the web, API, inference, and perception services is
+not complete. Until that work lands, session IDs, structured events, health
+endpoints, and persisted artifacts are the primary debugging record.
 
-OpenTelemetry is initialised at the first line of every service. A
-`protocol_run_id` propagates from web → api → inference → perception so a
-single run is one waterfall. Without this, a confusing judgment has no
-explanation; with it, you click into a trace and see the model call, the
-prompt, the segmentation evidence, and the criterion evaluation in the order
-they happened.
+## 8. Replay is the path toward reproducibility
 
-## 8. Reproducibility is a *property*, not a slogan
+The repository includes replay fixtures, frozen evaluation data, manifest
+readers, and dataset preparation utilities. Together they establish the
+intended lineage from a recorded session to an evaluation or training input.
+Not every training path yet enforces a frozen dataset hash and complete
+provenance, so reproducibility is a target being tested rather than a finished
+guarantee.
 
-Every training run takes a frozen dataset hash, a protocol version, and a base
-model id, and emits a manifest. Eval consumes that manifest. A reviewer asks
-"which run produced this number" and the answer is one hash. We commit
-representative manifests as test fixtures so a regression in a downstream
-component shows up as a diff, not a story.
+## 9. Deployment boundary
 
-## 9. What we deliberately do not do
-
-We do not host models for users; you bring your own weights or your own
-provider keys. We do not build hardware; we adapt to yours. We do not run a
-SaaS; we publish what you would self-host. We do not keep a hidden config
-plane that production depends on; the open-source repo is the production
-artefact.
+The repository is built for self-hosted experiments. Local providers are the
+default direction; hosted provider integrations require explicit credentials.
+The project does not provide user accounts, role-based access control, or a
+managed service. Compose binds to loopback, and remote experiments require the
+optional API token plus a reviewed TLS reverse proxy.
 
 ## 10. How to read the rest of the docs
 
@@ -136,6 +135,6 @@ Architecture lives here in `docs/architecture/`. Decisions live in
 next to their services in `services/<name>/README.md`. Tests are described in
 `docs/TESTING.md` and the catalog is in `docs/test-catalog.md`.
 
-If you ever feel lost, come back to *Section 1* of this file and remember
-what the system is for. Almost every design choice falls out of those four
-sentences.
+For current maturity and planned work, use
+[`roadmap.md`](roadmap.md). Architecture documents explain boundaries; they do
+not override service READMEs or verified runtime behavior.

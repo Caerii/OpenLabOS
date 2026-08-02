@@ -76,6 +76,8 @@ function main() {
     temperatureC: 24.9,
     chargeCounterUah: 29460,
     status: 3,
+    currentNowRaw: null,
+    currentAvgRaw: null,
   });
 
   assert.deepEqual(parseCpuInfo([

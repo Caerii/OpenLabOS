@@ -1,25 +1,29 @@
-# Post-SFT inference (HF + PEFT, not LM Studio)
+# Run a fine-tuned adapter
 
-This runbook covers the **bridge between TASK-0011 SFT outputs and TASK-0008 / TASK-0010 evaluation**: running the **same judgment task** as `POST /judgments`, but with a **local Hugging Face + LoRA adapter** instead of LM Studio.
+Run the same step-checking task as `POST /judgments`, but load a local
+Hugging Face model with a LoRA adapter instead of sending the request to LM
+Studio.
 
 ## Boundary: LM Studio vs HF path
 
 | Path | Role | Artifacts |
 | --- | --- | --- |
 | **LM Studio** | Default **baseline** inference in the demo | GGUF / LM Studio model id string stored in `judgments.model_id` |
-| **HF + PEFT** (`labos-training infer-hf-judgments`) | **Post-SFT** or ablation inference for comparison | Adapter directory from `labos-training train-judgment-sft`; **you choose** a distinct `--judgment-model-id` for SQLite |
+| **HF + PEFT** (`openlabos-training infer-hf-judgments`) | Post-SFT or ablation run | Adapter directory from `openlabos-training train-judgment-sft`; choose a distinct `--judgment-model-id` |
 
 **LM Studio does not load** arbitrary Hugging Face PEFT adapter folders produced by this repo. For apples-to-apples *serving* in LM Studio you would need a **separate merge/export to GGUF** pipeline (out of scope here).
 
 ## What the command does
 
-1. Reads a **frozen split JSONL** (`test.jsonl`, `val.jsonl`, or `train.jsonl`) in the TASK-0009 label format.
+1. Reads a frozen split (`test.jsonl`, `val.jsonl`, or `train.jsonl`) in the
+   [dataset format](../eval/dataset-spec.md).
 2. For each row: resolves clip + step in SQLite, selects frames with **`select_frames_for_clip`**, builds prompts with **`build_step_prompt`** (same strings as the API).
 3. Loads **`AutoProcessor` from the adapter directory** (saved during SFT) and **`AutoModelForVision2Seq` + `PeftModel`** from `--adapter-dir` / `adapter_config.json` / `run-manifest.json`.
 4. Generates text, parses with **`parse_strict_json` + `validate_judgment`** (same contract as the API).
 5. Inserts into **`judgments`** via **`judgment_repository.insert_judgment`** with **`model_id = --judgment-model-id`**.
 
-Eval harnesses pick the **latest** judgment per `clip_id`; a unique `model_id` is how you keep baseline vs post-SFT runs **provenance-safe**.
+The evaluation tools use the latest judgment for each `clip_id`. A unique
+`model_id` keeps the baseline and fine-tuned runs separate.
 
 ## Prerequisites
 
@@ -34,10 +38,10 @@ Preferred (matches prepare/train ergonomics): **`--frozen-dir`** + **`--split`**
 
 ```bash
 cd services/training
-uv run labos-training infer-hf-judgments ^
+uv run openlabos-training infer-hf-judgments ^
   --frozen-dir ..\..\data\splits\<dataset>\<freeze_id> ^
   --split test ^
-  --sqlite ..\..\apps\api\var\labos_sessions.sqlite ^
+  --sqlite ..\..\services\api\var\labos_sessions.sqlite ^
   --data-root ..\..\data ^
   --adapter-dir outputs\<run>_sft ^
   --judgment-model-id "hf-sft:outputs/<run>_sft:Qwen/Qwen3.5-9B"
@@ -52,10 +56,10 @@ Model outputs are normalized before validation (shared with `POST /judgments`): 
 Smoke / dry run:
 
 ```bash
-uv run labos-training infer-hf-judgments ^
+uv run openlabos-training infer-hf-judgments ^
   --frozen-dir ..\..\data\splits\<dataset>\<freeze_id> ^
   --split test ^
-  --sqlite ..\..\apps\api\var\labos_sessions.sqlite ^
+  --sqlite ..\..\services\api\var\labos_sessions.sqlite ^
   --data-root ..\..\data ^
   --adapter-dir outputs\<run>_sft ^
   --judgment-model-id "<unique-smoke-id>" ^
@@ -76,7 +80,8 @@ The manifest includes resolved **`split_jsonl`**, **`split_input_mode`** (`froze
 ## After inference
 
 1. Run **`labos-eval-metrics judgments`** on the same split JSONL with the SQLite DB.
-2. Optionally package a **TASK-0010**-style baseline report **after** you understand which `model_id` filter you want (today’s harness uses latest row per clip; design your comparison accordingly).
+2. Package a baseline report only after choosing the `model_id` filter for the
+   comparison. The current tools use the latest row for each clip.
 
 If you want to avoid the “latest row per clip_id” behavior, pass:
 
@@ -84,12 +89,13 @@ If you want to avoid the “latest row per clip_id” behavior, pass:
 cd services/eval
 uv run labos-eval-metrics judgments ^
   --dataset ..\..\data\splits\<dataset>\<freeze_id>\test.jsonl ^
-  --sqlite ..\..\apps\api\var\labos_sessions.sqlite ^
+  --sqlite ..\..\services\api\var\labos_sessions.sqlite ^
   --out ..\..\reports\post-sft\<dataset>\<freeze_id>\smoke ^
   --required-model-id "<your-judgment-model-id>"
 ```
 
 ## Next tasks (not here)
 
-- **TASK-0012 (GRPO)** — preference optimization; only after this bridge is exercised.
-- **TASK-0013** — consolidated comparison report.
+- Sampled-reward training should wait until this inference path works on the
+  frozen split.
+- A consolidated comparison report remains follow-up work.

@@ -436,6 +436,8 @@ export interface LabOSFeatureExperience {
   };
 }
 
+export type LabOSFeatureSurfaces = LabOSFeatureExperience["surfaces"];
+
 export interface KitchenStepSegment {
   id: string;
   createdAt: string;

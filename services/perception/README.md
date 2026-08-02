@@ -1,14 +1,20 @@
-# OpenLabOS Perception
+# Object detection (`services/perception`)
 
-Perception sidecar for OpenLabOS. Today it provides entity segmentation; the same service is intended to grow into the runtime home for tracking, spatial summary, and capture-readiness signals consumed by the rest of the platform.
+Accepts a frame and returns normalized object observations. Today that means a
+deterministic mock backend and an optional Grounded SAM 2 path. The service
+does not own sessions or produce step judgments.
 
 ## Role in the system
 
-`services/inference` is the judgment layer: it decides whether the operator is on-protocol, what to coach, and what to record. Before producing a judgment, it gathers visual evidence by calling this perception sidecar. The contract is intentionally narrow and HTTP-shaped so that alternative perception backends (SAM, GroundingDINO, OWL-ViT, custom detectors, etc.) can be dropped in as sibling apps without changing the caller. Adding a new backend means writing a new app that satisfies the same contract and pointing `services/inference` at it.
+The kitchen run path calls this service from the API when entity segmentation
+is configured. Step judgments are separate requests to `services/inference`.
+Keeping the normalized observation contract here prevents callers from
+depending on a model SDK.
 
 ## Runtime contract
 
-`POST /segment` — submit a frame, receive observed objects with bounding boxes and confidences (and optional masks + per-object tracks).
+`POST /segment`: submit a frame and receive objects with bounding boxes,
+confidences, and optional masks or track IDs.
 
 Request:
 
@@ -31,18 +37,22 @@ Response (normalized):
 - `tracks`: stable per-object identities for the frame/session
 - `summary`: `objectsFound`, `missingPrompts`, `averageConfidence`, `hasMasks`, `hasTracks`
 
-`GET /health` — backend name and whether bearer auth is required.
+`GET /health`: return the backend name and whether bearer auth is required.
 
-The `outputFormat` field in requests and the response shape are versioned (`labos.entity-segmentation.v1`) so additional backends can advertise alternative shapes when they ship.
+The `outputFormat` field identifies the normalized contract version
+(`labos.entity-segmentation.v1`). Every backend implementing that version must
+return the same shape. A future incompatible shape requires a new format
+version and explicit caller support.
 
 ## Bootstrap
 
 ```bash
 pip install -r requirements.txt
-uvicorn app:app --port 8090
+uvicorn app:app --port 8002
 ```
 
-Default backend is `mock`, which validates the contract end-to-end without loading any GPU models. For a real backend on a GPU host:
+The default `mock` backend exercises the contract without loading a model. For
+Grounded SAM 2 on a GPU host:
 
 ```bash
 LABOS_SEGMENTATION_BACKEND=grounded_sam2
@@ -53,14 +63,16 @@ GROUNDING_BOX_THRESHOLD=0.28
 GROUNDING_TEXT_THRESHOLD=0.25
 ```
 
-For lightweight local testing of the contract only, install `requirements-smoke.txt` instead — it omits the heavy ML dependencies.
+For contract-only testing, install `requirements-smoke.txt`; it omits the GPU
+dependencies.
 
 ## Adding a new perception backend
 
-The contract is intended to be implemented by alternative perception backends — SAM variants, GroundingDINO variants, OWL-ViT, depth/3D-aware models, multi-frame trackers, etc. Adding one is dropping in a sibling app that:
+To add a backend:
 
-1. Accepts the same `POST /segment` payload
-2. Emits the same `observations` / `tracks` / `summary` shape
-3. Runs as its own service so `services/inference` can target it via configuration
+1. Accept the same `POST /segment` payload.
+2. Emit the same `observations`, `tracks`, and `summary` shape.
+3. Keep model loading and backend-specific dependencies inside this service.
+4. Add contract tests that can run without downloading model weights.
 
-Treat this directory as the reference implementation, not as the only implementation.
+The API, not the inference service, is the current caller.

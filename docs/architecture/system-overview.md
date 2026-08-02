@@ -1,32 +1,67 @@
-# System overview (MVP)
+# System overview
 
-LabOS demo is a **local-only** stack: a tablet web UI (later), this FastAPI service, SQLite for **session** state, filesystem-backed **protocol** JSON, and (later) LM Studio for judgments.
+In the default Docker stack, the web console and Node API share one public
+port. Step checks and object detection run as separate Python services on the
+internal Compose network.
 
 ## Major components
 
-| Piece | Role |
-|-------|------|
-| `packages/protocol-schema` | TypeScript + Zod: canonical **shape** and `examples/kitchen-tea-v1.json`. |
-| `apps/api` | Serves HTTP API; loads protocol JSON at startup into an in-memory registry; persists **sessions** and **session_steps** in SQLite. |
-| `apps/web` | Tablet-first Vite + React UI (TASK-0004); calls FastAPI. |
-| `data/` | Media and labels (later prompts). |
+| Component | Role | Current state |
+|---|---|---|
+| `apps/web` | Operator workflow and engineering views | React/Vite |
+| `services/api` | Sessions, device requests, and artifact storage | Express with mounted Hono routes |
+| `services/inference` | Protocol-step checks (judgments) | FastAPI; Ollama/LM Studio/mock |
+| `services/perception` | Object detection and tracking | FastAPI; mock or GPU backend |
+| `packages/protocol` | Protocol, session, judgment, and run schemas | Zod plus emitted JSON Schema |
+| `adapters/device-android` | Android HTTP/ADB integration | Implemented, hardware-dependent |
+| `services/training` | Dataset and model-adaptation utilities | Experimental |
+| `services/eval` | Metrics and hybrid validators | Experimental |
 
-## Protocol vs session (sharp boundary)
+## Data flow
 
-- **Protocols** are **not** stored in SQLite. They are **versioned JSON files** on disk (default: monorepo `packages/protocol-schema/examples/kitchen-tea-v1.json`). The API mirrors the JSON with **Pydantic** models and **validates at startup**; if the file is missing, malformed, or invalid, the process **fails fast**.
-- **Sessions** are **runtime state**: who is running which protocol, and per-`step_id` status. That lives in **SQLite** (`sessions` + `session_steps` tables).
+```mermaid
+flowchart LR
+    Web --> API
+    API --> Protocol[Protocol JSON]
+    API --> Device[Device adapter]
+    API --> Perception
+    API --> Inference
+    API --> Evidence[Run data and artifacts]
+    Evidence --> Eval[Evaluation / training]
+```
 
-## API surface (this MVP)
+The browser speaks only to the API. The API forwards typed judgment requests
+to the step-check service and segmentation requests to object detection.
+Provider credentials and SDK behavior stay behind those service boundaries.
 
-- `GET /health` — `status`, `protocol_count`, `protocol_ids`, `sqlite_path`.
-- `GET /protocols` — summaries (`protocol_id`, `protocol_version`, `name`).
-- `GET /protocols/{protocol_id}` — full protocol document.
-- `POST /sessions` — start a session; first step **active**, others **pending**; response includes protocol `name`/`version` and per-step `title` + protocol `order` (internal DB `step_order` is not exposed).
-- `GET /sessions/{session_id}` — same denormalized session + step shape for the UI.
-- `DELETE /sessions/{session_id}` — remove session; `session_steps` cascade.
+## State boundaries
 
-No authentication in this slice; LAN/local use only (see decision 0006).
+- Protocols are versioned JSON documents validated by `packages/protocol`.
+- Legacy kitchen routes store run media under the configured API data root.
+- Hono session routes use the filesystem store by default and survive API
+  restarts. Set `OPENLABOS_STORAGE_TIER=memory` only for ephemeral tests.
+- Inference and the mock perception service are stateless.
+- Compose persists API data and artifacts in named volumes.
 
-## Cross-language contract
+## Runtime modes
 
-The **shared artifact** between TypeScript and Python is the **JSON file**, not codegen. Python does not import TypeScript. Both sides validate independently (Zod vs Pydantic).
+- **Compose:** hardware-independent, loopback-only, mock perception, and host
+  Ollama by default. Test scripts select the deterministic mock judgment
+  provider. Device-specific legacy routes are disabled with `CLOUD_MODE`.
+- **Source/local-device:** enables ADB and hardware control routes. Intended for
+  a trusted workstation connected to a reference device.
+- **Desktop:** Tauri packages the web UI and a local API sidecar.
+
+## Security
+
+Compose binds the API to `127.0.0.1`. Remote experiments can enable bearer
+token checks, but they still need TLS and a reviewed reverse proxy. OpenLabOS
+does not yet provide accounts, roles, or a production multi-user deployment.
+See [SECURITY.md](../../SECURITY.md).
+
+## Cross-language contracts
+
+TypeScript owns the shared schemas and emits JSON Schema. Python services use
+Pydantic models or typed dictionaries at runtime. The training service can
+regenerate its Python protocol types from the emitted schemas; broader
+cross-service generation remains planned.

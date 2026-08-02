@@ -1,7 +1,9 @@
 import { z } from "zod";
 import {
   ActionIdSchema,
+  MeasurementUnitSchema,
   ObjectIdSchema,
+  QuantityNameSchema,
   ReagentIdSchema,
   SurfaceIdSchema,
   ToolIdSchema,
@@ -39,10 +41,17 @@ export const CoreSuccessCriterion = z.discriminatedUnion("kind", [
     min_count: z.number().int().positive().optional(),
     description: z.string().min(1),
   }),
+  /**
+   * A numeric acceptance range. Declaring the range does not measure
+   * anything: unless a judgment's criterion evidence carries a
+   * `measured_value` with an instrument or display-readout method, a
+   * "satisfied" verdict on this criterion is a visual estimate or an
+   * operator attestation, not a measurement.
+   */
   z.object({
     kind: z.literal("measurement_in_range"),
-    quantity: z.string().min(1),
-    unit: z.string().min(1),
+    quantity: QuantityNameSchema,
+    unit: MeasurementUnitSchema,
     min: z.number().optional(),
     max: z.number().optional(),
     description: z.string().min(1),

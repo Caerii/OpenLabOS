@@ -32,6 +32,7 @@ export interface SessionView {
     judgmentsEmitted: number;
     stepsCompleted: number;
     operatorNotes: number;
+    measurementsRecorded: number;
   };
 }
 
@@ -59,6 +60,7 @@ export function fold(session: Session, events: SessionEvent[]): SessionView {
     judgmentsEmitted: 0,
     stepsCompleted: 0,
     operatorNotes: 0,
+    measurementsRecorded: 0,
   };
   for (const e of events) {
     switch (e.kind) {
@@ -80,6 +82,9 @@ export function fold(session: Session, events: SessionEvent[]): SessionView {
         break;
       case "operator_note":
         counts.operatorNotes += 1;
+        break;
+      case "measurement_recorded":
+        counts.measurementsRecorded += 1;
         break;
       default:
         // session_finalized — view-level state captured via Session.status

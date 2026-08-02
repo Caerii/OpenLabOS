@@ -6,7 +6,7 @@ root.
 | Script                                    | What it does                                                       |
 | ----------------------------------------- | ------------------------------------------------------------------ |
 | `openlabos-doctor.ps1`                    | Health check across the local install. Run after setup.            |
-| `openlabos-live.ps1`                      | Starts the local stack (api + inference + web) for live use.       |
+| `openlabos-live.ps1`                      | Sends operator commands to an API stack that is already running.  |
 | `start-local-agent-stack.ps1`             | Starts the API, local operator, and HTTPS local-agent tunnel.       |
 | `register-openlabos-protocol.ps1`         | Registers `openlabos://` to launch the local-agent stack.           |
 | `install-cloudflared.ps1`                 | Installs a workspace-local Cloudflare tunnel binary.                |
@@ -24,6 +24,7 @@ root.
 | `generate-protocol-voice-assets.ps1`      | Pre-renders TTS assets per protocol step.                          |
 | `generate-gemini-live-protocol-assets.ps1`| Pre-renders Gemini live-coach assets per protocol step.            |
 | `check-sidecar-smoke.py`                  | Smoke test for the perception sidecar's runtime contract.          |
+| `compose-smoke.mjs`                       | Verifies the compiled web app and Compose service bridges.         |
 
 PowerShell scripts target Windows; bash scripts target macOS/Linux. Any
 script that touches a remote device prints what it would do with a

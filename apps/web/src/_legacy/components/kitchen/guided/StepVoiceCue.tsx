@@ -190,12 +190,12 @@ export function StepVoiceCue({
       </div>
       {autoBlocked && (
         <div className="mt-2 text-[11px] text-amber-500">
-          Glasses playback failed and browser autoplay was blocked. Tap Enable Browser Audio once, or check the device connection.
+          Audio did not play on the glasses, and this browser needs permission to play it. Select Enable Browser Audio once, or check the glasses connection.
         </div>
       )}
       {status === "browser" && (
         <div className="mt-2 text-[11px] text-amber-500">
-          Could not reach the glasses audio route, so this played through the dashboard browser.
+          The glasses audio was unavailable, so the instruction played here instead.
         </div>
       )}
       {status === "error" && (

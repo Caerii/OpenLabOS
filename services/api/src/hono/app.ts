@@ -10,10 +10,14 @@ import { sessionsRoutes } from "./routes/sessions.js";
 import { adaptersRoutes } from "./routes/adapters.js";
 import { modulesRoutes } from "./routes/modules.js";
 import { judgmentsRoutes } from "./routes/judgments.js";
+import { runsRoutes } from "./routes/runs.js";
+import { protocolsRoutes } from "./routes/protocols.js";
 import { deviceProxyRoutes } from "./routes/device-proxy.js";
 import { type AdapterRegistry } from "../core/adapters/registry.js";
 import { type ModuleRegistry } from "../core/modules/registry.js";
 import { type SessionStore } from "../core/sessions/store.js";
+import { authMiddleware } from "./middleware/auth.js";
+import { rateLimitMiddleware } from "./middleware/rate-limit.js";
 
 export interface AppDeps {
   sessions: SessionStore;
@@ -23,11 +27,16 @@ export interface AppDeps {
 
 export function createApp(deps: AppDeps): Hono {
   const app = new Hono();
+  app.use("/api/*", authMiddleware());
+  app.use("/api/judgments/*", rateLimitMiddleware());
+  app.use("/api/sessions/*", rateLimitMiddleware());
   app.route("/api", healthRoute(deps));
   app.route("/api/sessions", sessionsRoutes(deps));
   app.route("/api/adapters", adaptersRoutes(deps));
   app.route("/api/modules", modulesRoutes(deps));
   app.route("/api/judgments", judgmentsRoutes(deps));
+  app.route("/api/runs", runsRoutes(deps));
+  app.route("/api/protocols", protocolsRoutes());
   app.route("/api/device", deviceProxyRoutes());
   return app;
 }

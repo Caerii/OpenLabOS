@@ -1,67 +1,156 @@
-# Local development: web + API
+# Local development
 
-This note describes how to run the **FastAPI** service and the **Vite** tablet UI together on one machine or a small LAN.
+Prefer [Docker Compose](../runbooks/docker-compose.md) when you only need a
+working stack. Use the commands below when you want hot reload, a real device
+adapter, or to edit services in place.
 
 ## Ports and roles
 
 | Process | Default | Purpose |
-|---------|---------|---------|
-| API (`uvicorn`) | `http://127.0.0.1:8000` | JSON: `/health`, `/protocols`, `/sessions`, OpenAPI `/docs` |
-| Web (`vite`) | `http://127.0.0.1:5173` | Operator UI (`apps/web`) |
+|---|---:|---|
+| Node API | `3847` | Express runtime plus mounted Hono routes |
+| Vite web app | `5174` | Operator and engineering interfaces |
+| Python step-check | `8001` | Ollama / LM Studio / mock judgments |
+| Python object detection | `8002` | Mock or configured segmentation |
 
-## Same machine (recommended first)
+## Install workspace dependencies
 
-1. **API** — from `apps/api` after `uv sync`:
+```bash
+pnpm install
+pnpm --filter @openlabos/protocol build
+pnpm --filter @openlabos/preview build
+pnpm --filter @openlabos/sdk-ts build
+pnpm --filter @openlabos/device-android build
+```
 
-   ```bash
-   uv run uvicorn labos_api.main:app --reload --host 127.0.0.1 --port 8000
-   ```
+## Start API and web
 
-2. **Web** — from repository root after `pnpm install`:
+Create the local API environment once:
 
-   ```bash
-   pnpm --filter @labos/web dev
-   ```
+```bash
+cp services/api/.env.example services/api/.env
+```
 
-In **development**, the UI calls **`/api/...`** on the Vite origin. Vite **proxies** `/api` to `http://127.0.0.1:8000` and strips the `/api` prefix, so the browser sees same-origin requests and you avoid CORS friction on localhost.
+Terminal 1:
 
-The API also enables **permissive CORS** (`allow_origins=["*"]`) so alternate dev setups (e.g. opening the Vite URL from a tablet by IP) still work if you point the UI at the API with `VITE_API_BASE`.
+```bash
+pnpm --filter @openlabos/api dev
+```
 
-## Tablet on the LAN
+Terminal 2:
 
-1. Start the API bound to all interfaces (example):
+```bash
+pnpm --filter @openlabos/web dev
+```
 
-   ```bash
-   uv run uvicorn labos_api.main:app --host 0.0.0.0 --port 8000
-   ```
+Open <http://localhost:5174/operate>. Vite proxies `/api` and the live-coach
+WebSocket to `http://localhost:3847`.
 
-2. Start Vite with host listen:
+The source environment uses mock entity segmentation and forwards judgments to
+`http://localhost:8001`. You can do most operator UI work without starting
+either Python sidecar.
 
-   ```bash
-   pnpm --filter @labos/web dev -- --host 0.0.0.0
-   ```
+## Optional inference
 
-3. On the tablet, open `http://<pc-ip>:5173`. Set **`VITE_API_BASE`** to `http://<pc-ip>:8000` (e.g. in `apps/web/.env.local`, which is gitignored) so fetches go directly to the API instead of through the dev machine’s loopback-only proxy target.
+```bash
+cd services/inference
+uv sync --python 3.12
+uv run openlabos-inference
+```
 
-   Important: the Vite **`/api` proxy** only targets **the machine running Vite** (`127.0.0.1:8000`). That works for a browser on the same machine, but a tablet hitting `http://<pc-ip>:5173` should use **`VITE_API_BASE=http://<pc-ip>:8000`** so the tablet can reach the API over the LAN.
+The default provider is Ollama. Set `OPENLABOS_PROVIDER=lmstudio` to use the
+LM Studio adapter, or `OPENLABOS_PROVIDER=mock` for a deterministic contract
+response.
 
-Rebuild or restart Vite after changing env vars.
+## Optional perception
 
-## Environment variables (recap)
+For contract testing without GPU dependencies:
 
-| Variable | Where | Meaning |
-|----------|-------|---------|
-| `LABOS_PROTOCOL_PATH` | API | Path to protocol JSON (default: monorepo example file). |
-| `LABOS_SQLITE_PATH` | API | SQLite file for sessions. |
-| `VITE_API_BASE` | Web | Absolute base URL of the API (no trailing slash). Optional in dev when using the `/api` proxy. |
+```bash
+cd services/perception
+python -m venv .venv
+.venv/Scripts/python -m pip install -r requirements-smoke.txt
+.venv/Scripts/python -m uvicorn app:app --host 127.0.0.1 --port 8002
+```
 
-## Failure modes
+On macOS/Linux, replace `.venv/Scripts/python` with `.venv/bin/python`.
+Then set these values in `services/api/.env`:
 
-- **Blank or stuck UI** — Check the **API** banner in the header; if it reads “unavailable”, the browser cannot reach the configured API base URL.
-- **422 on start session** — Unknown `protocol_id`; fix selection or load the right protocol file on the API.
-- **Stale schema** — MVP has no migrations; delete the SQLite file under `apps/api/var/` when the API schema changes (see `apps/api/README.md`).
+```dotenv
+LABOS_ENTITY_SEGMENTATION_MODE=sidecar
+LABOS_SEGMENTATION_SIDECAR_URL=http://localhost:8002
+```
 
-## See also
+## LAN access
 
-- [`apps/api/README.md`](../../apps/api/README.md) — HTTP routes (including `DELETE /sessions/{id}` for demo cleanup).
-- [`apps/web/README.md`](../../apps/web/README.md) — routes and state model for the UI shell.
+The API has no user authentication. Do not expose the source servers to an
+untrusted network.
+
+For a controlled LAN test:
+
+1. keep `OPENLABOS_API_HOST=0.0.0.0`;
+2. set `CORS_ORIGIN=http://<dev-machine-ip>:5174`;
+3. run Vite with `pnpm --filter @openlabos/web dev -- --host 0.0.0.0`; and
+4. open `http://<dev-machine-ip>:5174/operate`.
+
+The browser still talks to Vite, which proxies API requests on the development
+machine.
+
+## Verification
+
+```bash
+pnpm --filter @openlabos/api typecheck
+pnpm --filter @openlabos/web typecheck
+pnpm --filter @openlabos/api test:offline
+```
+
+See [Testing](../TESTING.md) for the test matrix and
+[Security](../../SECURITY.md) before changing network exposure.
+
+## Troubleshooting
+
+### Imports from `@openlabos/protocol` fail to resolve
+
+The workspace packages ship compiled output; a fresh clone has no `dist/`
+directories. Run the package builds from the install section (at minimum
+`pnpm --filter @openlabos/protocol build`) before starting the API or web
+dev servers. The same error after pulling schema changes means the package
+needs rebuilding.
+
+### Port 3847 or 5174 already in use
+
+Another API or Vite instance is holding the port — often a Compose stack:
+`docker compose ps` and `docker compose down` if so. Otherwise find the
+process (`netstat -ano | findstr :3847` on Windows, `lsof -i :3847`
+elsewhere). Changing `OPENLABOS_API_PORT` also requires updating the Vite
+proxy target and any `.env` URLs that reference it, so freeing the port is
+usually simpler.
+
+### The web app loads but every API call fails
+
+Vite proxies `/api` to `http://localhost:3847`, so this means the API
+process is not running or crashed at startup — check terminal 1. Requests
+that fail with CORS errors instead point at a `CORS_ORIGIN` that does not
+match the origin in the browser address bar.
+
+### Judgments return 502 from the API
+
+The API forwards `/api/judgments` to `OPENLABOS_INFERENCE_URL` (default
+`http://localhost:8001`). A 502 with `inference unreachable` means nothing
+is listening there: start the inference service from the optional-inference
+section, or exercise the contract without a model server by sending
+`"provider": "mock"` in the request body.
+
+### The perception sidecar is up but `/api/readyz` reports it failing
+
+`readyz` probes the sidecar only when `LABOS_ENTITY_SEGMENTATION_MODE=sidecar`
+is set in `services/api/.env` along with `LABOS_SEGMENTATION_SIDECAR_URL`.
+If both are set and it still fails, the detail string in the `readyz`
+response is the actual fetch error — typically a wrong port or the venv
+uvicorn process having exited.
+
+### Python service commands fail on Windows
+
+The venv layout differs: use `.venv\Scripts\python` where Unix docs say
+`.venv/bin/python`. For `services/inference`, prefer `uv run`, which
+resolves the environment on any platform.

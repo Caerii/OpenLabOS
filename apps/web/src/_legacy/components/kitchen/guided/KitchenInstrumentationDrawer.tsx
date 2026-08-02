@@ -4,13 +4,16 @@ import type {
   KitchenButtonConfirmStatus,
   KitchenOperatorReadiness,
   KitchenRealtimeSupervisorStatus,
+  KitchenRunAdherenceResult,
   LabOSFeatureExperience,
   LabOSFeatureFlags,
   LiveCoachHealth,
   PreviewHealth,
   RunPodCostGuardStatus,
-} from "../../api";
+} from "../../../api";
 import { deriveLabOSExperience } from "../../../lib/labosExperience";
+import { DependencyStatusPanel } from "./DependencyStatusPanel";
+import { JudgmentSourceBadge } from "./JudgmentSourceBadge";
 
 export function KitchenInstrumentationDrawer({
   featureFlags,
@@ -22,6 +25,7 @@ export function KitchenInstrumentationDrawer({
   segmentation,
   runpodGuard,
   supervisor,
+  lastAdherence,
 }: {
   featureFlags: LabOSFeatureFlags | null;
   featureExperience: LabOSFeatureExperience | null;
@@ -32,6 +36,7 @@ export function KitchenInstrumentationDrawer({
   segmentation: EntitySegmentationStatus | null;
   runpodGuard: RunPodCostGuardStatus | null;
   supervisor: KitchenRealtimeSupervisorStatus | null;
+  lastAdherence: KitchenRunAdherenceResult | null;
 }) {
   const experience = deriveLabOSExperience(featureFlags, featureExperience);
   const [open, setOpen] = useState(false);
@@ -65,7 +70,17 @@ export function KitchenInstrumentationDrawer({
       <summary className="labos-panel-head oc-expandable-trigger cursor-pointer list-none">
         Instrumentation
       </summary>
-      <div className="labos-panel-body">
+      <div className="labos-panel-body space-y-3">
+        <DependencyStatusPanel />
+        <div>
+          <div className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-subtle">Judgment source</div>
+          <JudgmentSourceBadge
+            lastAdherence={lastAdherence}
+            supervisor={supervisor}
+            segmentation={segmentation}
+            runpodGuard={runpodGuard}
+          />
+        </div>
         <pre className="max-h-80 overflow-auto font-mono text-[11px] leading-relaxed text-muted">
           {JSON.stringify(payload, null, 2)}
         </pre>

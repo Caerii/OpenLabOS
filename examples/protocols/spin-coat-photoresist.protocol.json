@@ -50,7 +50,8 @@
       "expected_action": {
         "action_id": "action:engage-vacuum",
         "label": "Engage vacuum",
-        "target_object_id": "tool:spin-coater"
+        "target_object_id": "object:wafer-100mm-si",
+        "instrument_id": "tool:spin-coater"
       },
       "success_criteria": [
         {
@@ -79,7 +80,7 @@
         "action_id": "action:dispense",
         "label": "Dispense",
         "target_object_id": "object:wafer-100mm-si",
-        "instrument_id": "reagent:s1813-photoresist"
+        "instrument_id": "tool:disposable-pipette"
       },
       "success_criteria": [
         {

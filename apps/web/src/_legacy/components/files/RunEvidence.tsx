@@ -68,7 +68,7 @@ function VideoFacts({
         </div>
         <div className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-2">
           <dt className="text-subtle">Segment</dt>
-          <dd className="break-all font-mono text-fg">{video.segmentId || "manifest only"}</dd>
+          <dd className="break-all font-mono text-fg">{video.segmentId || "session log only"}</dd>
         </div>
         <div className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-2">
           <dt className="text-subtle">Source</dt>
@@ -97,7 +97,7 @@ function StepAnalysisPanel({
   return (
     <div className="mt-3 rounded-lg border border-border/15 bg-surface-2 p-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="text-xs font-semibold uppercase tracking-wide text-subtle">Async Step Analysis</div>
+        <div className="text-xs font-semibold uppercase tracking-wide text-subtle">Step Review</div>
         <div className="flex flex-wrap gap-1.5">
           <Badge color={analysis.status === "error" ? "red" : completed ? passed ? "green" : "yellow" : "blue"}>
             {completed ? (passed ? "passed" : "review") : analysis.status}
@@ -108,8 +108,8 @@ function StepAnalysisPanel({
         </div>
       </div>
       <div className="mt-2 text-xs text-muted">
-        {analysis.status === "queued" && "Queued for local VLM analysis."}
-        {analysis.status === "running" && "Local VLM analysis is running."}
+        {analysis.status === "queued" && "Queued for a local step review."}
+        {analysis.status === "running" && "The local step review is running."}
         {analysis.status === "error" && `Analysis failed: ${analysis.error || "unknown error"}`}
         {completed && (analysis.summary || (passed ? "The saved evidence matches this step." : "The saved evidence needs review."))}
       </div>
@@ -154,7 +154,7 @@ function VqaAnnotationPanel({
   return (
     <div className="mt-3 rounded-lg border border-border/15 bg-surface-2 p-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="text-xs font-semibold uppercase tracking-wide text-subtle">VQA Annotation</div>
+        <div className="text-xs font-semibold uppercase tracking-wide text-subtle">Auto-Check Result</div>
         <div className="flex flex-wrap gap-1.5">
           <Badge color={annotation.status === "error" ? "red" : completed ? "green" : "blue"}>
             {annotation.status}
@@ -166,9 +166,9 @@ function VqaAnnotationPanel({
         </div>
       </div>
       <div className="mt-2 text-xs text-muted">
-        {annotation.status === "queued" && "Queued for local VQA annotation."}
-        {annotation.status === "running" && "Local VQA annotation is running."}
-        {annotation.status === "error" && `VQA failed: ${annotation.error || "unknown error"}`}
+        {annotation.status === "queued" && "Queued for a local auto-check."}
+        {annotation.status === "running" && "The local auto-check is running."}
+        {annotation.status === "error" && `Auto-check failed: ${annotation.error || "unknown error"}`}
         {completed && (annotation.frameSummary || `${answered}/${total} visual questions answered.`)}
       </div>
       {annotation.answers && annotation.answers.length > 0 && (
@@ -198,7 +198,7 @@ function VqaAnnotationPanel({
       )}
       {(annotation.missingEvidence.length > 0 || annotation.blockingIssues.length > 0) && (
         <details className="mt-2 rounded-md border border-border/15 bg-border/10">
-          <summary className="cursor-pointer px-2 py-1.5 text-[11px] font-medium text-muted">VQA facts</summary>
+          <summary className="cursor-pointer px-2 py-1.5 text-[11px] font-medium text-muted">Check details</summary>
           <div className="space-y-2 border-t border-border/15 p-2 text-[11px] text-muted">
             {annotation.missingEvidence.length > 0 && (
               <div>
@@ -258,7 +258,7 @@ function VqaStepReviewRow({ step }: { step: RunVqaStepReview }) {
                 Step {step.stepNumber}{step.attemptNumber && step.attemptNumber > 1 ? `, attempt ${step.attemptNumber}` : ""}
               </div>
               <Badge color={vqaStatusColor(step)}>
-                {vqaStepReady(step) ? "dataset ready" : step.status === "completed" ? "review" : step.status}
+                {vqaStepReady(step) ? "ready to export" : step.status === "completed" ? "review" : step.status}
               </Badge>
               {step.recommendedNext && <Badge color="gray">{step.recommendedNext.replace(/_/g, " ")}</Badge>}
             </div>
@@ -298,7 +298,7 @@ function VqaStepReviewRow({ step }: { step: RunVqaStepReview }) {
               </div>
             )) : (
               <div className="rounded-md border border-border/15 bg-border/10 p-2 text-xs text-muted">
-                No answer-level VQA details were saved for this record.
+                No question-by-question check details were saved for this step.
               </div>
             )}
           </div>
@@ -349,14 +349,14 @@ export function VqaRunReviewPanel({
     <section className="mt-4 rounded-lg border border-border/15 bg-border/10 p-3">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wide text-subtle">VQA Dataset Review</div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-subtle">Auto-Check Review</div>
           <div className="mt-1 text-sm font-medium text-fg">
             {hasLabels
               ? `${summary.readyCount} step${summary.readyCount === 1 ? "" : "s"} ready, ${summary.reviewCount + summary.errorCount} need review`
-              : "No VQA labels have been generated for this run yet."}
+              : "No automatic step checks have been generated for this run yet."}
           </div>
           <p className="mt-1 max-w-3xl text-xs text-muted">
-            VQA labels turn each step into question-answer supervision for dataset export. Review steps with missing evidence before using them as high-confidence training examples.
+            Automatic checks review each saved step against a short set of visual questions. Review any missing details before exporting the run.
           </p>
         </div>
         {canAnnotate && (
@@ -366,7 +366,7 @@ export function VqaRunReviewPanel({
             onClick={onAnnotate}
             disabled={busy}
           >
-            {busy ? "Annotating..." : hasLabels ? "Fill Missing Labels" : "Annotate VQA"}
+            {busy ? "Checking..." : hasLabels ? "Check Missing Steps" : "Run Auto-Check"}
           </button>
         )}
       </div>
@@ -382,7 +382,7 @@ export function VqaRunReviewPanel({
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4">
-        <StatTile value={summary.readyCount} label="dataset ready" loading={false} />
+        <StatTile value={summary.readyCount} label="ready to export" loading={false} />
         <StatTile value={summary.reviewCount + summary.errorCount} label="needs review" loading={false} />
         <StatTile value={summary.missingEvidenceCount} label="missing facts" loading={false} />
         <div className="rounded-lg border border-border/15 bg-border/10 p-3">
@@ -562,7 +562,7 @@ export function StepAttemptList({
     providedAttempts || attemptEvidenceForManifest(manifest)
   ).map(normalizeEvidenceAttempt);
   if (!attempts.length) {
-    return <p className="text-xs text-muted">No step evidence attempts are recorded in this package.</p>;
+    return <p className="text-xs text-muted">No saved step attempts are recorded in this session log.</p>;
   }
   return (
     <div className="space-y-3">
@@ -620,7 +620,7 @@ export function ReadinessPanel({ manifest }: { manifest: KitchenSessionManifest 
     <div className="mt-3 rounded-lg border border-border/15 bg-border/10 p-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wide text-subtle">Package Readiness</div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-subtle">Saved Run Readiness</div>
           <div className="mt-1 text-sm font-medium text-fg">{readiness.summary}</div>
         </div>
         <Badge color={readinessColor(readiness.grade)}>{readiness.label}</Badge>

@@ -124,7 +124,7 @@ export function RunPage() {
   }
 
   if (!sessionId) {
-    return <div className="p-8 text-ink-low">No session id in URL.</div>;
+    return <div className="p-8 text-ink-low">The URL does not include a session ID.</div>;
   }
 
   return (
@@ -133,7 +133,7 @@ export function RunPage() {
         onClick={() => navigate("/dashboard")}
         className="text-xs font-mono text-ink-low hover:text-accent-300 transition"
       >
-        ← back to dashboard
+        ← Back to dashboard
       </button>
 
       <motion.div
@@ -144,6 +144,10 @@ export function RunPage() {
         <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
           {protocol.name}
         </h1>
+        <p className="mt-2 max-w-2xl text-sm text-ink-mid">
+          Record when each step begins and ends. “Check step” sends the current
+          step and camera evidence to the configured judgment provider.
+        </p>
         <div className="mt-1 text-xs font-mono text-ink-low break-all">
           session {sessionId}
         </div>
@@ -193,7 +197,7 @@ export function RunPage() {
                 </p>
 
                 <div className="mt-6 grid gap-4 md:grid-cols-2">
-                  <Box title="Expected">
+                  <Box title="Expected objects">
                     <ul className="text-sm text-ink-mid space-y-1">
                       {activeStep.expected_objects.map((o) => (
                         <li key={o.object_id} className="flex justify-between">
@@ -238,7 +242,7 @@ export function RunPage() {
                     busy={busy === "start"}
                     disabled={view?.session.status !== "active"}
                   >
-                    Mark started
+                    Mark as started
                   </PrimaryButton>
                   <PrimaryButton
                     onClick={judge}
@@ -246,7 +250,7 @@ export function RunPage() {
                     variant="ghost"
                     disabled={view?.session.status !== "active"}
                   >
-                    Judge step
+                    Check step
                   </PrimaryButton>
                   <PrimaryButton
                     onClick={() => emit("complete")}
@@ -254,14 +258,14 @@ export function RunPage() {
                     variant="ghost"
                     disabled={view?.session.status !== "active"}
                   >
-                    Mark step complete
+                    Mark complete
                   </PrimaryButton>
                   <button
                     onClick={finalize}
                     disabled={busy === "finalize" || view?.session.status !== "active"}
                     className="ml-auto px-4 py-2 rounded-md text-xs font-mono uppercase tracking-widest text-ink-low hover:text-bad-400 transition disabled:opacity-50"
                   >
-                    Finalize
+                    End session
                   </button>
                 </div>
               </motion.section>
@@ -280,7 +284,7 @@ export function RunPage() {
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-3">
                   <h3 className="text-lg font-semibold text-accent-300">
-                    Judgment · {lastJudgment.verdict}
+                    Step check · {lastJudgment.verdict}
                   </h3>
                   <span className="font-mono text-xs text-ink-low">
                     {lastJudgment.source}

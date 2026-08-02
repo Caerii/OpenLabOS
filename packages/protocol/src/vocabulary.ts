@@ -31,3 +31,62 @@ export type SurfaceId = z.infer<typeof SurfaceIdSchema>;
 export type ActionId = z.infer<typeof ActionIdSchema>;
 export type ToolId = z.infer<typeof ToolIdSchema>;
 export type ReagentId = z.infer<typeof ReagentIdSchema>;
+
+/**
+ * Canonical measurement units. A closed set so that eval can compare
+ * measurements without normalising free-string spellings ("C" vs "°C" vs
+ * "celsius"). SI symbols where they exist; `pH` and `percent` and `count`
+ * cover the common dimensionless cases. Extend this list by PR — do not
+ * invent per-protocol spellings.
+ */
+export const MeasurementUnitSchema = z.enum([
+  // time
+  "s",
+  "min",
+  "h",
+  // temperature
+  "C",
+  "K",
+  // volume
+  "uL",
+  "mL",
+  "L",
+  // mass
+  "ug",
+  "mg",
+  "g",
+  "kg",
+  // length
+  "nm",
+  "um",
+  "mm",
+  "cm",
+  "m",
+  // concentration
+  "M",
+  "mM",
+  "uM",
+  "mg_per_mL",
+  // rotation / speed
+  "rpm",
+  "g_force",
+  // pressure
+  "Pa",
+  "kPa",
+  "bar",
+  "psi",
+  // dimensionless
+  "percent",
+  "pH",
+  "count",
+]);
+export type MeasurementUnit = z.infer<typeof MeasurementUnitSchema>;
+
+/**
+ * Machine-readable quantity name for measurements: lowercase snake_case,
+ * e.g. "hotplate_temperature", "spin_speed", "buffer_ph".
+ */
+export const QuantityNameSchema = z
+  .string()
+  .regex(/^[a-z][a-z0-9_]*$/, 'must be lowercase snake_case, e.g. "spin_speed"');
+export type QuantityName = z.infer<typeof QuantityNameSchema>;

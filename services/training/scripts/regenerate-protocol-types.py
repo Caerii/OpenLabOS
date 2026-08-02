@@ -9,7 +9,7 @@ Wiring this up is a follow-up:
   1. Install datamodel-code-generator in a tooling venv:
        pip install "datamodel-code-generator[http]>=0.25"
   2. Run this script from the repo root; it should produce
-     `services/training/openlabos_training/_generated_protocol.py` with
+     `services/training/openlabos_training/_generated_protocol/` with
      dataclasses / Pydantic models matching the JSON Schemas.
   3. Replace the TODO stubs in:
        - openlabos_training/judgment_sft_prepare.py  (JudgmentResult)
@@ -27,12 +27,12 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 SCHEMA_DIR = REPO_ROOT / "packages" / "protocol" / "schema"
-OUT_FILE = (
+OUT_DIR = (
     REPO_ROOT
     / "services"
     / "training"
     / "openlabos_training"
-    / "_generated_protocol.py"
+    / "_generated_protocol"
 )
 
 
@@ -50,7 +50,10 @@ def main() -> int:
         print(f"ERROR: no *.json files found in {SCHEMA_DIR}", file=sys.stderr)
         return 2
 
-    OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    OUT_DIR.parent.mkdir(parents=True, exist_ok=True)
+    if OUT_DIR.exists():
+        for child in OUT_DIR.glob("*.py"):
+            child.unlink()
 
     cmd = [
         sys.executable,
@@ -61,7 +64,7 @@ def main() -> int:
         "--input",
         str(SCHEMA_DIR),
         "--output",
-        str(OUT_FILE),
+        str(OUT_DIR),
         "--output-model-type",
         "pydantic_v2.BaseModel",
         "--target-python-version",
@@ -82,7 +85,13 @@ def main() -> int:
         )
         return result.returncode
 
-    print(f"Wrote generated protocol types -> {OUT_FILE}")
+    init_path = OUT_DIR / "__init__.py"
+    init_path.write_text(
+        '"""Generated from packages/protocol/schema via scripts/regenerate-protocol-types.py."""\n',
+        encoding="utf-8",
+    )
+
+    print(f"Wrote generated protocol types -> {OUT_DIR}")
     return 0
 
 

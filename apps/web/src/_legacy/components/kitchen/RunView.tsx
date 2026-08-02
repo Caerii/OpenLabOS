@@ -93,7 +93,7 @@ export default function RunView({
   }
 
   const liveCoachEnabled = run?.status === "running" || run?.status === "paused";
-  const showExpertPanels = experience.mode === "experimental";
+  const showExpertPanels = experience.mode === "engineering";
 
   return (
     <div className="space-y-4 animate-fade-in">

@@ -1,14 +1,15 @@
-# Runbook: Dataset acquisition for Qwen3.5 live vision
+# Collect video for step-checking experiments
 
-This runbook defines the clean acquisition path for testing **Qwen/Qwen3.5-9B** on step-conditioned kitchen judgments.
+Build a video dataset for testing **Qwen/Qwen3.5-9B** on the kitchen protocol.
+Start with footage from the same devices and camera angles used in real runs.
 
 For the researched external egocentric dataset shortlist, see:
 
 - `docs/runbooks/egocentric-dataset-shortlist.md`
 
-## Goal
+## What to collect
 
-Build a dataset that is useful for three things at once:
+The same collection should support:
 
 - short-clip video comprehension with **Qwen3.5-9B**
 - high-quality teacher labels from **Gemini Robotics ER 1.6**
@@ -16,13 +17,15 @@ Build a dataset that is useful for three things at once:
 
 ## Recommended source order
 
-### 1. First-party LabOS captures
+### 1. Your own OpenLabOS runs
 
-This remains the highest-value source.
+Start here. These recordings match the camera, lighting, and mistakes the
+system will encounter at the bench.
 
-- It exactly matches the POV, device optics, and task framing we care about.
-- It contains the real failure modes we need to solve.
-- It lets us compare `student vs teacher vs human` on the same clip inventory.
+- The camera view and device optics match production.
+- The clips include the failures that matter to your operators.
+- You can compare the candidate model, teacher model, and human label on the
+  same footage.
 
 Use this repo's existing import path first for all real glasses captures:
 

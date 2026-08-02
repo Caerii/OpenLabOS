@@ -15,6 +15,7 @@
     "test:device": "tsx src/scripts/run-tests.ts device",
     "test:live": "tsx src/scripts/run-tests.ts live",
     "test:offline": "tsx src/scripts/run-tests.ts offline",
+    "test:core": "vitest run",
     "openapi:emit": "tsx src/hono/emit-openapi.ts",
     "local-agent:tunnel": "tsx --env-file=.env src/scripts/start-local-agent-tunnel.ts",
     "kitchen:live-sim": "tsx --env-file=.env src/scripts/kitchen-live-annotation-sim.ts",

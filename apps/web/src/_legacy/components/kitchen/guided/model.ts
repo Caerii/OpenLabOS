@@ -20,7 +20,7 @@ import {
   type LabOSFeatureCapabilities,
 } from "../../../lib/labosExperience";
 import type { CheckItem, CoachAutoCue, OperatorAction, OperatorSecondaryAction } from "./types";
-import { perceptionLabel, runpodLabel, voiceLabel } from "./statusLabels";
+import { runpodLabel, voiceLabel } from "./statusLabels";
 
 export { deriveFeatureCapabilities, featureFlagsOrDefault };
 export type { LabOSFeatureCapabilities };
@@ -120,7 +120,7 @@ export function buildReadinessChecks({
     {
       id: "glasses",
       label: "Glasses connected",
-      detail: connected ? "ADB is connected. Keep the glasses awake and pointed at the workspace." : "Connect the glasses before starting the guided flow.",
+      detail: connected ? "The glasses are connected. Keep them awake and pointed at the workspace." : "Connect the glasses before starting the guided run.",
       state: connected ? "ready" : "blocked",
     },
     {
@@ -138,17 +138,17 @@ export function buildReadinessChecks({
       id: "preview",
       label: "Live preview frames",
       detail: previewReady
-        ? `Current frame reachable${preview?.frameBytes ? ` (${preview.frameBytes} bytes)` : ""}; health reports ${Number(preview?.fps || 0).toFixed(1)} fps.`
-        : "Start the camera preview so adherence can sample current frames.",
+        ? `The camera view is live at ${Number(preview?.fps || 0).toFixed(1)} fps.`
+        : "Start the camera preview so step checks can see the workspace.",
       state: previewReady ? "ready" : connected ? "blocked" : "warn",
       action: !previewReady && connected ? { label: "Start Preview", onClick: onStartPreview, loading: busy === "preview" } : undefined,
     },
     {
       id: "recording",
-      label: "Native session recording",
+      label: "Session recording",
       detail: recordingActive
-        ? `Recording is active${recordingStatus?.state.activeVideoPath ? `: ${recordingStatus.state.activeVideoPath}` : "."} The right-side capture light should be visible.`
-        : "Start Protocol will start the native camera recording through the same camera module path as long-press video.",
+        ? `Recording is active${recordingStatus?.state.activeVideoPath ? " on the glasses" : ""}. The capture light on the right should be visible.`
+        : "Recording starts automatically when you start the run.",
       state: "ready",
     },
   ];
@@ -177,10 +177,13 @@ export function buildReadinessChecks({
     });
   }
   if (capabilities.handsFree || capabilities.realtimeSupervisor || capabilities.postStepValidation) {
+    const objectDetectionLabel = segmentation?.mode === "sidecar"
+      ? segmentation.health?.ok === false ? "unavailable" : "ready"
+      : "sample mode";
     checks.push({
       id: "voice",
-      label: "Voice and perception stack",
-      detail: `Gemini Live: ${voiceLabel(voiceHealth)}. Entity layer: ${perceptionLabel(segmentation)}. RunPod: ${runpodLabel(runpodGuard)}.`,
+      label: "Voice and object detection",
+      detail: `Voice: ${voiceLabel(voiceHealth)}. Object detection: ${objectDetectionLabel}. Remote checks: ${runpodLabel(runpodGuard)}.`,
       state: voiceReady && sidecarReal ? "ready" : "warn",
     });
   }
@@ -275,8 +278,8 @@ export function buildPrimaryAction({
     const partial = run?.status === "aborted";
     if (savedManifestRef) {
       const savedDetail = capabilities.advancedEvidence
-        ? `${partial ? "Partial evidence" : "Evidence"} is saved to dashboard/data/${savedManifestRef}.`
-        : `${partial ? "Partial evidence" : "Evidence"} package is saved and ready for review.`;
+        ? `${partial ? "The partial run" : "The run"} is saved to dashboard/data/${savedManifestRef}.`
+        : `${partial ? "The partial run" : "The run"} is saved and ready for review.`;
       if (!connected) return { label: "Connect Glasses First", detail: `${savedDetail} Reconnect the glasses to run the protocol again.`, disabled: true };
       if (!labosReady) return { label: "Launch LabOS App", detail: `${savedDetail} Start the on-device service before the next run.`, loading: busy === "labos", onClick: onLaunchLabos };
       if (!previewReady) return { label: "Start Camera Preview", detail: `${savedDetail} Start frames before the next run.`, loading: busy === "preview", onClick: onStartPreview };
@@ -289,22 +292,22 @@ export function buildPrimaryAction({
       };
     }
     return {
-      label: "Save Evidence Package",
+      label: "Save Run",
       detail: partial
-        ? "Save the partial run evidence package before starting over."
-        : "Save the run evidence package for replay and training review.",
+        ? "Save this partial run before starting over."
+        : "Save this run for replay and review.",
       loading: savingManifest,
       onClick: onSaveManifest,
     };
   }
   if (!connected) return { label: "Connect Glasses First", detail: "Use the top connection bar, then return here.", disabled: true };
   if (!labosReady) return { label: "Launch LabOS App", detail: "Starts the on-device service before preview and recording.", loading: busy === "labos", onClick: onLaunchLabos };
-  if (!previewReady) return { label: "Start Camera Preview", detail: "Opens the glasses stream so adherence checks can see frames.", loading: busy === "preview", onClick: onStartPreview };
+  if (!previewReady) return { label: "Start Camera Preview", detail: "Opens the glasses view so step checks can see the workspace.", loading: busy === "preview", onClick: onStartPreview };
   if (!isActive) {
     return {
       label: capabilities.handsFree && voiceReady ? "Start Hands-Free Run" : "Start Protocol Run",
       detail: capabilities.handsFree && voiceReady
-        ? "Starts native recording, protocol state, and realtime supervision."
+        ? "Starts recording, opens the first step, and enables automatic checks."
         : capabilities.buttonConfirm
           ? "Starts native recording. The operator short-presses the glasses button after each step."
           : "Starts native recording and opens the first step.",
@@ -334,15 +337,15 @@ export function buildPrimaryAction({
   }
   if (capabilities.realtimeSupervisor && shouldStartSupervisor) {
     return {
-      label: "Start Realtime Supervisor",
-      detail: "The protocol is loaded. Start autonomous step checks.",
+      label: "Start Auto-Check",
+      detail: "The run is ready. Start automatic step checks.",
       loading: busy === "supervisor",
       onClick: onStartSupervisor,
     };
   }
   return {
-    label: supervisor?.running ? "Supervisor Running" : "Run Active",
-    detail: supervisor?.running ? "Continue the task; Gemini will judge each step from the live stream." : "Use manual checks or start realtime supervision.",
+    label: supervisor?.running ? "Auto-Check Running" : "Run Active",
+    detail: supervisor?.running ? "Continue the task. Each step will be checked from the live camera view." : "Use Check Now or start Auto-Check.",
     disabled: true,
   };
 }
@@ -377,8 +380,8 @@ export function buildOperatorWorkflowState({
   if (supervisorRunning) {
     secondaryActions.push({
       key: "stop-realtime",
-      label: "Stop Realtime Supervisor",
-      detail: "Stop autonomous checks and keep the run in manual control.",
+      label: "Stop Auto-Check",
+      detail: "Stop automatic checks and continue with manual step confirmation.",
       variant: "secondary",
       loading: busy === "supervisor",
       onClick: onStopSupervisor,

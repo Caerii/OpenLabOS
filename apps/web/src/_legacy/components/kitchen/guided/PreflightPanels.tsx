@@ -48,7 +48,7 @@ export function PreflightPanel({ checks, readyCount }: { checks: CheckItem[]; re
               icon={<Icon d={ICON.check} size={16} className="text-good-fg" />}
               sub={allReady ? "Ready. Collapse this and keep the run controls in focus." : nextCheck?.detail || "Finish setup before starting."}
             >
-              Preflight
+              Setup Check
             </CardTitle>
             <Badge color={allReady ? "green" : "yellow"}>{readyCount}/{checks.length}</Badge>
           </CardHeader>

@@ -2,7 +2,7 @@ import type { KitchenProtocolSummary, LabOSWorkflowPreset } from "../../../api";
 
 export const KITCHEN_DEMO_FALLBACK_PRESET: LabOSWorkflowPreset = {
   id: "kitchen-demo",
-  title: "Kitchen Demo",
+  title: "Guided Kitchen Run",
   domain: "kitchen-protocol",
   defaultProtocolId: "kitchen-tea-v1",
   protocolAliases: ["video-extracted-tea"],
@@ -18,7 +18,7 @@ export const KITCHEN_DEMO_FALLBACK_PRESET: LabOSWorkflowPreset = {
   voice: {
     contextLabel: "kitchen workflow",
     operatorRole: "operator",
-    openingExample: "Starting the kitchen workflow. Ask me what to do next and I will guide the current step.",
+    openingExample: "The kitchen run is ready. Ask what comes next, and I will guide you through the current step.",
   },
 };
 

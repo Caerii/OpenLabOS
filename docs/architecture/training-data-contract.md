@@ -1,12 +1,13 @@
-# Training data contract (LabOS kitchen step verification)
+# Training data for kitchen step checks
 
-This document defines the canonical dataset shapes we will generate from LabOS kitchen artifacts and feed into:
+Training jobs read the same saved kitchen runs used by review and replay. The
+formats below support:
 
 - **SFT** (supervised fine-tuning)
 - **DPO** (preference optimization)
 - **GRPO** (reward optimization; later)
 
-The goal is to keep the data model stable while the training stack evolves.
+Keep these records stable when changing the training code.
 
 ## Inputs (source artifacts)
 
@@ -16,7 +17,7 @@ From `OpenLabOS/dashboard/data/kitchen/`:
 - `frames/*.jpg` — images referenced by `frameRef`
 - `current_run.json` — latest snapshot (convenience; not required)
 
-## Canonical label schema (authoritative)
+## Label schema
 
 The long-term “closed world” authoritative schema lives in:
 

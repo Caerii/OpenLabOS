@@ -39,7 +39,7 @@ function RunwayStrip({
     { label: "Preflight", done: readyCount === checkCount, active: readyCount < checkCount },
     { label: "Run", done: !!isActive || completed, active: readyCount === checkCount && !isActive && !completed },
     {
-      label: realtimeEnabled ? "Supervise" : "Confirm",
+      label: realtimeEnabled ? "Auto-check" : "Confirm",
       done: realtimeEnabled ? !!supervisor?.running : completed,
       active: isActive && !completed,
     },

@@ -13,7 +13,11 @@ import { StepVoiceCue } from "./StepVoiceCue";
 
 function decisionLabel(decision: AdherenceDecision | null) {
   if (!decision) return "";
-  return decision.action.replace(/_/g, " ");
+  if (decision.action === "advance") return "step passed";
+  if (decision.action === "possible_deviation") return "check step";
+  if (decision.action === "blocked") return "needs attention";
+  if (decision.action === "collect_more_evidence" || decision.action === "confirming") return "checking";
+  return "step check";
 }
 
 function runBadgeColor(status?: string): "green" | "yellow" | "blue" | "gray" {
@@ -51,7 +55,7 @@ function FocusedGlassesStream({
         </div>
         <div className="flex flex-wrap gap-1.5 sm:shrink-0 sm:justify-end">
           <Badge color={previewReady ? "green" : "yellow"}>{previewReady ? "streaming" : "waiting"}</Badge>
-          <Badge color="gray">{frameCount} run frames</Badge>
+          <Badge color="gray">{frameCount} snapshots</Badge>
           <Badge color="gray">{fps.toFixed(1)} fps</Badge>
           <Badge color={latencyMs !== null ? "blue" : "gray"}>{formatPreviewLatency(latencyMs)}</Badge>
         </div>

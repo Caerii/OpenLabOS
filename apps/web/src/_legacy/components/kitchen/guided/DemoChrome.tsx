@@ -9,7 +9,6 @@ import type {
 } from "../../../api";
 import { deriveLabOSExperience } from "../../../lib/labosExperience";
 import type { CheckItem, OperatorAction } from "./types";
-import { perceptionLabel } from "./statusLabels";
 
 function MiniStep({ active, done, label, detail }: {
   active?: boolean;
@@ -64,8 +63,14 @@ export function DemoHero({
           <Badge color={connected ? "green" : "red"}>{connected ? "glasses online" : "glasses offline"}</Badge>
           <Badge color={previewReady ? "green" : "yellow"}>{previewReady ? "frames live" : "preview needed"}</Badge>
           {showAdvancedBadges && <Badge color={voiceReady ? "green" : "yellow"}>{voiceReady ? "voice live" : "voice replay"}</Badge>}
-          {showAdvancedBadges && <Badge color={segmentation?.mode === "sidecar" ? "green" : "blue"}>{perceptionLabel(segmentation)}</Badge>}
-          <Badge color={supervisor?.running ? "green" : "gray"}>{supervisor?.running ? "supervising" : "manual"}</Badge>
+          {showAdvancedBadges && (
+            <Badge color={segmentation?.mode === "sidecar" ? "green" : "blue"}>
+              {segmentation?.mode === "sidecar"
+                ? segmentation.health?.ok === false ? "object detection unavailable" : "object detection ready"
+                : "object detection sample mode"}
+            </Badge>
+          )}
+          <Badge color={supervisor?.running ? "green" : "gray"}>{supervisor?.running ? "auto-check on" : "manual checks"}</Badge>
         </div>
       </div>
     </Card>
@@ -104,16 +109,16 @@ export function DemoSideRail({
   return (
     <div className="space-y-4">
       <Card>
-        <SectionLabel>Demo Timeline</SectionLabel>
+        <SectionLabel>Run path</SectionLabel>
         <div className="space-y-2">
-          <MiniStep done={readyCount === checkCount} active={readyCount < checkCount} label="1. Preflight" detail="Connect glasses, launch app, and start frames." />
-          <MiniStep done={!!isActive || completed} active={readyCount === checkCount && !isActive} label="2. Start Protocol" detail="Start the recording and show the first step." />
+          <MiniStep done={readyCount === checkCount} active={readyCount < checkCount} label="1. Setup" detail="Connect the camera or glasses, open the device app if needed, and confirm the live view." />
+          <MiniStep done={!!isActive || completed} active={readyCount === checkCount && !isActive} label="2. Start protocol" detail="Begin recording and show the first step." />
           {realtimeEnabled ? (
-            <MiniStep done={!!supervisor?.running} active={isActive && !supervisor?.running} label="3. Realtime Supervisor" detail="Backend checks frames/chunks while the operator works." />
+            <MiniStep done={!!supervisor?.running} active={isActive && !supervisor?.running} label="3. Auto-check" detail="While you work, each step can be checked from the live view." />
           ) : (
-            <MiniStep done={completed} active={isActive && !completed} label="3. Confirm Steps" detail="Each confirmation saves evidence and advances the protocol." />
+            <MiniStep done={completed} active={isActive && !completed} label="3. Confirm steps" detail="Each confirmation keeps evidence with the run and advances the protocol." />
           )}
-          <MiniStep done={completed} active={isActive && !completed} label="4. Review" detail="Save the evidence package for review." />
+          <MiniStep done={completed} active={isActive && !completed} label="4. Review" detail="Save the run, then open it to see what was recorded." />
         </div>
       </Card>
 
@@ -121,12 +126,12 @@ export function DemoSideRail({
         <SectionLabel>Progress</SectionLabel>
         <div className="flex items-center justify-between text-[11px] text-muted">
           <span>{isActive ? `${progress} completed, ${Math.max(0, (run?.totalSteps || 0) - progress)} remaining` : `${readyCount} of ${checkCount} preflight checks ready`}</span>
-          {realtimeEnabled && <span>{supervisor?.tickCount || 0} supervisor ticks</span>}
+          {realtimeEnabled && <span>{supervisor?.tickCount || 0} automatic checks</span>}
         </div>
         <ProgressBar value={isActive ? progress : readyCount} max={max} className="mt-2" />
         {supervisor?.lastResult && (
           <div className="mt-3 labos-inset p-2 text-[11px] text-muted">
-            Last decision: <span className="text-fg">{supervisor.lastResult.adherence.action.replace(/_/g, " ")}</span>
+            <span className="text-fg">Latest check</span>
             <div className="mt-1">{supervisor.lastResult.adherence.spokenSummary}</div>
           </div>
         )}

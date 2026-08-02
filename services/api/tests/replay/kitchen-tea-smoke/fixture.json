@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "labos.kitchen.replay-fixture.v1",
+  "fixtureId": "kitchen-tea-smoke-v1",
+  "source": {
+    "kind": "synthetic",
+    "runId": "kitchen-tea-smoke-run"
+  },
+  "protocolId": "kitchen-tea-v1",
+  "notes": "Minimal replay scenario for kitchen-tea adherence policy smoke checks.",
+  "ticks": [
+    {
+      "label": "first-step-high-confidence-pass",
+      "runId": "kitchen-tea-smoke-run",
+      "protocolId": "kitchen-tea-v1",
+      "stepNumber": 1,
+      "decision": {
+        "stepComplete": true,
+        "confidence": 0.91,
+        "action": "advance",
+        "summary": "Synthetic high-confidence completion.",
+        "supportingCheckIds": ["setup-tea-workspace:success"],
+        "warnings": [],
+        "blockers": []
+      },
+      "evidence": [
+        {
+          "checkId": "setup-tea-workspace:success",
+          "scale": "frame",
+          "modeId": "success-check",
+          "title": "Single-frame success check",
+          "ok": true,
+          "passed": true,
+          "confidence": 0.91,
+          "warnings": [],
+          "blockers": []
+        }
+      ],
+      "expected": {
+        "action": "advance",
+        "state": "passed",
+        "shouldAdvance": true
+      }
+    }
+  ]
+}

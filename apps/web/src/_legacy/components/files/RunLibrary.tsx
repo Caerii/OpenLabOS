@@ -90,7 +90,7 @@ export function RunLibrary({
     if (!selectedRunId || analysisBusy) return;
     setAnalysisBusyRunId(selectedRunId);
     setAnalysisMessageRunId(selectedRunId);
-    setAnalysisMessage("Queued saved step evidence for local VLM analysis. This can take a few minutes on a local model.");
+    setAnalysisMessage("Queued the saved steps for local review. This may take a few minutes.");
     try {
       const result = await kitchenAnalyzeSavedSessionManifest(selectedRunId);
       setAnalysisMessage(
@@ -113,7 +113,7 @@ export function RunLibrary({
       <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 className="text-lg font-semibold text-fg">Run Library</h2>
-          <p className="text-sm text-muted">Saved protocol runs, evidence packages, and redo history.</p>
+          <p className="text-sm text-muted">Saved runs, session logs, and redo history.</p>
         </div>
         <div className="text-xs text-subtle">{shown.length} of {runs.length} runs</div>
       </div>
@@ -145,7 +145,7 @@ export function RunLibrary({
       {!runs.length ? (
         <div className="rounded-xl border border-border/15 bg-border/10 p-8 text-center">
           <div className="text-sm font-medium text-fg">No saved runs yet</div>
-          <p className="mt-1 text-sm text-muted">Complete or stop a kitchen run, then save the evidence package.</p>
+          <p className="mt-1 text-sm text-muted">Complete or stop a kitchen run, then select Save Run.</p>
         </div>
       ) : !shown.length ? (
         <div className="rounded-xl border border-border/15 bg-border/10 p-8 text-center text-sm text-muted">

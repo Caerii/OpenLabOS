@@ -3,6 +3,7 @@ import { zValidator } from "@hono/zod-validator";
 import { SessionEventSchema } from "@openlabos/protocol";
 import { z } from "zod";
 import type { AppDeps } from "../app.js";
+import { FilesystemSessionStore } from "../../core/sessions/filesystem-store.js";
 
 const StartBody = z.object({
   protocol_id: z.string().min(1),
@@ -40,12 +41,35 @@ export function sessionsRoutes(deps: AppDeps) {
     async (c) => {
       const { session_id } = c.req.valid("param");
       const event = c.req.valid("json");
+      const idemKey = c.req.header("idempotency-key");
+      if (deps.sessions instanceof FilesystemSessionStore) {
+        const idem = deps.sessions.checkEventIdempotency(idemKey, session_id, event);
+        if ("conflict" in idem) {
+          return c.json({ error: "idempotency_key_conflict" }, 409);
+        }
+        if (idem.replay) return c.json({ accepted: true as const, replayed: true }, 202);
+      }
       try {
         await deps.sessions.appendEvent(session_id, event);
         return c.json({ accepted: true as const }, 202);
       } catch {
         return c.json({ error: `Unknown session: ${session_id}` }, 404);
       }
+    },
+  );
+
+  app.post(
+    "/:session_id/resume",
+    zValidator("param", SessionParam),
+    async (c) => {
+      const { session_id } = c.req.valid("param");
+      const session = await deps.sessions.getSession(session_id);
+      if (!session) return c.json({ error: "Unknown session" }, 404);
+      if (session.status !== "active") {
+        return c.json({ error: "session_not_active", status: session.status }, 409);
+      }
+      const view = await deps.sessions.getView(session_id);
+      return c.json({ resumed: true, view }, 200);
     },
   );
 
@@ -57,6 +81,12 @@ export function sessionsRoutes(deps: AppDeps) {
       const { session_id } = c.req.valid("param");
       const { status } = c.req.valid("json");
       const session = await deps.sessions.finalize(session_id, status);
+      const protocolJson = JSON.stringify({
+        protocol_id: session.protocol_id,
+        protocol_version: session.protocol_version,
+      });
+      const { writeRunManifest } = await import("../../core/sessions/manifest-builder.js");
+      await writeRunManifest(deps.sessions, session_id, [], protocolJson);
       return c.json(session, 200);
     },
   );

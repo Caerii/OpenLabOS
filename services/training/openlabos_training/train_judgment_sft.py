@@ -26,17 +26,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 
-# TODO(openlabos): replace with safe path-join helper that prevents traversal under data_root
-# was: from labos_api.storage.media_paths import MediaPathError, resolve_data_path
-class MediaPathError(RuntimeError):
-    """Stub for labos_api.storage.media_paths.MediaPathError."""
-
-
-def resolve_data_path(data_root: Path, rel: str) -> Path:  # pragma: no cover - stub
-    raise NotImplementedError(
-        "TODO(openlabos): port resolve_data_path (safe join under data_root); "
-        "was labos_api.storage.media_paths.resolve_data_path",
-    )
+from openlabos_training.judgment_runtime import MediaPathError, resolve_data_path
 
 
 def _require(pkg: str) -> None:

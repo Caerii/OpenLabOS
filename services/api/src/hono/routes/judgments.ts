@@ -12,6 +12,7 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
+import { fetchWithResilience } from "../../util/fetch-resilience.js";
 import type { AppDeps } from "../app.js";
 
 const ForwardBody = z.object({
@@ -46,7 +47,7 @@ export function judgmentsRoutes(deps: AppDeps) {
     const body = c.req.valid("json");
     let res: Response;
     try {
-      res = await fetch(`${inferenceUrl}/v1/judgments`, {
+      res = await fetchWithResilience(`${inferenceUrl}/v1/judgments`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body),

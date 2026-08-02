@@ -1,8 +1,8 @@
 # Services
 
-Each service is a long-running process with a single responsibility and a
-documented contract. Services are deployable independently and reachable only
-through their public surface — never through shared in-process state.
+Run live coordination in `api`, model judgments in `inference`, segmentation in
+`perception`, and voice coaching in `voice`. Training and evaluation are
+offline tools, not request-path services.
 
 | Service           | Stack                | Talks to                                  |
 | ----------------- | -------------------- | ----------------------------------------- |
@@ -13,4 +13,4 @@ through their public surface — never through shared in-process state.
 | `eval/`           | Python 3.12          | Manifests, metric reports (offline)       |
 | `voice/`          | Python 3.12, LiveKit | Web app via WebRTC                        |
 
-Per-service READMEs cover the wire contract, configuration, and runbook.
+Open a service README for its contract, configuration, and start command.

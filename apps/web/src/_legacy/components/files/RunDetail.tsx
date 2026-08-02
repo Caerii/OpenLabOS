@@ -10,6 +10,7 @@ import {
   StatTile,
   StepAttemptList,
 } from "./RunEvidence";
+import { RunAuditTimeline } from "../kitchen/guided/RunAuditTimeline";
 import {
   evidenceStatsForManifest,
   evidenceStatsForSummary,
@@ -47,7 +48,7 @@ export function RunDetail({
   if (!selected) {
     return (
       <div className="rounded-xl border border-border/15 bg-border/10 p-6 text-center text-sm text-muted">
-        Select a saved run to review its evidence package.
+        Select a saved run to review its session log.
       </div>
     );
   }
@@ -91,7 +92,7 @@ export function RunDetail({
               onClick={onAnalyzeSavedRun}
               disabled={analysisBusy}
             >
-              {analysisBusy ? "Analyzing..." : "Analyze Evidence"}
+              {analysisBusy ? "Reviewing..." : "Review Saved Steps"}
             </button>
           )}
           {jsonUrl && (
@@ -104,10 +105,10 @@ export function RunDetail({
 
       <>
         <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5">
-          <StatTile value={stats?.stepSegmentCount} label="step segments" loading={statsLoading} />
+          <StatTile value={stats?.stepSegmentCount} label="saved steps" loading={statsLoading} />
           <StatTile value={stats?.nativeVideoCount} label="videos" loading={statsLoading} />
           <StatTile value={stats?.frameCount} label="snapshots" loading={statsLoading} />
-          <StatTile value={stats?.stepAnalysisCount} label="analyses" loading={statsLoading} />
+          <StatTile value={stats?.stepAnalysisCount} label="step reviews" loading={statsLoading} />
           <StatTile value={stats?.redoneAttemptCount} label="redone" loading={statsLoading} />
         </div>
 
@@ -125,7 +126,7 @@ export function RunDetail({
         )}
         {error && !manifest && (
           <div className="mt-3 rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-400">
-            Could not load the evidence package: {error}
+            Could not load the session log: {error}
           </div>
         )}
 
@@ -136,6 +137,12 @@ export function RunDetail({
         )}
 
         {manifest && <ReadinessPanel manifest={manifest} />}
+
+        {manifest ? (
+          <div className="mt-4">
+            <RunAuditTimeline manifest={manifest} sessionId={selected.runId} />
+          </div>
+        ) : null}
 
         {manifest ? (
           <div className="mt-4">

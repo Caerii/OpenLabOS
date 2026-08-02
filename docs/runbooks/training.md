@@ -1,25 +1,32 @@
-# Training runbook (judgment LoRA / SFT)
+# Train a step-checking adapter
 
-This runbook covers **TASK-0011**: supervised fine-tuning for the **clip-level, step-conditioned judgment** task, plus the local **GRPO** sampled-reward path implemented in `labos-training train-grpo`.
+Fine-tune a vision model to return the same structured step result used by the
+API. This page covers supervised fine-tuning and the local sampled-reward
+training path.
 
 ## What you are training
 
-- **Task**: Same structured JSON judgment as production inference (`JudgmentResult` in `apps/api`), with **structured fields authoritative** and `reason` explanatory only.
+- **Task**: Produce the API's structured JSON step result. Structured fields
+  are authoritative; `reason` is explanatory.
 - **Inputs**: Up to **N** frames per clip (`LABOS_JUDGMENT_MAX_FRAMES`, default **8**), selected **deterministically** the same way as the API (`select_frames_for_clip`: list `processed/<session_id>/frames/<clip_id>/`, sort by filename, take first N).
 - **Prompt (frozen at prepare time)**: `prepare-judgment-sft` calls **`build_step_prompt`** once per row and writes `system` + `user_text` into JSONL. **Training never re-runs** the prompt builder; it only tokenizes those frozen strings plus frames. Multimodal **transport** still differs (API: base64 data URLs; training: PIL tensors).
 
 ## What you are not training
 
 - Not a general “lab assistant.”
-- Not dashboard `verify_step` JSON (legacy `labos-build-sft` remains separate).
-- **No in-loop eval**: after training, compare adapters using **TASK-0008** (`labos-eval-metrics judgments`) and **TASK-0010** (`labos-eval-metrics baseline`) against the frozen split and SQLite judgments.
+- Not the legacy `verify_step` dataset (`openlabos-build-sft` remains separate).
+- **No in-loop evaluation**: after training, compare adapters with
+  `openlabos-eval-metrics` against the frozen split and stored judgments.
 
 ## Prerequisites
 
 - **Python 3.12** and `uv` (see `services/training/.python-version`).
 - **CUDA GPU** (judgment SFT targets a single local GPU path, e.g. RTX 3080 10GB). CPU training is refused with a clear error.
-- **Frozen dataset** under `data/splits/<dataset>/<freeze_id>/` with `train.jsonl` (and optionally `val.jsonl`) in the TASK-0009 JSONL format (`docs/eval/dataset-spec.md`).
-- **SQLite** (`apps/api/var/labos_sessions.sqlite`) so each `session_id` in the split resolves to a `protocol_id` (same as API).
+- **Frozen dataset** under `data/splits/<dataset>/<freeze_id>/` with
+  `train.jsonl` and, when available, `val.jsonl`; see
+  `docs/eval/dataset-spec.md`.
+- **Session data** from the API data root. Legacy workflows may also require
+  `services/api/var/labos_sessions.sqlite`.
 - **Frames on disk** under `data/` for every clip in the split (same paths the API would read).
 
 ## Install
@@ -33,9 +40,9 @@ uv sync --python 3.12 --extra gpu
 `pytorch-cu124` index, so this sync resolves a CUDA build instead of the CPU
 wheel.
 
-`labos-api` is pulled in as an **editable path dependency** so prompts and frame selection stay aligned with the API.
+The training package shares prompt and frame-selection helpers with the API.
 
-## One boring CLI: `labos-training`
+## CLI: `openlabos-training`
 
 ### 1) Prepare SFT JSONL
 
@@ -45,16 +52,17 @@ Writes an explicit machine-readable bundle:
 - `dataset-manifest.json` (paths, counts, frame policy, schema version, `labos-api` package version, explicit **test split excluded** note, small-dataset warning)
 
 ```bash
-uv run labos-training prepare-judgment-sft ^
+uv run openlabos-training prepare-judgment-sft ^
   --frozen-dir ..\..\data\splits\<dataset>\<freeze_id> ^
-  --sqlite ..\..\apps\api\var\labos_sessions.sqlite ^
+  --sqlite ..\..\services\api\var\labos_sessions.sqlite ^
   --out-dir outputs\<run_name>_prep
 ```
 
 Optional flags:
 
 - `--data-root` — defaults from `LABOS_DATA_ROOT` or inferred repo `data/` when `--frozen-dir` is under `.../data/splits/...`.
-- `--protocol-path` — defaults from `LABOS_PROTOCOL_PATH` or `packages/protocol-schema/examples/kitchen-tea-v1.json`.
+- `--protocol-path` — defaults from `LABOS_PROTOCOL_PATH` or the example
+  protocol under `examples/protocols/`.
 
 **Failure modes** (fail fast):
 
@@ -65,7 +73,7 @@ Optional flags:
 Default stack: **`Qwen/Qwen3.5-9B`**, **4-bit** weights, **LoRA** on MLP + attention linear projections, **`per_device_train_batch_size=1`** (**current collator limitation**, not a universal law). Use **`Qwen/Qwen2.5-VL-3B-Instruct`** only for cheaper smoke checks.
 
 ```bash
-uv run labos-training train-judgment-sft ^
+uv run openlabos-training train-judgment-sft ^
   --train outputs\<run_name>_prep\sft_train.jsonl ^
   --val outputs\<run_name>_prep\sft_val.jsonl ^
   --data-root ..\..\data ^
@@ -88,16 +96,20 @@ Artifacts under `--output`:
 
 ### 3) Post-SFT judgments (HF + PEFT, not LM Studio)
 
-After SFT, run judgments with the **same task contract** as the API using **`labos-training infer-hf-judgments`**. You must pass a distinct **`--judgment-model-id`** so eval can distinguish HF post-SFT rows from LM Studio baselines (latest judgment per clip wins in today’s harness).
+After SFT, run the same task contract as the API with
+`openlabos-training infer-hf-judgments`. Give each adapter a distinct
+`--judgment-model-id` so the evaluation output can distinguish it from the
+baseline.
 
 Full operator steps: **`docs/runbooks/post-sft-inference.md`**. Typical invocation uses **`--frozen-dir`** and **`--split`** (`train` / `val` / `test`) instead of spelling out `test.jsonl`.
 
 ### 4) GRPO sampled reward loop
 
-`labos-training train-grpo` samples multiple completions per prompt, scores them against the frozen target JSON, computes group-relative advantages, and updates the LoRA policy.
+`openlabos-training train-grpo` samples several answers for each prompt, scores
+them against the frozen target, and updates the LoRA policy.
 
 ```bash
-uv run labos-training train-grpo ^
+uv run openlabos-training train-grpo ^
   --train outputs\<run_name>_prep\sft_train.jsonl ^
   --val outputs\<run_name>_prep\sft_val.jsonl ^
   --data-root ..\..\data ^
@@ -119,7 +131,7 @@ Notes:
 There is **no** cloud job launcher in-repo. If the local GPU is insufficient, copy:
 
 - `sft_train.jsonl` / `dataset-manifest.json`
-- the same `labos-training train-judgment-sft ...` command
+- the same `openlabos-training train-judgment-sft ...` command
 
 to a GPU host or managed notebook, keeping `data/` and SQLite conventions consistent.
 
@@ -133,6 +145,7 @@ Older scaffolds remain for dashboard-era JSON:
 
 - `services/training/README.md` — purpose, assumptions, output layout.
 - `docs/runbooks/post-sft-inference.md` — HF + PEFT judgment loop after SFT.
-- `docs/verification/TASK-0011-sft-training.md` — verification checklist.
+- `docs/verification/TASK-0011-sft-training.md` contains the original
+  implementation verification notes.
 - `docs/verification/post-sft-inference-integration.md` — integration scope and manual checks.
 - `docs/eval/dataset-spec.md` — label JSONL contract (unchanged by training).

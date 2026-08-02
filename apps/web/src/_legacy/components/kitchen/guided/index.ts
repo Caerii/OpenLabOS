@@ -23,6 +23,10 @@ export { MobilePreflightDetails, PreflightPanel } from "./PreflightPanels";
 export { SetupHintBanner } from "./SetupHintBanner";
 export { SetupFixNext } from "./SetupFixNext";
 export { KitchenInstrumentationDrawer } from "./KitchenInstrumentationDrawer";
+export { DependencyStatusPanel } from "./DependencyStatusPanel";
+export { JudgmentSourceBadge, deriveJudgmentSource } from "./JudgmentSourceBadge";
+export { RunAuditTimeline, buildAuditTimelineFromManifest } from "./RunAuditTimeline";
+export { CaptureConsentModal, hasCaptureConsent, recordCaptureConsent, CAPTURE_CONSENT_STORAGE_KEY } from "./CaptureConsentModal";
 export {
   ProtocolInstructionPanel,
   ProtocolPrimaryAction,

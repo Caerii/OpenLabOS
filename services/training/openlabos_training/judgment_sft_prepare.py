@@ -15,88 +15,20 @@ from __future__ import annotations
 import argparse
 import json
 import sqlite3
-from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Iterable
 
 
-# TODO(openlabos): replace with read of generated openlabos_protocol JSON Schema types
-# was: from labos_api.models.judgment import JudgmentResult
-@dataclass
-class JudgmentResult:
-    """Stub mirroring labos_api.models.judgment.JudgmentResult.
-
-    Was a Pydantic-ish model with model_dump(mode='json'). The OpenLabOS port should
-    regenerate this from packages/protocol/schema/*.json via datamodel-code-generator
-    (see scripts/regenerate-protocol-types.py).
-    """
-
-    step_id: str
-    judgment_schema_version: str
-    objects_seen: list[str]
-    action_detected: str | None
-    step_complete: bool
-    possible_issue: str | None
-    confidence: float
-    reason: str
-
-    def model_dump(self, *, mode: str = "python") -> dict[str, Any]:  # pragma: no cover - stub
-        raise NotImplementedError(
-            "TODO(openlabos): regenerate JudgmentResult from packages/protocol/schema; "
-            "was labos_api.models.judgment.JudgmentResult.model_dump",
-        )
-
-
-# TODO(openlabos): replace with frame selection helper (lists processed/<session>/frames/<clip>/, sorts lexically, takes first N)
-# was: from labos_api.services.frame_selection import FrameSelectionError, select_frames_for_clip
-class FrameSelectionError(RuntimeError):
-    """Stub for labos_api.services.frame_selection.FrameSelectionError."""
-
-
-def select_frames_for_clip(*, data_root: Path, session_id: str, clip_id: str) -> list[str]:  # pragma: no cover - stub
-    """Stub for labos_api.services.frame_selection.select_frames_for_clip."""
-    raise NotImplementedError(
-        "TODO(openlabos): port frame selection (sorted listing of "
-        "processed/<session>/frames/<clip>/, first N images where N = LABOS_JUDGMENT_MAX_FRAMES); "
-        "was labos_api.services.frame_selection.select_frames_for_clip",
-    )
-
-
-# TODO(openlabos): replace with prompt builder rendering protocol+step into a multimodal user/system prompt
-# was: from labos_api.services.judgment_prompt import build_step_prompt
-@dataclass
-class _PromptParts:
-    system: str
-    user: str
-
-
-def build_step_prompt(*, protocol: Any, step: Any, frame_paths: list[str]) -> _PromptParts:  # pragma: no cover - stub
-    """Stub for labos_api.services.judgment_prompt.build_step_prompt."""
-    raise NotImplementedError(
-        "TODO(openlabos): port judgment prompt builder (renders protocol+step into "
-        "system/user text aligned with the API inference contract); "
-        "was labos_api.services.judgment_prompt.build_step_prompt",
-    )
-
-
-# TODO(openlabos): replace with protocol registry that loads protocol JSON files matching the new schema
-# was: from labos_api.services.protocol_registry import ProtocolRegistry
-class ProtocolRegistry:  # pragma: no cover - stub
-    """Stub for labos_api.services.protocol_registry.ProtocolRegistry."""
-
-    @classmethod
-    def from_single_path(cls, path: Path) -> "ProtocolRegistry":
-        raise NotImplementedError(
-            "TODO(openlabos): port ProtocolRegistry (loads protocol JSON, exposes get(protocol_id) "
-            "with .steps having .step_id); was labos_api.services.protocol_registry.ProtocolRegistry",
-        )
-
-    def get(self, protocol_id: str) -> Any:
-        raise NotImplementedError(
-            "TODO(openlabos): port ProtocolRegistry.get; was "
-            "labos_api.services.protocol_registry.ProtocolRegistry.get",
-        )
+from openlabos_training.judgment_runtime import (
+    FrameSelectionError,
+    JudgmentResult,
+    ProtocolRegistry,
+    build_step_prompt,
+    protocol_id_for_session,
+    select_frames_for_clip,
+)
+from openlabos_training.session_manifest_io import SessionManifestError
 
 
 class JudgmentSftPrepareError(RuntimeError):
@@ -176,11 +108,11 @@ def parse_label_row(obj: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def protocol_id_for_session(conn: sqlite3.Connection, session_id: str) -> str:
-    row = conn.execute("SELECT protocol_id FROM sessions WHERE session_id = ?", (session_id,)).fetchone()
-    if row is None:
-        raise JudgmentSftPrepareError(f"No session row for session_id={session_id!r}")
-    return str(row[0])
+def protocol_id_for_session_row(conn: sqlite3.Connection, session_id: str, *, data_root: Path) -> str:
+    try:
+        return protocol_id_for_session(conn, session_id, data_root=data_root)
+    except SessionManifestError as exc:
+        raise JudgmentSftPrepareError(str(exc)) from exc
 
 
 def build_target_json(label: dict[str, Any]) -> dict[str, Any]:
@@ -224,7 +156,7 @@ def materialize_split(
         clip_id = label["clip_id"]
         step_id = label["step_id"]
 
-        protocol_id = protocol_id_for_session(conn, session_id=session_id)
+        protocol_id = protocol_id_for_session_row(conn, session_id=session_id, data_root=data_root)
         protocol = registry.get(protocol_id)
         if protocol is None:
             raise JudgmentSftPrepareError(f"Protocol {protocol_id!r} not loaded (check --protocol-path).")
@@ -296,7 +228,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument(
         "--protocol-path",
         default="",
-        help="Protocol JSON (default: LABOS_PROTOCOL_PATH or monorepo packages/protocol-schema/examples/kitchen-tea-v1.json).",
+        help="Protocol JSON (default: LABOS_PROTOCOL_PATH or examples/protocols/kitchen-tea.protocol.json).",
     )
     p.add_argument(
         "--out-dir",
@@ -335,9 +267,7 @@ def main(argv: list[str] | None = None) -> int:
         if env_proto:
             protocol_path = Path(env_proto).resolve()
         elif inferred_root is not None:
-            protocol_path = (
-                inferred_root / "packages" / "protocol-schema" / "examples" / "kitchen-tea-v1.json"
-            )
+            protocol_path = inferred_root / "examples" / "protocols" / "kitchen-tea.protocol.json"
         else:
             raise SystemExit("Could not infer protocol path; set --protocol-path or LABOS_PROTOCOL_PATH.")
 
@@ -355,8 +285,12 @@ def main(argv: list[str] | None = None) -> int:
     dataset_name = frozen_dir.parent.name
     prompt_frozen_at = datetime.now(UTC).replace(microsecond=0).isoformat()
 
-    # TODO(openlabos): re-source labos_api package version once a Python protocol package exists; was importlib_metadata.version("labos-api")
-    labos_api_version = "unknown"
+    import importlib.metadata as metadata
+
+    try:
+        labos_api_version = metadata.version("openlabos-training")
+    except metadata.PackageNotFoundError:
+        labos_api_version = "unknown"
 
     registry = ProtocolRegistry.from_single_path(protocol_path)
     conn = sqlite3.connect(str(sqlite_path))

@@ -80,9 +80,11 @@ export function Dashboard() {
         <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
           Dashboard
         </h1>
-        <p className="mt-2 text-ink-mid">
-          Live coordination plane. Sessions, devices, and the modules that
-          extend the closed world.
+        <p className="mt-2 text-ink-mid max-w-2xl">
+          Inspect API health, registered devices, loaded modules, and persisted
+          sessions. This is the engineering view; the guided operator workflow
+          is available at{" "}
+          <span className="font-mono text-accent-300">/operate</span>.
         </p>
       </motion.div>
 
@@ -121,11 +123,11 @@ export function Dashboard() {
                 exit={{ opacity: 0 }}
                 className="text-sm text-ink-low"
               >
-                No adapters registered. Boot the API with{" "}
+                No device adapters are registered. Start the API with{" "}
                 <span className="font-mono text-accent-300">
                   OPENLABOS_DEVICE_BASE_URL
                 </span>{" "}
-                set.
+                configured.
               </motion.div>
             ) : (
               adapters.map((a, i) => (
@@ -163,8 +165,8 @@ export function Dashboard() {
         <Card title="Modules loaded" delay={0.15}>
           {modules.length === 0 ? (
             <div className="text-sm text-ink-low">
-              No domain modules registered. Add a module package and register
-              its manifest at boot.
+              No modules are registered. Add a module package and register it
+              when the API starts.
             </div>
           ) : (
             modules.map((m) => (
@@ -202,10 +204,10 @@ export function Dashboard() {
               <span className="font-mono text-accent-300 break-all">
                 {adapters[0]?.id}
               </span>
-              . Camera lifecycle is broadcast on this panel's mount/unmount;
-              the on-device server proxies through{" "}
-              <span className="font-mono">/api/device</span> with token
-              auth handled server-side.
+              . Opening this panel starts the camera preview; leaving it stops
+              the preview. Requests pass through{" "}
+              <span className="font-mono">/api/device</span>, and the server
+              supplies the device token.
             </div>
           </div>
         </motion.div>
@@ -221,7 +223,10 @@ export function Dashboard() {
           <div>
             <h2 className="text-xl font-semibold">Run a protocol</h2>
             <p className="mt-1 text-sm text-ink-mid">
-              Drive {defaultProtocol.name.toLowerCase()} against the connected adapter.
+              Start {defaultProtocol.name.toLowerCase()} on the first connected
+              device. This path uses the session API; the guided console at{" "}
+              <span className="font-mono">/operate</span> is the fuller
+              operator flow.
             </p>
           </div>
           <motion.button
@@ -254,7 +259,10 @@ export function Dashboard() {
 
       <Card title="Recent sessions" delay={0.25} className="mt-10">
         {sessions.length === 0 ? (
-          <div className="text-sm text-ink-low">No sessions yet.</div>
+          <div className="text-sm text-ink-low">
+            No sessions yet. Start a protocol above, or finish a guided run at{" "}
+            <span className="font-mono">/operate</span>.
+          </div>
         ) : (
           <div className="grid gap-2">
             <AnimatePresence>

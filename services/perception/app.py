@@ -62,6 +62,35 @@ def clean_prompts(prompts: list[str]) -> list[str]:
     return out
 
 
+import ipaddress
+import socket
+from urllib.parse import urlparse
+
+
+def _image_url_allowed(url: str) -> bool:
+    if os.environ.get("LABOS_PERCEPTION_ALLOW_IMAGE_URL", "true").strip().lower() in {"0", "false", "no"}:
+        return False
+    parsed = urlparse(url)
+    if parsed.scheme not in {"http", "https"}:
+        return False
+    host = parsed.hostname
+    if not host:
+        return False
+    allowlist = os.environ.get("LABOS_PERCEPTION_IMAGE_URL_ALLOWLIST", "").strip()
+    if allowlist:
+        allowed = {h.strip().lower() for h in allowlist.split(",") if h.strip()}
+        return host.lower() in allowed
+    try:
+        infos = socket.getaddrinfo(host, None)
+        for info in infos:
+            ip = ipaddress.ip_address(info[4][0])
+            if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved:
+                return False
+    except OSError:
+        return False
+    return True
+
+
 def decode_image(req: SegmentRequest) -> Image.Image:
     if req.imageBase64:
         payload = req.imageBase64
@@ -71,6 +100,8 @@ def decode_image(req: SegmentRequest) -> Image.Image:
         return Image.open(io.BytesIO(data)).convert("RGB")
 
     if req.imageUrl:
+        if not _image_url_allowed(req.imageUrl):
+            raise HTTPException(status_code=400, detail="imageUrl host is not allowed")
         response = requests.get(req.imageUrl, timeout=20)
         response.raise_for_status()
         return Image.open(io.BytesIO(response.content)).convert("RGB")

@@ -599,7 +599,7 @@ export async function runDeepSynchronizedTrace(opts: RunTraceOpts): Promise<{
   while (Date.now() <= deadline || samples.length === 0) {
     tick += 1;
     const isFull = tick === 1 || tick % fullEveryNTicks === 0;
-    const sample = isFull
+    const sample: SynchronizedTraceSample = isFull
       ? await sampleSynchronizedTrace(tick, {
           previewPort: opts.previewPort,
           includeSlow: ++fullTick === 1 || fullTick % cpuEveryFullTicks === 0,

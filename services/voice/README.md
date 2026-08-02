@@ -1,13 +1,17 @@
 # OpenLabOS Voice
 
-Live-coaching voice agent for OpenLabOS. The service joins a LiveKit room and runs a real-time TTS/ASR session against the operator wearing the smart glasses (or any WebRTC client). It is consumed by `apps/web` via WebRTC: the browser publishes the egocentric camera + microphone tracks into a LiveKit room, and this agent subscribes, listens, watches, and speaks back.
+`services/voice` joins a LiveKit room, subscribes to the operator's audio and
+video, and returns spoken coaching. `apps/web` publishes the WebRTC tracks.
+`services/api` remains responsible for protocols, adherence events, and
+recordings.
 
-The voice service is the realtime *media plane*. The structured *control plane* (protocols, adherence, recordings) lives in `services/api`. Per-session protocol context is fetched from `services/api` when a room is joined, and rendered into the agent's system instructions so the model can coach the operator through the active step.
+When the agent joins a room, it fetches the active step and prior adherence
+events from the API and adds that context to its instructions.
 
 ## Role in the system
 
 - `apps/web` opens a LiveKit room and streams audio + video over WebRTC.
-- `services/voice` (this service) runs as a LiveKit Agent inside the same room.
+- `services/voice` runs as a LiveKit Agent in the same room.
 - `services/api` provides the protocol context for the session (current step, expected entities, prior adherence events).
 - The agent renders that context into the LLM prompt and produces real-time speech back to the operator.
 
@@ -23,7 +27,7 @@ uv run python -m openlabos_voice.agent dev
 
 Copy `.env.example` to `.env.local` (do not commit `.env.local`).
 
-LiveKit media plane (required):
+LiveKit connection (required):
 
 - `LIVEKIT_URL`
 - `LIVEKIT_API_KEY`
@@ -39,7 +43,7 @@ Optional tuning:
 - `LABOS_AGENT_NAME` (default `openlabos-voice`)
 - `LABOS_GEMINI_LIVE_MODEL`
 - `LABOS_GEMINI_LIVE_VOICE` (default `Despina`)
-- `LABOS_DASHBOARD_BASE_URL` — base URL of `services/api` for protocol context lookups
+- `LABOS_DASHBOARD_BASE_URL`: base URL of `services/api` for protocol context lookups
 
 ## Integration with `services/api`
 
@@ -49,7 +53,8 @@ When a room is joined, the agent uses `LABOS_DASHBOARD_BASE_URL` to fetch the pr
 - avoid claiming a step passed unless adherence says so
 - frame deviations as recoverable corrections
 
-Adherence events themselves are owned by `services/api`; this service only produces voice + visual context.
+The API owns adherence events. This service produces voice output and visual
+context for the live session.
 
 ## Deploy
 
@@ -60,4 +65,5 @@ lk agent logs
 lk agent update-secrets --secrets-file=.env.local
 ```
 
-LiveKit Cloud automatically injects `LIVEKIT_URL`, `LIVEKIT_API_KEY`, and `LIVEKIT_API_SECRET` into deployed agent containers.
+LiveKit Cloud injects `LIVEKIT_URL`, `LIVEKIT_API_KEY`, and
+`LIVEKIT_API_SECRET` into deployed agent containers.

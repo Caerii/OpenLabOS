@@ -18,7 +18,7 @@ export const NAV_CONFIG = [
     items: [
       { id: "vision", segment: "vision", label: "AI Vision", icon: "vision" },
       { id: "copilot", segment: "copilot", label: "Live Copilot", icon: "copilot" },
-      { id: "kitchen", segment: "kitchen", label: "Kitchen Demo", icon: "kitchen" },
+      { id: "kitchen", segment: "kitchen", label: "Guided Run", icon: "kitchen" },
       { id: "labclaw", segment: "labclaw", label: "LabClaw", icon: "labclaw" },
     ],
   },
@@ -26,7 +26,7 @@ export const NAV_CONFIG = [
     label: "Device",
     items: [
       { id: "mcu", segment: "mcu", label: "MCU Monitor", icon: "mcu" },
-      { id: "preview", segment: "camera", label: "Camera", icon: "preview" },
+      { id: "preview", segment: "camera", label: "Live Camera", icon: "preview" },
       { id: "battery", segment: "battery", label: "Battery", icon: "battery" },
       { id: "audio", segment: "audio", label: "Audio", icon: "audio" },
       { id: "buttons", segment: "buttons", label: "Buttons", icon: "buttons" },
@@ -35,7 +35,7 @@ export const NAV_CONFIG = [
   {
     label: "System",
     items: [
-      { id: "files", segment: "files", label: "Files", icon: "files" },
+      { id: "files", segment: "files", label: "Run Library", icon: "files" },
       { id: "apps", segment: "apps", label: "Apps", icon: "apps" },
       { id: "network", segment: "network", label: "Network", icon: "network" },
       { id: "labos", segment: "labos", label: "LabOS", icon: "labos" },

@@ -3,6 +3,8 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import { networkInterfaces } from "os";
+import { requestLogMiddleware } from "./middleware/request-log.js";
+import { initOtel } from "./telemetry/otel.js";
 import { findAdb } from "./adb.js";
 import wifiProxyRouter, { wifiProxyMiddleware } from "./wifi-proxy.js";
 import deviceRoutes from "./routes/device.js";
@@ -29,7 +31,7 @@ import runpodRoutes from "./routes/runpod.js";
 import workflowRoutes from "./routes/workflows.js";
 import perceptionRoutes from "./routes/perception.js";
 import { liveCoach } from "./live-coach/singleton.js";
-import { mountHonoOnExpress } from "./hono/mount-on-express.js";
+import { mountHonoOnExpress, closeSessionStore } from "./hono/mount-on-express.js";
 import { dashboardApiHost, dashboardApiPort } from "./runtime-config.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -38,11 +40,18 @@ const HOST = dashboardApiHost();
 const CLOUD_MODE = process.env.CLOUD_MODE === "true";
 
 const app = express();
+const otel = await initOtel();
 
+app.use(requestLogMiddleware());
 app.use(cors({
   origin: process.env.CORS_ORIGIN || true,
   credentials: true,
 }));
+
+// Mount coordination routes before Express parses request bodies. Hono's Node
+// adapter must read the original request stream for POST/PUT payloads.
+await mountHonoOnExpress(app);
+
 app.use(express.json({ limit: "50mb" }));
 
 // ── AI routes (always available — work in cloud and local) ──
@@ -84,9 +93,6 @@ if (!CLOUD_MODE) {
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, mode: CLOUD_MODE ? "cloud" : "local", adbPath: CLOUD_MODE ? null : findAdb() });
 });
-
-// Hono coordination routes (/api/healthz, /api/sessions, device proxy, …)
-await mountHonoOnExpress(app);
 
 // In production, serve the built frontend
 const clientDist = path.resolve(__dirname, "..", "client");
@@ -153,3 +159,16 @@ try {
 } catch (e: any) {
   console.warn(`[LiveCoach] WS unavailable: ${e?.message || e}`);
 }
+
+function shutdown(signal: string) {
+  console.log(`[LabOS] ${signal} received — draining HTTP server`);
+  server.close(async () => {
+    await otel?.shutdown();
+    closeSessionStore();
+    process.exit(0);
+  });
+  setTimeout(() => process.exit(1), 10_000).unref();
+}
+
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));

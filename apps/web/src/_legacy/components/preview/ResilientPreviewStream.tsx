@@ -176,7 +176,7 @@ export function ResilientPreviewStream({
       )}
       {showCornerLabel && (
         <div className="absolute left-3 top-3 rounded-lg bg-black/65 px-2 py-1 text-[11px] text-white">
-          {useH264 ? "H.264" : "MJPEG"} · {adaptive.profileId}
+          Live camera
         </div>
       )}
       {showStreamMetrics && streaming && (

@@ -10,7 +10,6 @@ import type {
 } from "../../../api";
 import { deriveLabOSExperience } from "../../../lib/labosExperience";
 import type { CheckItem, OperatorAction, OperatorSecondaryAction } from "./types";
-import { perceptionLabel } from "./statusLabels";
 
 function humanPhase(stageLabel: string, stepNumber?: number, stepTotal?: number) {
   if (stepNumber && stepTotal) return `Step ${stepNumber} of ${stepTotal}`;
@@ -57,12 +56,14 @@ export function ProtocolStatusRail({
   if (showAdvanced) {
     signals.push({ label: voiceReady ? "Voice ready" : "Voice idle", tone: voiceReady ? "good" : "idle" });
     signals.push({
-      label: perceptionLabel(segmentation),
+      label: segmentation?.mode === "sidecar"
+        ? segmentation.health?.ok === false ? "Object detection unavailable" : "Object detection ready"
+        : "Object detection in sample mode",
       tone: segmentation?.mode === "sidecar" ? "good" : "idle",
     });
   }
   signals.push({
-    label: supervisor?.running ? "Supervising" : "Manual mode",
+    label: supervisor?.running ? "Auto-checking" : "Manual mode",
     tone: supervisor?.running ? "good" : "idle",
   });
 
@@ -195,7 +196,7 @@ export function ProtocolRunway({
   const realtimeEnabled = experience.capabilities.realtimeSupervisor;
   const steps = [
     {
-      label: "Preflight",
+      label: "Setup",
       detail: `${readyCount}/${checkCount} checks`,
       done: readyCount === checkCount,
       active: readyCount < checkCount,
@@ -208,8 +209,8 @@ export function ProtocolRunway({
     },
     realtimeEnabled
       ? {
-          label: "Supervisor",
-          detail: supervisor?.running ? `${supervisor.tickCount || 0} ticks` : "Standby",
+          label: "Auto-check",
+          detail: supervisor?.running ? `${supervisor.tickCount || 0} checks` : "Standby",
           done: !!supervisor?.running,
           active: isActive && !supervisor?.running && !completed,
         }
@@ -221,7 +222,7 @@ export function ProtocolRunway({
         },
     {
       label: "Review",
-      detail: completed ? "Evidence ready" : "Save manifest",
+      detail: completed ? "Run ready to review" : "Save run",
       done: completed,
       active: isActive && !completed && progress >= max,
     },
@@ -309,7 +310,7 @@ export function instructionHeadlineFor({
 }) {
   if (currentStep) return currentStep.instruction;
   if (run?.status === "completed" || run?.status === "aborted") {
-    return run.status === "completed" ? "Run complete — review evidence" : "Run aborted — review captured steps";
+    return run.status === "completed" ? "Run complete — review the session log" : "Run stopped — review captured steps";
   }
   return defaultProtocol?.name || primaryAction.label;
 }

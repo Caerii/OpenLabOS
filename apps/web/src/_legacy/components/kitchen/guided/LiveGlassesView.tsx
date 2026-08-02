@@ -30,7 +30,7 @@ export function LiveGlassesView({
               <>
                 <span data-live="true">{fps.toFixed(1)} fps</span>
                 <span>{formatPreviewLatency(latencyMs)}</span>
-                <span>{frameCount.toLocaleString()} frames</span>
+                <span>{frameCount.toLocaleString()} snapshots</span>
               </>
             ) : (
               <span>Awaiting stream</span>
@@ -44,7 +44,7 @@ export function LiveGlassesView({
             frameCount={frameCount}
             latencyMs={latencyMs}
             showStreamMetrics
-            waitingMessage="Start preview on the glasses. The protocol should not advance until frames are live."
+            waitingMessage="Start the camera view on the glasses. Wait for a live image before continuing."
             disconnectedMessage="Connect glasses to open the operator view."
             className="!aspect-[16/10] sm:!aspect-video"
           />
@@ -61,7 +61,7 @@ export function LiveGlassesView({
           <p className="text-xs text-muted">Keep this visible during the demo so the operator can confirm what the glasses see.</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Badge color={previewReady ? "green" : "yellow"}>{previewReady ? "streaming" : "waiting"}</Badge>
+          <Badge color={previewReady ? "green" : "yellow"}>{previewReady ? "live" : "waiting"}</Badge>
           <Badge color="gray">live only</Badge>
           <Badge color="gray">{fps.toFixed(1)} fps</Badge>
           <Badge color={metricsReady ? "blue" : "gray"}>{formatPreviewLatency(latencyMs)}</Badge>
@@ -73,7 +73,7 @@ export function LiveGlassesView({
         frameCount={frameCount}
         latencyMs={latencyMs}
         showStreamMetrics
-        waitingMessage="Start preview and keep this panel open. The run should not start until frame count increases."
+        waitingMessage="Start the camera view and keep this panel open. Wait for a live image before starting the run."
         disconnectedMessage="Connect glasses to view the camera stream."
         showCornerLabel
       />

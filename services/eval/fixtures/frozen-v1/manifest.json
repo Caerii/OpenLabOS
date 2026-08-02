@@ -1,0 +1,26 @@
+{
+  "dataset_name": "kitchen-tea-smoke",
+  "freeze_id": "frozen-v1",
+  "freeze_timestamp": "2026-07-16T18:00:00+00:00",
+  "dataset_schema_version": "1",
+  "baseline_locked": false,
+  "inputs": {
+    "train_path": "services/eval/fixtures/frozen-v1/train.jsonl",
+    "val_path": "services/eval/fixtures/frozen-v1/val.jsonl",
+    "test_path": "services/eval/fixtures/frozen-v1/test.jsonl",
+    "sqlite_path": "services/api/var/openlabos_sessions.sqlite",
+    "strict_db_check": false
+  },
+  "counts": {
+    "train": 2,
+    "val": 1,
+    "test": 1,
+    "total": 4
+  },
+  "hashes": {
+    "train.jsonl": "6a1ecdc92e70d356e98e7485fe068fc066e993b41f4f4361a8dfb54a6e43d384",
+    "val.jsonl": "3cc8f0ab2f5b3030f2d23d16624899888762fbb6beea01e6ce7bfdb6f858c8bc",
+    "test.jsonl": "922c51c8511b5262896df33dea368a6c00015b0fbaf2e22a05d9c992a717d045"
+  },
+  "notes": "Minimal hashed fixture for offline eval smoke. Replace hashes after editing split JSONL."
+}

@@ -146,6 +146,8 @@ export function parseBatteryDump(output: string): PowerSample["battery"] {
     })(),
     chargeCounterUah: numberValue(output.match(/Charge counter:\s*(-?\d+)/)?.[1]),
     status: numberValue(output.match(/status:\s*(-?\d+)/)?.[1]),
+    currentNowRaw: null,
+    currentAvgRaw: null,
   };
 }
 

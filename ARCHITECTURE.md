@@ -1,31 +1,34 @@
 # OpenLabOS Architecture
 
-This document explains *why* the system is shaped the way it is. For *how to
-use it*, see the per-service READMEs.
+Use this page to locate responsibilities and contracts. For the narrative —
+why these planes exist and what a run means — read
+[docs/architecture/literate-architecture.md](docs/architecture/literate-architecture.md)
+first. Service READMEs own setup and commands.
 
-## The four planes
+## Service boundaries
 
-OpenLabOS separates concerns into four horizontal planes. Each plane talks to
-the next through a small, documented contract — never by reaching across.
+OpenLabOS separates the operator UI, the session API, model services, and
+offline learning tools. They communicate through HTTP contracts and stored
+artifacts.
 
-```
+```text
                 ┌─────────────────────────────────────────────┐
    Presentation │  apps/web   apps/device-reference           │
                 └─────────────────────────────────────────────┘
                          │ HTTP / WebSocket / WebRTC
                 ┌─────────────────────────────────────────────┐
-   Coordination │  services/api  (Hono, OpenAPI-typed)         │
+   Coordination │  services/api  (Express + Hono routes)       │
                 │   • Session lifecycle                        │
                 │   • Protocol registry                        │
                 │   • Device adapter routing                   │
                 │   • Artifact store (frames, events, judgments)│
                 └─────────────────────────────────────────────┘
-                         │ gRPC-style typed JSON / SSE
+                         │ typed JSON / SSE
                 ┌─────────────────────────────────────────────┐
    Reasoning    │  services/inference   services/perception   │
-                │   • LLM routing (cloud + local)              │
+                │   • Step-check routing (cloud + local)       │
                 │   • Frame analysis, judgment generation      │
-                │   • Segmentation, tracking, spatial summary  │
+                │   • Object detection, tracking, spatial summary │
                 └─────────────────────────────────────────────┘
                          │ filesystem / object store
                 ┌─────────────────────────────────────────────┐
@@ -35,19 +38,17 @@ the next through a small, documented contract — never by reaching across.
                 └─────────────────────────────────────────────┘
 ```
 
-The presentation plane never calls a model provider directly. The coordination
-plane never owns a GPU. The reasoning plane never owns session state. The
-learning plane never runs in the request path. These constraints are the
-entire point of the split.
+The web app does not call model providers directly. The API owns session state
+and routes work but does not require a GPU. Inference and perception do not own
+sessions. Training and evaluation stay out of the live request path.
 
 ## Design rules
 
-These rules are load-bearing. They explain why the directory tree looks the
-way it does and why certain things are *forbidden* in certain places.
+Follow these rules when adding a service or moving code.
 
-### 1. The API server is a coordinator, not a kitchen sink
+### 1. Keep the API focused on the live run
 
-`services/api` does four things only:
+`services/api` owns:
 
 - session lifecycle (start, append event, finalize)
 - protocol registry (read-only after boot)
@@ -55,114 +56,100 @@ way it does and why certain things are *forbidden* in certain places.
   device's wire protocol itself)
 - artifact storage (frames, events, judgments)
 
-Vendor SDKs (`@google/genai`, `@ai-sdk/openai`, …) are forbidden in
-`services/api`. That code lives in `services/inference` and is reachable only
-through one typed HTTP contract. This makes the API trivially mockable,
-re-implementable in any language, and possible to deploy without GPU
-credentials.
+New model-provider integrations belong in `services/inference`, behind its
+typed HTTP contract. Some provider code remains in the API from the earlier
+monolith and should be treated as migration debt.
 
-### 2. Devices are adapters, not assumptions
+### 2. Keep hardware code in adapters
 
-Hardware never appears as a hardcoded path, package name, or feature flag in
-core code. Devices are polymorphic:
+Put hardware-specific code in an adapter. The coordination contract is defined
+in `services/api/src/core/adapters/types.ts`; device packages currently keep
+compatible local types while that contract is consolidated. A `DeviceAdapter`
+reports capabilities and health, then opens a `DeviceSession`. The session
+owns preview and sensor streams, capability invocation, and cleanup. Read the
+exported interfaces before implementing an adapter; this summary is not a
+substitute for their method signatures.
 
-```ts
-interface DeviceAdapter {
-  id: string;
-  capabilities: Capability[];          // camera, imu, audio, shell, packages, …
-  open(opts): Promise<DeviceSession>;
-  preview(): AsyncIterable<Frame>;
-  sensors(): AsyncIterable<SensorSample>;
-  close(): Promise<void>;
-}
-```
+The Android adapter is implemented. The webcam adapter is partial; ROS 2 and
+serial adapters remain planned.
 
-The reference Android device-owner app is one adapter. A laptop webcam is
-another. A ROS 2 robot station is another. The API doesn't know or care.
+### 3. Treat demo protocols as examples, not special cases
 
-### 3. Protocols are first-class; demos are examples
-
-There is no privileged protocol. Every protocol is a JSON document validated
-against `packages/protocol`. The kitchen-tea document under
-`examples/protocols/` is a smoke test, not a feature.
+Every protocol is a JSON document validated against `packages/protocol`. The
+kitchen-tea document under `examples/protocols/` is the integration fixture.
 
 - success criteria are extensible (registered by name with a Zod validator)
 - protocols can declare expected `tools`, `reagents`, `containers`, `surfaces`
 - protocol versioning is semver, with a forward-compat policy in
   [decision 0003](docs/decisions/0003-protocol-versioning.md)
-- domain modules contribute *prompt fragments* and *vocabulary* — not whole
-  pipelines
+- domain modules are planned; the current module code is not a published
+  package interface
 
-### 4. One schema, generated everywhere
+### 4. Define shared records once
 
-`packages/protocol` exports both Zod and JSON Schema. Python types are
-*generated* from the JSON Schema during `uv sync` (via
-`datamodel-code-generator`) into `services/*/openlabos_protocol/`. Drift
-between TS and Python is a build error, not a runtime bug.
+`packages/protocol` exports Zod types and emitted JSON Schema. The training
+service generates Python types from those schemas with
+`scripts/regenerate-protocol-types.py`. Other Python services currently
+maintain their runtime contract types directly.
 
-### 5. Modules are packages, not built-ins
+### 5. Put reusable domain work in packages
 
-Each domain module — biotech, chemistry, materials, field-bio, nanotech, … —
-is its own package under `packages/modules/<name>`. Independently versionable,
-optionally loaded. A lab can ship a private `@yourlab/openlabos-module-cryoEM`
-without forking core.
+Versioned domain packages are planned. Existing domain helpers in
+`services/api` came from the monolith and are not stable extension points.
 
-### 6. Training and eval are reproducible by construction
+### 6. Record every training and evaluation input
 
-Every `services/training` run takes a *frozen dataset hash* + a *protocol
-version* + a *base model id* and emits a manifest. `services/eval` consumes
-exactly that manifest. "Which checkpoint did the demo use" has a
-one-hash answer.
+Freeze dataset splits before training or evaluation. Record the protocol
+version, base model, dataset hashes, and outputs in the run manifest. The
+current tooling supports these artifacts, but reproducibility still depends on
+using the documented commands and preserving the referenced inputs.
 
-### 7. Tests at every layer, no exceptions
+### 7. Test the boundary you change
 
-- `packages/protocol` — Zod round-trip + golden-file JSON Schema tests
-- `services/api` — Vitest + supertest, no real models in CI
-- `services/inference` — pytest with VCR-style fixture replay
-- `services/training` — pytest, smoke runs on a 64-frame slice
-- `services/eval` — pytest, deterministic metric tests
-- `apps/web` — Vitest for components, Playwright for the protocol-run flow
+- `packages/protocol`: Zod round-trip and golden-file JSON Schema tests
+- `services/api`: Vitest and supertest, with no real models in CI
+- `services/inference`: pytest with fixture replay
+- `services/training`: pytest and smoke runs on a 64-frame slice
+- `services/eval`: pytest with deterministic metric tests
+- `apps/web`: Vitest for components and Playwright for the protocol-run flow
 
 ## Cross-cutting concerns
 
 ### Configuration
 
-Each service owns a single `Settings` object (Pydantic for Python, Zod for
-TS), populated from env vars. No `.env` lookups scattered through code.
-Defaults work offline.
+Prefer one validated settings module per service. The current API still has
+configuration spread across legacy and newer modules.
 
 ### Telemetry
 
-OpenTelemetry SDK is wired up at process start in every service. Traces use a
-shared `protocol_run_id` so a single run is one waterfall across web → api →
-inference → perception.
+OpenTelemetry integration is planned. Current health, run, and artifact data
+provide the available cross-service diagnostics.
 
 ### Storage
 
-Default: SQLite + local filesystem (works on a laptop). Production: Postgres
-+ S3-compatible object store, switched by config. The repository layer in
-`services/api/src/storage/` is the only place that knows the difference.
+The API defaults to filesystem-backed sessions and local artifacts. SQLite is
+still used by judgment and evaluation workflows. Postgres and S3-compatible
+storage are not implemented deployment options.
 
 ### Auth
 
-None by default — local-first. When deployed, the API speaks OIDC; the
-inference service trusts only the API via mTLS. Documented in
-`docs/runbooks/deployment.md`.
+Compose binds the API to loopback by default. Experimental remote deployments
+can require a bearer token with `OPENLABOS_AUTH_REQUIRED=true`; they still need
+TLS at the reverse proxy. Multi-user identity and service credentials remain
+roadmap work.
 
 ## What's explicitly out of scope (for now)
 
-- Multi-tenant SaaS hosting. OpenLabOS is what you'd self-host or embed.
-- Custom hardware design. We adapt to your hardware; we don't sell it.
+- Multi-tenant SaaS hosting.
+- Custom hardware design.
 - Closed-weights bundling. Local model weights are user-supplied.
 
 ## Decisions
 
-The reasoning behind every cross-cutting choice lives in `docs/decisions/`.
-Start with the index in `docs/decisions/README.md`. The keystone decisions
-referenced from this document are:
+Record cross-service choices in `docs/decisions/`. Start with:
 
-- [0001 — Monorepo tooling](docs/decisions/0001-monorepo-tooling.md)
-- [0002 — Schema as source of truth](docs/decisions/0002-schema-source-of-truth.md)
-- [0003 — Protocol versioning](docs/decisions/0003-protocol-versioning.md)
-- [0004 — Device adapter interface](docs/decisions/0004-device-adapter-interface.md)
-- [0005 — Reasoning gateway contract](docs/decisions/0005-reasoning-gateway-contract.md)
+- [0001: Monorepo tooling](docs/decisions/0001-monorepo-tooling.md)
+- [0002: Schema as source of truth](docs/decisions/0002-schema-source-of-truth.md)
+- [0003: Protocol versioning](docs/decisions/0003-protocol-versioning.md)
+- [0004: Device adapter interface](docs/decisions/0004-device-adapter-interface.md)
+- [0005: Reasoning gateway contract](docs/decisions/0005-reasoning-gateway-contract.md)

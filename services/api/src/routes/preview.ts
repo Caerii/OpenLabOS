@@ -342,7 +342,6 @@ router.get("/metrics", asyncRoute(async (_req, res) => {
     }).breakdown,
   });
   res.json({
-    ok: true,
     streaming: stream.running,
     streamFrameAgeMs: getStreamFrameAgeMs(),
     ...trace,

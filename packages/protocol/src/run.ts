@@ -5,8 +5,14 @@ import { SessionEventSchema, SessionSchema } from "./session.js";
 /**
  * A run manifest is the closure over a session: protocol id+version, every
  * event, every judgment, plus pointers to the artifacts on disk. It is the
- * thing training and eval consume; the thing reviewers audit; the thing a
- * regression suite replays bit-for-bit.
+ * thing training and eval consume and the thing reviewers audit.
+ *
+ * Determinism boundary: replaying `events` in order reconstructs the
+ * session state exactly — that is the reproducible half of the record. The
+ * `judgments` are recorded observations: re-running the producer named in
+ * each judgment's `source` against the same frame does not, in general,
+ * yield the same output. The manifest preserves what was judged and by
+ * what, not a recomputable function.
  */
 export const RunManifestSchema = z.object({
   manifest_version: z.literal(1),
