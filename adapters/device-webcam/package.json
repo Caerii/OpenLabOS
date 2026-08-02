@@ -1,10 +1,23 @@
 {
   "name": "@openlabos/device-webcam",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
+  "description": "DeviceAdapter for local webcams and WebRTC preview tracks on laptops and tablets.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+  },
   "scripts": {
-    "typecheck": "echo 'no sources yet' && exit 0",
-    "test": "echo 'no tests yet' && exit 0"
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
   }
 }
