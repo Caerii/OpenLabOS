@@ -34,6 +34,7 @@ Thumbs.db
 /data/processed/
 /data/tmp/
 /services/api/artifacts/
+/services/api/data/kitchen/manifests/test-*.json
 /services/training/artifacts/
 /desktop/src-tauri/target/
 /desktop/src-tauri/resources/client/
@@ -49,3 +50,7 @@ Thumbs.db
 services/*/openlabos_protocol/_generated/
 packages/sdk-ts/src/_generated/
 packages/sdk-py/openlabos_sdk/_generated/
+
+# Playwright / local test artifacts
+apps/web/test-results/
+
