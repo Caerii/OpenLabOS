@@ -1,0 +1,43 @@
+# GPU overlay for Grounded SAM 2 perception.
+#
+# Usage:
+#   docker compose -f compose.yaml -f compose.gpu.yaml up --build perception
+#
+# Requires an NVIDIA GPU, the NVIDIA Container Toolkit, and several GB of model
+# cache on first start.
+
+services:
+  perception:
+    build:
+      context: .
+      dockerfile: services/perception/Dockerfile.gpu
+      args:
+        OPENLABOS_VERSION: ${OPENLABOS_VERSION:-local}
+        GIT_REVISION: ${GIT_REVISION:-local}
+    image: openlabos/perception:gpu-local
+    environment:
+      LABOS_SEGMENTATION_BACKEND: grounded_sam2
+      GROUNDING_DINO_MODEL: ${GROUNDING_DINO_MODEL:-IDEA-Research/grounding-dino-tiny}
+      SAM2_MODEL: ${SAM2_MODEL:-facebook/sam2-hiera-large}
+      GROUNDING_BOX_THRESHOLD: ${GROUNDING_BOX_THRESHOLD:-0.28}
+      GROUNDING_TEXT_THRESHOLD: ${GROUNDING_TEXT_THRESHOLD:-0.25}
+      HF_HOME: /cache/huggingface
+      TORCH_HOME: /cache/torch
+    volumes:
+      - perception-model-cache:/cache
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      start_period: 120s
+      retries: 10
+
+volumes:
+  perception-model-cache:
+    name: openlabos-perception-model-cache
