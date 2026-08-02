@@ -1,8 +1,8 @@
-# services/eval — OpenLabOS evaluation harness
+# Evaluation
 
-Offline evaluation harness for OpenLabOS. This service consumes RunManifests
-emitted into `services/api`'s artifact store and computes reproducible reports
-without ever touching the live API or training services at runtime.
+Use `services/eval` to score stored judgments, validate frozen datasets, and
+write offline reports. It reads API artifacts directly and does not call the
+live API or training code.
 
 ## What it does
 
@@ -20,8 +20,8 @@ without ever touching the live API or training services at runtime.
   `openlabos-eval-metrics dataset {export-candidates,validate,freeze}`.
 - **Judgment-eval comparison**: score stored SQLite `judgments` rows (latest
   per `clip_id`) against gold labels and emit JSON + Markdown reports.
-- **Baseline-run baseline**: package a reproducible baseline for a frozen
-  split — `baseline-config.json`, `judgment-eval.{json,md}`, and a canonical
+- **Baseline package**: package the configuration and report for a frozen
+  split as `baseline-config.json`, `judgment-eval.{json,md}`, and
   `baseline-lock.json`. CLI: `openlabos-eval-metrics baseline`.
 
 ## Bootstrap
@@ -50,7 +50,7 @@ Artifacts:
 - `<out>/judgment-eval.json`
 - `<out>/judgment-eval.md`
 
-For a fully packaged baseline (config + report + lock) over a frozen split:
+To package a baseline configuration, report, and lock over a frozen split:
 
 ```bash
 uv run openlabos-eval-metrics baseline \
@@ -68,4 +68,4 @@ pipeline, or the training loop. It only reads:
 - protocol JSON definitions
 
 All outputs are written under `reports/` (or a caller-specified directory).
-Eval sets are immutable once frozen — never mutate held-out data in place.
+Do not edit a frozen eval set in place. Create a new `freeze_id`.

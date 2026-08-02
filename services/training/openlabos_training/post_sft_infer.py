@@ -25,107 +25,31 @@ import torch
 from PIL import Image
 
 
-# TODO(openlabos): replace with judgment + media persistence helpers (insert_judgment, get_clip, session_step_exists) reading services/api SQLite schema
-# was: from labos_api.persistence import judgment_repository, media_repository
-class _JudgmentRepositoryStub:
-    @staticmethod
-    def insert_judgment(*args: Any, **kwargs: Any) -> None:  # pragma: no cover - stub
-        raise NotImplementedError(
-            "TODO(openlabos): port judgment_repository.insert_judgment; "
-            "was labos_api.persistence.judgment_repository.insert_judgment",
-        )
+from openlabos_training.judgment_runtime import (
+    FrameSelectionError,
+    JudgmentParseError,
+    MediaPathError,
+    ProtocolRegistry,
+    build_step_prompt,
+    get_clip,
+    insert_judgment,
+    parse_strict_json,
+    protocol_id_for_session,
+    resolve_data_path,
+    select_frames_for_clip,
+    session_step_exists,
+    validate_judgment,
+)
 
-
-class _MediaRepositoryStub:
-    @staticmethod
-    def get_clip(conn: sqlite3.Connection, *, clip_id: str) -> Any:  # pragma: no cover - stub
-        raise NotImplementedError(
-            "TODO(openlabos): port media_repository.get_clip; "
-            "was labos_api.persistence.media_repository.get_clip",
-        )
-
-    @staticmethod
-    def session_step_exists(conn: sqlite3.Connection, *, session_id: str, step_id: str) -> bool:  # pragma: no cover - stub
-        raise NotImplementedError(
-            "TODO(openlabos): port media_repository.session_step_exists; "
-            "was labos_api.persistence.media_repository.session_step_exists",
-        )
-
-
-judgment_repository = _JudgmentRepositoryStub()
-media_repository = _MediaRepositoryStub()
-
-
-# TODO(openlabos): replace with frame selection helper from openlabos protocol package
-# was: from labos_api.services.frame_selection import FrameSelectionError, select_frames_for_clip
-class FrameSelectionError(RuntimeError):
-    """Stub for labos_api.services.frame_selection.FrameSelectionError."""
-
-
-def select_frames_for_clip(*, data_root: Path, session_id: str, clip_id: str) -> list[str]:  # pragma: no cover - stub
-    raise NotImplementedError(
-        "TODO(openlabos): port frame selection; "
-        "was labos_api.services.frame_selection.select_frames_for_clip",
-    )
-
-
-# TODO(openlabos): replace with strict JSON judgment parser/validator (matches generated openlabos_protocol JudgmentResult schema)
-# was: from labos_api.services.judgment_parsing import JudgmentParseError, parse_strict_json, validate_judgment
-class JudgmentParseError(RuntimeError):
-    """Stub for labos_api.services.judgment_parsing.JudgmentParseError."""
-
-
-def parse_strict_json(text: str) -> dict[str, Any]:  # pragma: no cover - stub
-    raise NotImplementedError(
-        "TODO(openlabos): port parse_strict_json; "
-        "was labos_api.services.judgment_parsing.parse_strict_json",
-    )
-
-
-def validate_judgment(parsed: dict[str, Any]) -> Any:  # pragma: no cover - stub
-    raise NotImplementedError(
-        "TODO(openlabos): port validate_judgment; "
-        "was labos_api.services.judgment_parsing.validate_judgment",
-    )
-
-
-# TODO(openlabos): replace with judgment prompt builder
-# was: from labos_api.services.judgment_prompt import build_step_prompt
-def build_step_prompt(*, protocol: Any, step: Any, frame_paths: list[str]) -> Any:  # pragma: no cover - stub
-    raise NotImplementedError(
-        "TODO(openlabos): port build_step_prompt; "
-        "was labos_api.services.judgment_prompt.build_step_prompt",
-    )
-
-
-# TODO(openlabos): replace with protocol registry that loads protocol JSON files
-# was: from labos_api.services.protocol_registry import ProtocolRegistry
-class ProtocolRegistry:  # pragma: no cover - stub
-    @classmethod
-    def from_single_path(cls, path: Path) -> "ProtocolRegistry":
-        raise NotImplementedError(
-            "TODO(openlabos): port ProtocolRegistry.from_single_path; "
-            "was labos_api.services.protocol_registry.ProtocolRegistry.from_single_path",
-        )
-
-    def get(self, protocol_id: str) -> Any:
-        raise NotImplementedError(
-            "TODO(openlabos): port ProtocolRegistry.get; "
-            "was labos_api.services.protocol_registry.ProtocolRegistry.get",
-        )
-
-
-# TODO(openlabos): replace with safe path-join helper that prevents traversal under data_root
-# was: from labos_api.storage.media_paths import MediaPathError, resolve_data_path
-class MediaPathError(RuntimeError):
-    """Stub for labos_api.storage.media_paths.MediaPathError."""
-
-
-def resolve_data_path(data_root: Path, rel: str) -> Path:  # pragma: no cover - stub
-    raise NotImplementedError(
-        "TODO(openlabos): port resolve_data_path (safe join under data_root); "
-        "was labos_api.storage.media_paths.resolve_data_path",
-    )
+judgment_repository = type("judgment_repository", (), {"insert_judgment": staticmethod(insert_judgment)})()
+media_repository = type(
+    "media_repository",
+    (),
+    {
+        "get_clip": staticmethod(get_clip),
+        "session_step_exists": staticmethod(session_step_exists),
+    },
+)()
 
 
 def _default_repo_root() -> Path:
@@ -200,11 +124,17 @@ def _resolve_split_path(
     p.error("Provide --split-jsonl or --frozen-dir with --split (train|val|test).")
 
 
-def _get_protocol(conn: sqlite3.Connection, registry: ProtocolRegistry, *, session_id: str):
-    row = conn.execute("SELECT protocol_id FROM sessions WHERE session_id = ?", (session_id,)).fetchone()
-    if row is None:
+def _get_protocol(
+    conn: sqlite3.Connection,
+    registry: ProtocolRegistry,
+    *,
+    session_id: str,
+    data_root: Path,
+):
+    try:
+        pid = protocol_id_for_session(conn, session_id, data_root=data_root)
+    except Exception:
         return None, None
-    pid = str(row[0])
     return registry.get(pid), pid
 
 
@@ -287,7 +217,7 @@ def main(argv: list[str] | None = None) -> int:
         if env:
             protocol_path = Path(env).resolve()
         else:
-            protocol_path = _default_repo_root() / "packages" / "protocol-schema" / "examples" / "kitchen-tea-v1.json"
+            protocol_path = _default_repo_root() / "examples" / "protocols" / "kitchen-tea.protocol.json"
     if not protocol_path.is_file():
         print(f"ERROR: protocol file not found: {protocol_path}", file=sys.stderr)
         return 2
@@ -365,7 +295,7 @@ def main(argv: list[str] | None = None) -> int:
                 stats["skipped"] += 1
                 continue
 
-            protocol, _pid = _get_protocol(conn, registry, session_id=clip.session_id)
+            protocol, _pid = _get_protocol(conn, registry, session_id=clip.session_id, data_root=data_root)
             if protocol is None:
                 stats["skipped"] += 1
                 continue

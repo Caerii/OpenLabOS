@@ -28,44 +28,14 @@ from pathlib import Path
 from typing import Any, Optional
 
 
-# TODO(openlabos): replace with safe path-join helper that prevents traversal under data_root
-# was: from labos_api.storage.media_paths import MediaPathError, resolve_data_path
-class MediaPathError(RuntimeError):
-    """Stub for labos_api.storage.media_paths.MediaPathError."""
-
-
-def resolve_data_path(data_root: Path, rel: str) -> Path:  # pragma: no cover - stub
-    raise NotImplementedError(
-        "TODO(openlabos): port resolve_data_path (safe join under data_root); "
-        "was labos_api.storage.media_paths.resolve_data_path",
-    )
-
-
-# TODO(openlabos): replace with strict JSON judgment parser/validator/normalizer
-# was: from labos_api.services.judgment_parsing import JudgmentParseError, normalize_judgment_dict, parse_strict_json, validate_judgment
-class JudgmentParseError(RuntimeError):
-    """Stub for labos_api.services.judgment_parsing.JudgmentParseError."""
-
-
-def parse_strict_json(text: str) -> dict[str, Any]:  # pragma: no cover - stub
-    raise NotImplementedError(
-        "TODO(openlabos): port parse_strict_json; "
-        "was labos_api.services.judgment_parsing.parse_strict_json",
-    )
-
-
-def normalize_judgment_dict(parsed: dict[str, Any]) -> dict[str, Any]:  # pragma: no cover - stub
-    raise NotImplementedError(
-        "TODO(openlabos): port normalize_judgment_dict; "
-        "was labos_api.services.judgment_parsing.normalize_judgment_dict",
-    )
-
-
-def validate_judgment(parsed: dict[str, Any]) -> Any:  # pragma: no cover - stub
-    raise NotImplementedError(
-        "TODO(openlabos): port validate_judgment; "
-        "was labos_api.services.judgment_parsing.validate_judgment",
-    )
+from openlabos_training.judgment_runtime import (
+    JudgmentParseError,
+    MediaPathError,
+    normalize_judgment_dict,
+    parse_strict_json,
+    resolve_data_path,
+    validate_judgment,
+)
 
 
 REWARD_WEIGHTS = {

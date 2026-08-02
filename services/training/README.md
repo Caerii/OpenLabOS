@@ -1,8 +1,8 @@
-# services/training — OpenLabOS training stack
+# Training
 
-This service is the Python (uv-managed) ML training stack for OpenLabOS. It
-hosts SFT, DPO, GRPO, and judgment LoRA training, along with dataset ingestion
-utilities for video sources.
+Use `services/training` for SFT, DPO, GRPO, judgment LoRA training, and video
+dataset ingestion. Run it offline with `uv`; it is not part of the API request
+path.
 
 The service consumes **RunManifests** produced by `services/api` (TypeScript).
 Manifests pin the protocol JSON, the SQLite path, frozen split locations, and
@@ -21,10 +21,9 @@ do not need bitsandbytes.
 
 ## Protocol types
 
-OpenLabOS keeps the canonical protocol/judgment schemas in
-`packages/protocol/schema/*.json`. The training service regenerates Python
-types from those schemas with `datamodel-code-generator` instead of importing
-from `services/api` (which is TypeScript).
+Shared protocol and judgment schemas are emitted to
+`packages/protocol/schema/*.json`. Generate Python types from those files with
+`datamodel-code-generator`; do not import TypeScript API code.
 
 Run the codegen helper:
 
@@ -32,9 +31,9 @@ Run the codegen helper:
 uv run python scripts/regenerate-protocol-types.py
 ```
 
-This writes `openlabos_training/_generated_protocol.py`. Several modules
-currently have TODO stubs (search the package for `TODO(openlabos)`) marking
-the symbols that should be sourced from the generated module once available.
+This writes `openlabos_training/_generated_protocol/`. Training helpers in
+`judgment_runtime.py` and `session_manifest_io.py` implement the runtime
+contract; regenerate types after schema changes in `packages/protocol`.
 
 ## CLI scripts
 
@@ -56,11 +55,11 @@ only the CLI names use the `openlabos-` prefix.
 | `openlabos-infer-hf-judgments` | Runs HF + PEFT (post-SFT) judgments against a frozen split, writing rows to SQLite under a caller-chosen `model_id` so eval can distinguish them from baselines. |
 | `openlabos-export-isaac-lab` | Exports a session manifest into a portable Isaac Lab task spec (no Isaac Lab runtime dependency). |
 
-## How this fits with `services/api`
+## API inputs
 
-`services/api` (TypeScript) is the source of truth for the running protocol
-state, owns the SQLite database, and emits per-run **RunManifest** JSON. This
-training service treats those manifests as inputs:
+`services/api` owns live protocol state, writes session manifests and the
+judgment SQLite database, and emits per-run **RunManifest** JSON. Training reads
+those outputs:
 
 - frozen splits live under `data/splits/<dataset>/<freeze_id>/` exactly as the
   API records them
@@ -70,6 +69,6 @@ training service treats those manifests as inputs:
   schema the API exposes, but with a unique `model_id` so post-SFT runs do
   not collide with the LM Studio baseline
 
-Until `scripts/regenerate-protocol-types.py` is wired up, the cross-stack types
-that used to come from `labos_api` are temporarily stubbed locally and clearly
-marked with `TODO(openlabos)` comments.
+Cross-stack types that used to come from `labos_api` live in
+`openlabos_training/judgment_runtime.py` and `openlabos_training/session_manifest_io.py`,
+with generated schemas under `openlabos_training/_generated_protocol/`.
