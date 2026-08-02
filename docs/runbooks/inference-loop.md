@@ -1,8 +1,9 @@
-# Runbook: Inference loop (LM Studio judgments)
+# Check a protocol step with LM Studio
 
-This runbook describes the MVP “judge the current step” loop using **sampled frames only** and a local LM Studio server.
+Send a few frames from the current step to a local LM Studio model and store
+its structured result.
 
-## What this is (and is not)
+## Scope
 
 - **Is:** clip frames + explicit protocol step prompt → LM Studio → strict JSON → stored judgment.
 - **Is not:** training, async workers, token streaming, full-video reasoning, or cloud inference.

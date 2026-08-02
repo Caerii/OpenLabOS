@@ -1,95 +1,114 @@
 # Testing in OpenLabOS
 
-OpenLabOS treats testing as a *literate artefact* — each test names the
-behaviour it pins, in prose any reader can follow, then proves it with a small
-example. The goal is for someone reading `tests/` alone to learn what the
-system does and why.
+The test surface is growing and is not uniform across packages yet. This page
+documents commands that exist today; planned coverage belongs in the roadmap.
 
-## The three rings
+## Main verification commands
 
-We organise tests in three concentric rings. Costs grow outward; coverage
-expectations shrink.
-
-```
-   ┌────────────────────────────────────────────────────┐
-   │  Ring 3 — End-to-end                                │
-   │  Real device adapter, real model, real storage.     │
-   │  A handful of golden-path scenarios per protocol.   │
-   │  Run nightly + on release.                          │
-   │  ┌─────────────────────────────────────────────┐    │
-   │  │  Ring 2 — Service contract                   │    │
-   │  │  Each service against typed clients,         │    │
-   │  │  with mocked downstreams. ~40-80 per service.│    │
-   │  │  Run on every PR.                            │    │
-   │  │  ┌───────────────────────────────────────┐   │    │
-   │  │  │  Ring 1 — Pure unit                    │   │    │
-   │  │  │  Schema, parsers, pure functions.      │   │    │
-   │  │  │  Hundreds. Run on every save.          │   │    │
-   │  │  └───────────────────────────────────────┘   │    │
-   │  └─────────────────────────────────────────────┘    │
-   └────────────────────────────────────────────────────┘
-```
-
-A test belongs in the innermost ring that can pin its behaviour. Promote tests
-outward only when the behaviour genuinely depends on the next ring.
-
-## Conventions
-
-- **One file per behaviour group.** `protocol.test.ts`, not `tests-2.ts`.
-- **Each `describe` is a contract sentence.** *"ProtocolSchema accepts the
-  canonical kitchen-tea example"* reads like a spec line.
-- **Every Ring 1 test is hermetic.** No network, no clock, no filesystem
-  outside the test's own `tmp` dir.
-- **Every Ring 2 test pins a single contract.** Either request → response
-  shape, or an event sequence emitted from a known input.
-- **Fixtures are committed.** `__fixtures__/` lives next to the test that owns
-  it. Fixture files are minified with intent: a fixture is a specification.
-- **Goldens are regenerated, never hand-edited.** Each golden has an `update`
-  command in the test file's docstring.
-
-## Per-package matrix
-
-| Package / service        | Framework        | Where        | Notable kinds of test                                |
-| ------------------------ | ---------------- | ------------ | ---------------------------------------------------- |
-| `packages/protocol`      | Vitest           | `tests/`     | Round-trip, golden JSON Schema, negative parse cases |
-| `packages/sdk-ts`        | Vitest           | `tests/`     | Generated-client contract, replay against fixtures   |
-| `packages/ui`            | Vitest + jsdom   | `tests/`     | Component render, accessibility (axe)                |
-| `packages/modules/*`     | Vitest           | `tests/`     | Prompt golden, vocabulary additions valid            |
-| `services/api`           | Vitest+supertest | `tests/`    | Route contracts, storage round-trip, replay fidelity |
-| `services/inference`     | pytest + VCR     | `tests/`     | Provider routing, prompt rendering, retry policy     |
-| `services/perception`    | pytest           | `tests/`     | Model adapter contract, frame I/O                    |
-| `services/training`      | pytest           | `tests/`     | Dataset construction, loss-step sanity, smoke runs   |
-| `services/eval`          | pytest           | `tests/`     | Metric correctness, hybrid validator decision tables |
-| `apps/web`               | Vitest + Playwright | `tests/` and `e2e/` | Component + protocol-run flow                |
-
-## How to run
+Install and build workspace dependencies first:
 
 ```bash
-# Everything fast (Ring 1 + Ring 2 across the workspace):
-pnpm test
-
-# A single TS package:
-pnpm --filter @openlabos/protocol test
-
-# A Python service:
-cd services/eval && uv run pytest -q
-
-# End-to-end (Ring 3) — opt-in, requires Docker:
-pnpm test:e2e
+pnpm install --frozen-lockfile
+pnpm --filter @openlabos/protocol build
+pnpm --filter @openlabos/preview build
+pnpm --filter @openlabos/sdk-ts build
+pnpm --filter @openlabos/device-android build
 ```
 
-## Coverage targets
+Then run the TypeScript/offline checks:
 
-- Ring 1: 90% line coverage, 100% branch coverage on parsers and validators.
-- Ring 2: every public route + every published event variant.
-- Ring 3: every protocol in `examples/protocols/` runs to a final `succeeded`
-  manifest under the deterministic-replay device adapter.
+```bash
+# All workspace test scripts (some packages currently declare placeholders)
+pnpm test
 
-## Replay-as-test
+pnpm typecheck
 
-The most powerful test we ship is *replay*. A bug-causing run is captured as a
-`RunManifest` (frames, events, judgments). We commit it to
-`tests/replay/<bug-id>/`, and a tiny harness re-runs the API service against
-the manifest, asserting the new code produces an equivalent — or strictly
-better — outcome. Every regression we fix gets a replay test; the suite grows
-into a living spec of "things that used to be broken".
+# API tests that must not call devices or providers
+pnpm --filter @openlabos/api test:offline
+
+# Real-device tests; explicit opt-in
+pnpm --filter @openlabos/api test:device
+
+# Provider/network tests; explicit opt-in
+pnpm --filter @openlabos/api test:live
+```
+
+`pnpm check` combines typechecks, API offline tests, and the perception smoke
+script. Run it only after installing the perception smoke dependencies shown
+below.
+
+## Docker Compose contract smoke
+
+```bash
+docker compose up --build --wait
+pnpm compose:smoke
+pnpm compose:protocol-run
+pnpm compose:restart-persistence
+docker compose down
+```
+
+The smoke script verifies:
+
+- the compiled operator HTML is served;
+- API health and dependency-aware readiness;
+- API-to-perception health probing;
+- API-to-inference forwarding through the deterministic mock provider; and
+- direct health of both internal sidecars.
+
+`compose:protocol-run` drives a full kitchen-tea session through the Hono API and
+finalizes with a manifest. `compose:restart-persistence` verifies session events
+survive `docker compose restart api`.
+
+## Current coverage
+
+| Area | Framework/runner | Current scope |
+|---|---|---|
+| `packages/protocol` | Vitest | Schema parsing and round trips |
+| `packages/preview` | Vitest | Buffer, wire, health, energy, and latency models |
+| `adapters/device-android` | Vitest | Client and replay fixtures |
+| `services/api` | Custom TSX runner | Offline contracts plus gated device/live suites |
+| `services/perception` | Python smoke script | Process and HTTP contract |
+| `services/training` | pytest | GRPO and world-model utilities |
+| `services/eval` | pytest | Hybrid validator |
+| `services/voice` | pytest / LiveKit tests | Agent behavior |
+| `apps/web` | Placeholder script | Dedicated browser/unit suite still pending |
+| `packages/sdk-ts`, `packages/ui` | Placeholder scripts | Tests still pending |
+| Compose stack | Node smoke script | Web and cross-service contracts |
+
+## Python services
+
+Python services use `uv` when they contain `pyproject.toml` and `uv.lock`:
+
+```bash
+cd services/eval
+uv sync --python 3.12
+uv run pytest -q
+```
+
+The perception sidecar currently uses pinned requirements:
+
+```bash
+python -m venv services/perception/.venv
+services/perception/.venv/bin/python -m pip install \
+  -r services/perception/requirements-smoke.txt
+services/perception/.venv/bin/python scripts/check-sidecar-smoke.py
+```
+
+Use `Scripts/python` instead of `bin/python` on Windows.
+
+## Test boundaries
+
+- Offline tests must not require network access, credentials, or hardware.
+- Device and live-provider tests must remain behind explicit commands.
+- Fixtures must contain no secrets or private captured media.
+- A regression should get the smallest test that reproduces it.
+- Replay fixtures are preferred when behavior depends on a sequence of device
+  or run events.
+
+## Known gaps
+
+- No committed Playwright/browser suite for the web app.
+- No full protocol-run test through Compose.
+- No provider contract tests in `services/inference/tests`.
+- No enforced coverage thresholds.
+- No persisted Hono-session restart test because that store is still in memory.

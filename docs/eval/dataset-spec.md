@@ -1,6 +1,7 @@
-# Dataset spec: judged-clip labels (MVP)
+# Judged-clip dataset format
 
-This document defines the frozen labeled dataset format used by the eval harness (TASK-0008).
+The evaluation tools read frozen JSONL files in this format. One line holds the
+human label for one clip.
 
 ## Format
 

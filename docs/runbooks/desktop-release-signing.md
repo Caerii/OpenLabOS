@@ -1,6 +1,6 @@
-# Desktop Release Signing
+# Sign an OpenLabOS Desktop release
 
-This runbook covers the signing path for OpenLabOS Desktop.
+Use these steps to produce a signed desktop build for distribution.
 
 Unsigned builds are useful for internal testing, but public installers should be signed:
 

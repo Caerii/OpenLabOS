@@ -1,20 +1,21 @@
-# Runbook: Capture pipeline (MVP media contract)
+# Capture pipeline
 
-This runbook defines the **on-disk layout** and **API contract** for local POV video capture in the MVP.
+Use this layout for local point-of-view video, whether the camera is on glasses
+or another supported device.
 
 ## What this is (and is not)
 
 - **Is:** a boring contract for where files live and how they are registered/listed/linked to sessions and steps.
 - **Is not:** upload server, streaming, background workers, or job queues.
 
-## Canonical root
+## Data root
 
 All media lives under repo-local `data/` by default.
 
 - API resolves this as **`LABOS_DATA_ROOT`** (default: `<repo>/data`).
 - SQLite stores **relative paths** rooted at that data root.
 
-## Canonical on-disk layout
+## On-disk layout
 
 The intent is: a human can discover media from the filesystem alone, without needing the database.
 

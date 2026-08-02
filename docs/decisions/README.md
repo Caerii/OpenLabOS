@@ -38,6 +38,15 @@ Brief — enough that a reader can audit the trade.
 
 ## Index
 
+Each ADR lists **Status** in its header. Implementation pointers:
+
+| ADR | Status | Implementation |
+|-----|--------|----------------|
+| 0008 Storage tiering | accepted | `services/api/src/core/sessions/filesystem-store.ts` |
+| 0014 Media storage layout | accepted | `services/api/src/storage/repository.ts` |
+| 0015 Replay-as-test | accepted | `services/api/tests/replay/` |
+| 0016 API runtime | accepted | `services/api/src/hono/` (migration in progress) |
+
 - [0001 — Monorepo tooling](0001-monorepo-tooling.md)
 - [0002 — Schema as source of truth](0002-schema-source-of-truth.md)
 - [0003 — Protocol versioning](0003-protocol-versioning.md)
