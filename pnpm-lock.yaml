@@ -218,8 +218,8 @@ importers:
   services/api:
     dependencies:
       '@ai-sdk/google':
-        specifier: ^3.0.64
-        version: 3.0.67(zod@4.4.3)
+        specifier: ^4.0.28
+        version: 4.0.28(zod@4.4.3)
       '@ai-sdk/openai':
         specifier: ^3.0.53
         version: 3.0.59(zod@4.4.3)
@@ -302,9 +302,9 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/google@3.0.67':
-    resolution: {integrity: sha512-Qeq+SidYtzMrcf0fdw3L0QLmtXK+ErwdBzbxS4+0Q/2UP85Ges8RJJcbAj7SO8e2JbeJoM35BLqkeNy1o3wJvQ==}
-    engines: {node: '>=18'}
+  '@ai-sdk/google@4.0.28':
+    resolution: {integrity: sha512-/40fma4dtjOXcZrBiv/8X/ggIEY54Crsd5cTssGP8/h5vYcE/JEoyyx0Py4/Tfk1qWnAkuSZ+jJnTeStr633Fw==}
+    engines: {node: '>=22'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
@@ -320,9 +320,19 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
+  '@ai-sdk/provider-utils@5.0.15':
+    resolution: {integrity: sha512-dnDM4/fS17qO+D7LxVU4003V1+8ZDEWgG7rPhvcDNNFs269qLx+Jnm2mTf72ejyjdzu+f0J+rKNSLXWjZWzxwA==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
   '@ai-sdk/provider@3.0.10':
     resolution: {integrity: sha512-Q3BZ27qfpYqnCYGvE3vt+Qi6LGOF9R5Nmzn+9JoM1lCRsD9mYaIhfJLkSunN48nfGXJ6n+XNV0J/XVpqGQl7Dw==}
     engines: {node: '>=18'}
+
+  '@ai-sdk/provider@4.0.4':
+    resolution: {integrity: sha512-tbHKNLirllUNF3ZlkCsXnwab2ZV1Sl4b1H/Cp9ruCce15IBmskE8Gwkk0yo9xDWY+jho2of7lVXtwSsyrq7cwQ==}
+    engines: {node: '>=22'}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -333,6 +343,10 @@ packages:
 
   '@babel/code-frame@7.29.0':
     resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/code-frame@7.29.7':
+    resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/compat-data@7.29.3':
@@ -377,6 +391,10 @@ packages:
     resolution: {integrity: sha512-qSs4ifwzKJSV39ucNjsvc6WVHs6b7S03sOh2OcHF9UHfVPqWWALUsNUVzhSBiItjRZoLHx7nIarVjqKVusUZ1Q==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/helper-validator-identifier@7.29.7':
+    resolution: {integrity: sha512-qehxGkRj55h/ff8EMaJ+cYhyaKlHIxqYDn682wQD7RNp9UujOQsHog2uS0r2vzr4pW+sXf90NeeayjcNaX3fFg==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/helper-validator-option@7.27.1':
     resolution: {integrity: sha512-YvjJow9FxbhFFKDSuFnVCe2WxXk1zWc22fFePVNEaWJEu8IrZVlda6N0uHwzZrUM1il7NC9Mlp4MaJYbYd9JSg==}
     engines: {node: '>=6.9.0'}
@@ -404,6 +422,10 @@ packages:
 
   '@babel/runtime@7.29.2':
     resolution: {integrity: sha512-JiDShH45zKHWyGe4ZNVRrCjBz8Nh9TMmZG1kh4QTK8hCBTWBi8Da+i7s1fJw7/lYpM4ccepSNfqzZ/QvABBi5g==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/runtime@7.29.7':
+    resolution: {integrity: sha512-Nq8OhGWiZIZGV6hLHoyAKLLcJihP/xFeBMGJoUrxTX2psI8dCifzLhZISFb+VWS3wFMRDmCGw5R+dOySCqPLhw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.28.6':
@@ -1332,6 +1354,9 @@ packages:
   '@webgpu/types@0.1.69':
     resolution: {integrity: sha512-RPmm6kgRbI8e98zSD3RVACvnuktIja5+yLgDAkTmxLr90BEwdTXRQWNLF3ETTTyH/8mKhznZuN5AveXYFEsMGQ==}
 
+  '@workflow/serde@4.1.0':
+    resolution: {integrity: sha512-pav4F2BoirECWR7Nf1TKt+2eETcBj7jj4cBefQ8VXQCA6NPkaKeLfj/zMgi+3zYV5ZIBT4GuUiphsj0/b9hPQQ==}
+
   accepts@1.3.8:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
     engines: {node: '>= 0.6'}
@@ -1692,6 +1717,10 @@ packages:
 
   eventsource-parser@3.0.8:
     resolution: {integrity: sha512-70QWGkr4snxr0OXLRWsFLeRBIRPuQOvt4s8QYjmUlmlkyTZkRqS7EDVRZtzU3TiyDbXSzaOeF0XUKy8PchzukQ==}
+    engines: {node: '>=18.0.0'}
+
+  eventsource-parser@3.1.0:
+    resolution: {integrity: sha512-kJezFj9YFAMLeORyi7aCLxLbD5/qWMQnoMVlVPyHIll7lgRJCc3JVln9Vgl9nwQi0YkMnhdGTMNn7CkRRAptMg==}
     engines: {node: '>=18.0.0'}
 
   expect-type@1.3.0:
@@ -2687,6 +2716,10 @@ packages:
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
+  undici@7.29.0:
+    resolution: {integrity: sha512-IDxfleLmmbSskfWSUATiN1nfn2rDuvnMOqb5CWR92iIfojA0Ud+ulOAAEQ57LPr9rWmsreUyf5lwyao+7GNNVw==}
+    engines: {node: '>=20.18.1'}
+
   unpipe@1.0.0:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
@@ -2915,10 +2948,10 @@ snapshots:
       '@vercel/oidc': 3.2.0
       zod: 4.4.3
 
-  '@ai-sdk/google@3.0.67(zod@4.4.3)':
+  '@ai-sdk/google@4.0.28(zod@4.4.3)':
     dependencies:
-      '@ai-sdk/provider': 3.0.10
-      '@ai-sdk/provider-utils': 4.0.26(zod@4.4.3)
+      '@ai-sdk/provider': 4.0.4
+      '@ai-sdk/provider-utils': 5.0.15(zod@4.4.3)
       zod: 4.4.3
 
   '@ai-sdk/openai@3.0.59(zod@4.4.3)':
@@ -2934,7 +2967,20 @@ snapshots:
       eventsource-parser: 3.0.8
       zod: 4.4.3
 
+  '@ai-sdk/provider-utils@5.0.15(zod@4.4.3)':
+    dependencies:
+      '@ai-sdk/provider': 4.0.4
+      '@standard-schema/spec': 1.1.0
+      '@workflow/serde': 4.1.0
+      eventsource-parser: 3.1.0
+      undici: 7.29.0
+      zod: 4.4.3
+
   '@ai-sdk/provider@3.0.10':
+    dependencies:
+      json-schema: 0.4.0
+
+  '@ai-sdk/provider@4.0.4':
     dependencies:
       json-schema: 0.4.0
 
@@ -2951,6 +2997,12 @@ snapshots:
   '@babel/code-frame@7.29.0':
     dependencies:
       '@babel/helper-validator-identifier': 7.28.5
+      js-tokens: 4.0.0
+      picocolors: 1.1.1
+
+  '@babel/code-frame@7.29.7':
+    dependencies:
+      '@babel/helper-validator-identifier': 7.29.7
       js-tokens: 4.0.0
       picocolors: 1.1.1
 
@@ -3016,6 +3068,8 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.28.5': {}
 
+  '@babel/helper-validator-identifier@7.29.7': {}
+
   '@babel/helper-validator-option@7.27.1': {}
 
   '@babel/helpers@7.29.2':
@@ -3038,6 +3092,8 @@ snapshots:
       '@babel/helper-plugin-utils': 7.28.6
 
   '@babel/runtime@7.29.2': {}
+
+  '@babel/runtime@7.29.7': {}
 
   '@babel/template@7.28.6':
     dependencies:
@@ -3546,8 +3602,8 @@ snapshots:
 
   '@testing-library/dom@10.4.1':
     dependencies:
-      '@babel/code-frame': 7.29.0
-      '@babel/runtime': 7.29.2
+      '@babel/code-frame': 7.29.7
+      '@babel/runtime': 7.29.7
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       dom-accessibility-api: 0.5.16
@@ -3787,6 +3843,8 @@ snapshots:
       tinyrainbow: 1.2.0
 
   '@webgpu/types@0.1.69': {}
+
+  '@workflow/serde@4.1.0': {}
 
   accepts@1.3.8:
     dependencies:
@@ -4151,6 +4209,8 @@ snapshots:
   events@3.3.0: {}
 
   eventsource-parser@3.0.8: {}
+
+  eventsource-parser@3.1.0: {}
 
   expect-type@1.3.0: {}
 
@@ -5207,6 +5267,8 @@ snapshots:
   typescript@5.9.3: {}
 
   undici-types@6.21.0: {}
+
+  undici@7.29.0: {}
 
   unpipe@1.0.0: {}
 
