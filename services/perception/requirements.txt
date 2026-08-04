@@ -9,4 +9,4 @@ torchvision>=0.18.1
 transformers>=4.48.0
 accelerate>=1.2.1
 pycocotools>=2.0.8
-opencv-python-headless>=4.10.0.84
+opencv-python-headless>=5.0.0.93
